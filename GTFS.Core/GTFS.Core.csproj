@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81F40909-0A8A-4F2A-8F59-A54896BFAE89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GTFS.Core</RootNamespace>
+    <AssemblyName>GTFS.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\FileNameAttribute.cs" />
+    <Compile Include="Entities\Enumerations\ExceptionType.cs" />
+    <Compile Include="Attributes\FieldNameAttribute.cs" />
+    <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />
+    <Compile Include="Attributes\RequiredAttribute.cs" />
+    <Compile Include="Entities\Agency.cs" />
+    <Compile Include="Entities\Calendar.cs" />
+    <Compile Include="Entities\CalendarDate.cs" />
+    <Compile Include="Entities\Enumerations\DirectionType.cs" />
+    <Compile Include="Entities\Enumerations\DropOffType.cs" />
+    <Compile Include="Entities\Enumerations\LocationType.cs" />
+    <Compile Include="Entities\Enumerations\PickupType.cs" />
+    <Compile Include="Entities\Enumerations\RouteType.cs" />
+    <Compile Include="Entities\Enumerations\TransferType.cs" />
+    <Compile Include="Entities\Enumerations\WheelchairBoardingType.cs" />
+    <Compile Include="Entities\FareAttribute.cs" />
+    <Compile Include="Entities\FareRule.cs" />
+    <Compile Include="Entities\FeedInfo.cs" />
+    <Compile Include="Entities\Frequency.cs" />
+    <Compile Include="Entities\GTFSEntity.cs" />
+    <Compile Include="Entities\Route.cs" />
+    <Compile Include="Entities\Shape.cs" />
+    <Compile Include="Entities\Stop.cs" />
+    <Compile Include="Entities\StopTime.cs" />
+    <Compile Include="Entities\Transfers.cs" />
+    <Compile Include="Entities\Trip.cs" />
+    <Compile Include="Feed.cs" />
+    <Compile Include="IO\GTFSReader.cs" />
+    <Compile Include="IO\IGTFSSourceFile.cs" />
+    <Compile Include="IO\IGTFSSource.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
