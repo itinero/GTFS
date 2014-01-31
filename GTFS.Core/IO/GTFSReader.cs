@@ -21,13 +21,15 @@
 // THE SOFTWARE.
 
 using GTFS.Core.Entities;
+using System;
 using System.Collections.Generic;
+
 namespace GTFS.Core.IO
 {
     /// <summary>
     /// A GTFS reader.
     /// </summary>
-    public class GTFSReader
+    public class GTFSReader<T> where T : Feed
     {
         /// <summary>
         /// Reads the specified GTFS source.
@@ -39,22 +41,64 @@ namespace GTFS.Core.IO
             // create the feed.
             var feed = new Feed();
 
-            // read the files.
-            this.ReadAgency(source.AgencyFile, feed.Agencies);
-            this.ReadCalendar(source.CalendarFile, feed.Calendars);
-            this.ReadCalendarDate(source.CalendarDateFile, feed.CalendarDates);
-            this.ReadFareAttribute(source.FareAttributeFile, feed.FareAttributes);
-            this.ReadFareRule(source.FareRuleFile, feed.FareRules);
-            this.ReadFeedInfo(source.FeedInfoFile, feed.FeedInfo);
-            this.ReadFrequency(source.FrequencyFile, feed.Frequencies);
-            this.ReadRoute(source.RouteFile, feed.Routes);
-            this.ReadShape(source.ShapeFile, feed.Shapes);
-            this.ReadStop(source.StopFile, feed.Stops);
-            this.ReadStopTime(source.StopTimeFile, feed.StopTimes);
-            this.ReadTransfer(source.TransferFile, feed.Transfers);
-            this.ReadTrip(source.TripFile, feed.Trips);
+            foreach(var file in source.Files)
+            { // read each file.
+                this.Read(file, feed);
+            }
 
             return feed;            
+        }
+
+        /// <summary>
+        /// A delegate for parsing methods per entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        private delegate T EntityParseDelegate<T>(GTFSSourceFileHeader header, string[] data)
+            where T : GTFSEntity;
+
+        /// <summary>
+        /// Reads the given file and adds the result to the feed.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="feed"></param>
+        protected virtual void Read(IGTFSSourceFile file, Feed feed)
+        {
+            switch(file.Name.ToLower())
+            {
+                case "agency":
+                    this.Read<Agency>(file, this.ParseAgency, feed.Agencies);
+                    break;
+                case "calendar":
+                    this.Read<Calendar>(file, this.ParseCalender, feed.Calendars);
+                    break;
+                case "calendar_date":
+                    this.Read<CalendarDate>(file, this.ParseCalendarDate, feed.CalendarDates);
+                    break;
+                case "fare_attribute":
+                    this.Read<FareAttribute>(file, this.ParseFareAttribute, feed.FareAttributes);
+                    break;
+                case "fare_rule":
+                    this.Read<FareRule>(file, this.ParseFareRule, feed.FareRules);
+                    break;
+                case "feed_info":
+                    this.Read<FeedInfo>(file, this.ParseFeedInfo, feed.FeedInfo);
+                    break;
+                case "route_file":
+                    this.Read<Frequency>(file, this.ParseFrequency, feed.Frequencies);
+                    break;
+                case "shape":
+                    this.Read<Shape>(file, this.ParseShape, feed.Shapes);
+                    break;
+                case "stop":
+                    this.Read<Stop>(file, this.ParseStop, feed.Stops);
+                    break;
+                case "transfer":
+                    this.Read<StopTime>(file, this.ParseStopTime, feed.StopTimes);
+                    break;
+                case "trip":
+                    this.Read<Trip>(file, this.ParseTrip, feed.Trips);
+                    break;
+            }
         }
 
         /// <summary>
@@ -62,129 +106,167 @@ namespace GTFS.Core.IO
         /// </summary>
         /// <param name="file"></param>
         /// <param name="list"></param>
-        private void ReadAgency(IGTFSSourceFile file, List<Agency> list)
+        private void Read<T>(IGTFSSourceFile file, EntityParseDelegate<T> parser, List<T> list)
+            where T : GTFSEntity
         {
+            // enumerate all lines.
+            var enumerator = file.GetEnumerator();
+            if(!enumerator.MoveNext())
+            { // there is no data, and if there is move to the columns.
+                return;
+            }
 
+            // read the header.
+            var header = new GTFSSourceFileHeader(enumerator.Current);
+
+            // read fields.
+            while (enumerator.MoveNext())
+            {
+                list.Add(parser.Invoke(header, enumerator.Current));
+            }
         }
 
         /// <summary>
-        /// Reads the calendar file.
+        /// Parses an agency row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadCalendar(IGTFSSourceFile file, List<Calendar> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Agency ParseAgency(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the calender date file.
+        /// Parses a calendar row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadCalendarDate(IGTFSSourceFile file, List<CalendarDate> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Calendar ParseCalender(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the fare attribute file.
+        /// Parses a calendar date row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadFareAttribute(IGTFSSourceFile file, List<FareAttribute> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual CalendarDate ParseCalendarDate(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the trip file.
+        /// Parses a fare attribute row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadTrip(IGTFSSourceFile file, List<Trip> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual FareAttribute ParseFareAttribute(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the transfer file.
+        /// Parses a fare rule row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadTransfer(IGTFSSourceFile file, List<Transfer> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual FareRule ParseFareRule(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the stop times file.
+        /// Parses a feed info row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadStopTime(IGTFSSourceFile file, List<StopTime> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual FeedInfo ParseFeedInfo(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the stops file.
+        /// Parses a frequency row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadStop(IGTFSSourceFile file, List<Stop> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Frequency ParseFrequency(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the shape file.
+        /// Parses a route row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadShape(IGTFSSourceFile file, List<Shape> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Route ParseRoute(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the route file.
+        /// Parses a shapte row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadRoute(IGTFSSourceFile file, List<Route> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Shape ParseShape(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the frequency file.
+        /// Parses a stop row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadFrequency(IGTFSSourceFile file, List<Frequency> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Stop ParseStop(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Returns the feed info file.
+        /// Parses a stop time row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="feedInfo"></param>
-        private void ReadFeedInfo(IGTFSSourceFile file, FeedInfo feedInfo)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual StopTime ParseStopTime(GTFSSourceFileHeader header, string[] data)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Reads the fare rule file.
+        /// Parses a transfer row.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="list"></param>
-        private void ReadFareRule(IGTFSSourceFile file, List<FareRule> list)
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Transfer ParseTransfer(GTFSSourceFileHeader header, string[] data)
         {
+            throw new NotImplementedException();
+        }
 
+        /// <summary>
+        /// Parses a trip row.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Trip ParseTrip(GTFSSourceFileHeader header, string[] data)
+        {
+            throw new NotImplementedException();
         }
     }
 }

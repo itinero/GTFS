@@ -93,6 +93,6 @@ namespace GTFS.Core
         /// <summary>
         /// Gets the feed info.
         /// </summary>
-        public FeedInfo FeedInfo { get; private set; }
+        public List<FeedInfo> FeedInfo { get; private set; }
     }
 }

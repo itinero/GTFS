@@ -19,17 +19,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-namespace GTFS.Core.IO
+using System;
+namespace GTFS.Core.Attributes
 {
-    /// <summary>
-    /// Represents a GTFS-source.
-    /// </summary>
-    public interface IGTFSSource
+    public class ParserAttribute : Attribute
     {
-        /// <summary>
-        /// Returns all the files.
-        /// </summary>
-        IGTFSSourceFile[] Files { get; }
+
     }
 }

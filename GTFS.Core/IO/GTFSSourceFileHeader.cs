@@ -25,23 +25,55 @@ using System.Collections.Generic;
 namespace GTFS.Core.IO
 {
     /// <summary>
-    /// Represents a GTFS-file.
+    /// Defines a GTFS source file header.
     /// </summary>
-    public interface IGTFSSourceFile : IEnumerable<string[]>
-    {
+    public class GTFSSourceFileHeader
+    {    
         /// <summary>
-        /// Returns the name of the file (ex: agency, route, shape, ...).
+        /// Holds the reverse index of the column names.
         /// </summary>
-        string Name { get; }
+        private Dictionary<string, int> _indexPerColumn;
 
         /// <summary>
-        /// Returns the column count.
+        /// Holds the column names.
         /// </summary>
-        int ColumnCount { get; }
+        private string[] _columns;
 
         /// <summary>
-        /// Returns the row count.
+        /// Creates a new header.
         /// </summary>
-        int RowCount { get; }
+        /// <param name="columns"></param>
+        public GTFSSourceFileHeader(string[] columns)
+        {
+            _columns = new string[columns.Length];
+
+            _indexPerColumn = new Dictionary<string, int>(columns.Length);
+            for (int idx = 0; idx < _columns.Length; idx++)
+            {
+                _indexPerColumn[_columns[idx]] = idx;
+            }
+        }
+
+        /// <summary>
+        /// Returns the column index for given column.
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public int GetColumnIndex(string column)
+        {
+            int value = -1;
+            _indexPerColumn.TryGetValue(column, out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the column for the given index.
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <returns></returns>
+        public string GetColumn(int idx)
+        {
+            return _columns[idx];
+        }
     }
 }

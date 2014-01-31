@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\FileNameAttribute.cs" />
+    <Compile Include="Attributes\ParserAttribute.cs" />
     <Compile Include="Entities\Enumerations\ExceptionType.cs" />
     <Compile Include="Attributes\FieldNameAttribute.cs" />
     <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Entities\Trip.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="IO\GTFSReader.cs" />
+    <Compile Include="IO\GTFSSourceFileHeader.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />
     <Compile Include="IO\IGTFSSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
