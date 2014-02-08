@@ -20,13 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace GTFS.Core.Entities
+using System;
+
+namespace GTFS.Core.Exceptions
 {
     /// <summary>
-    /// Represents a base-class for all GTFS entities.
+    /// Exception thrown when a required field is missing from a GTFS-feed.
     /// </summary>
-    public abstract class GTFSEntity
+    public class GTFSRequiredFieldMissingException : Exception
     {
+        /// <summary>
+        /// Creates a new field missing exception.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        public GTFSRequiredFieldMissingException(string name, string fieldName)
+            : base(string.Format("Required field {0} not found in {1}.", fieldName, name))
+        {
+            this.Name = name;
+            this.FieldName = fieldName;
+        }
 
+        /// <summary>
+        /// Returns the name of the file.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Returns the field name of the file.
+        /// </summary>
+        public string FieldName { get; set; }
     }
 }

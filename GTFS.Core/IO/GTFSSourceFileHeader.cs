@@ -43,16 +43,25 @@ namespace GTFS.Core.IO
         /// Creates a new header.
         /// </summary>
         /// <param name="columns"></param>
-        public GTFSSourceFileHeader(string[] columns)
+        public GTFSSourceFileHeader(string name, string[] columns)
         {
+            this.Name = name;
             _columns = new string[columns.Length];
 
             _indexPerColumn = new Dictionary<string, int>(columns.Length);
             for (int idx = 0; idx < _columns.Length; idx++)
             {
+                // create a deep copy of the columns array.
+                _columns[idx] = columns[idx];
+                // reverse-index the columns.
                 _indexPerColumn[_columns[idx]] = idx;
             }
         }
+
+        /// <summary>
+        /// Gets the name of the file this header represents.
+        /// </summary>
+        public string Name { get; private set; }
 
         /// <summary>
         /// Returns the column index for given column.
@@ -64,6 +73,16 @@ namespace GTFS.Core.IO
             int value = -1;
             _indexPerColumn.TryGetValue(column, out value);
             return value;
+        }
+
+        /// <summary>
+        /// Returns true if the column with the given name is in this header definition.
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public bool HasColumn(string column)
+        {
+            return this.GetColumnIndex(column) > -1;
         }
 
         /// <summary>

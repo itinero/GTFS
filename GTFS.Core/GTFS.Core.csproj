@@ -66,13 +66,18 @@
     <Compile Include="Entities\StopTime.cs" />
     <Compile Include="Entities\Transfers.cs" />
     <Compile Include="Entities\Trip.cs" />
+    <Compile Include="Exceptions\GTFSIntegrityException.cs" />
+    <Compile Include="Exceptions\GTFSParseException.cs" />
+    <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />
     <Compile Include="Feed.cs" />
+    <Compile Include="IO\CSV\CSVStreamReader.cs" />
     <Compile Include="IO\GTFSReader.cs" />
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
+    <Compile Include="IO\GTFSSourceFileStream.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />
-    <Compile Include="IO\IGTFSSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

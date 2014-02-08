@@ -83,12 +83,12 @@ namespace GTFS.Core.Entities
         /// Gets or sets a color that corresponds to a route. The color must be provided as a six-character hexadecimal number, for example, 00FFFF. If no color is specified, the default route color is white (FFFFFF).
         /// </summary>
         [FieldName("route_color")]
-        public int Color { get; set; }
+        public int? Color { get; set; }
 
         /// <summary>
         /// Gets or sets a legible color to use for text drawn against a background of route_color. The color must be provided as a six-character hexadecimal number, for example, FFD700. If no color is specified, the default text color is black (000000).
         /// </summary>
         [FieldName("route_text_color")]
-        public int TextColor { get; set; }
+        public int? TextColor { get; set; }
     }
 }

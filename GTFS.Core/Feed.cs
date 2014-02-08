@@ -31,6 +31,36 @@ namespace GTFS.Core
     public class Feed
     {
         /// <summary>
+        /// Creates a new feed.
+        /// </summary>
+        public Feed()
+        {
+            this.Agencies = new List<Agency>();
+            this.CalendarDates = new List<CalendarDate>();
+            this.Calendars = new List<Calendar>();
+            this.FareAttributes = new List<FareAttribute>();
+            this.FareRules = new List<FareRule>();
+            this.FeedInfo = new List<FeedInfo>();
+            this.Frequencies = new List<Frequency>();
+            this.Routes = new List<Route>();
+            this.Shapes = new List<Shape>();
+            this.Stops = new List<Stop>();
+            this.StopTimes = new List<StopTime>();
+            this.Transfers = new List<Transfer>();
+            this.Trips = new List<Trip>();
+        }
+
+        /// <summary>
+        /// Returns the agency with the given id.
+        /// </summary>
+        /// <param name="agencyId"></param>
+        /// <returns></returns>
+        public Agency GetAgency(string agencyId)
+        {
+            return this.Agencies.Find(x => x.Id.Equals(agencyId));
+        }
+
+        /// <summary>
         /// Gets the list of agencies.
         /// </summary>
         public List<Agency> Agencies { get; private set; }

@@ -33,15 +33,5 @@ namespace GTFS.Core.IO
         /// Returns the name of the file (ex: agency, route, shape, ...).
         /// </summary>
         string Name { get; }
-
-        /// <summary>
-        /// Returns the column count.
-        /// </summary>
-        int ColumnCount { get; }
-
-        /// <summary>
-        /// Returns the row count.
-        /// </summary>
-        int RowCount { get; }
     }
 }

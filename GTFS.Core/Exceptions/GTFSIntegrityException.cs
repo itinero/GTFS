@@ -20,16 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace GTFS.Core.IO
+using System;
+
+namespace GTFS.Core.Exceptions
 {
     /// <summary>
-    /// Represents a GTFS-source.
+    /// Exception thrown when a referred id has not been found.
     /// </summary>
-    public interface IGTFSSource
+    public class GTFSIntegrityException : Exception
     {
         /// <summary>
-        /// Returns all the files.
+        /// Creates a parsing exception.
         /// </summary>
-        IGTFSSourceFile[] Files { get; }
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        public GTFSIntegrityException(string name, string fieldName, string value)
+            : base(string.Format("Could not find referenced entity for value {0} in field {1} in file {2}.", value, fieldName, name))
+        {
+            this.Name = name;
+            this.FieldName = fieldName;
+            this.Value = value;
+        }
+
+        /// <summary>
+        /// Returns the name of the file.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Returns the field name of the file.
+        /// </summary>
+        public string FieldName { get; private set; }
+
+        /// <summary>
+        /// Returns the value that could not be parsed.
+        /// </summary>
+        public string Value { get; private set; }
     }
 }
