@@ -35,7 +35,7 @@ namespace GTFS.Core.Entities
         /// </summary>
         [Required]
         [FieldName("shape_id")]
-        public string ShapeId { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets a shape point's latitude with a shape ID. The field value must be a valid WGS 84 latitude. Each row in shapes.txt represents a shape point in your shape definition.
@@ -62,6 +62,6 @@ namespace GTFS.Core.Entities
         /// Gets or sets the distance traveled along a shape from the first shape point.
         /// </summary>
         [FieldName("shape_dist_traveled")]
-        public double DistanceTravelled { get; set; }
+        public double? DistanceTravelled { get; set; }
     }
 }

@@ -155,5 +155,108 @@ namespace GTFS.Test
             Assert.AreEqual(null, feed.Routes[idx].Color);
             Assert.AreEqual(null, feed.Routes[idx].TextColor);
         }
+
+        /// <summary>
+        /// Tests paresing shapes.
+        /// </summary>
+        [Test]
+        public void ParseShapes()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the source file(s).
+            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[1];
+            source[0] = sourceFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.Shapes);
+            Assert.AreEqual(44, feed.Shapes.Count);
+
+            // @ 1: shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
+            // @ 2: shape_1,37.754211,-122.197868,1,
+            int idx = 0;
+            Assert.AreEqual("shape_1", feed.Shapes[idx].Id);
+            Assert.AreEqual(37.754211, feed.Shapes[idx].Latitude);
+            Assert.AreEqual(-122.197868, feed.Shapes[idx].Longitude);
+            Assert.AreEqual(1, feed.Shapes[idx].Sequence);
+            Assert.AreEqual(null, feed.Shapes[idx].DistanceTravelled);
+
+            // @ 10: shape_3,37.73645,-122.19706,1,
+            idx = 8;
+            Assert.AreEqual("shape_3", feed.Shapes[idx].Id);
+            Assert.AreEqual(37.73645, feed.Shapes[idx].Latitude);
+            Assert.AreEqual(-122.19706, feed.Shapes[idx].Longitude);
+            Assert.AreEqual(1, feed.Shapes[idx].Sequence);
+            Assert.AreEqual(null, feed.Shapes[idx].DistanceTravelled);
+        }
+
+        /// <summary>
+        /// Tests parsing trips.
+        /// </summary>
+        [Test]
+        public void ParseTrips()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the agency source file.
+            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
+            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
+            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
+            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
+            
+            // define the array of source files.
+            var source = new IGTFSSourceFile[4];
+            source[0] = agencyFile;
+            source[1] = routeFile;
+            source[2] = shapesFile;
+            source[3] = tripsFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.Trips);
+            Assert.AreEqual(11, feed.Trips.Count);
+
+            // @ 1: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
+            // @ 2: AB,FULLW,AB1,to Bullfrog,0,1,shape_1
+            int idx = 0;
+            Assert.IsNotNull(feed.Trips[idx].Route);
+            Assert.AreEqual("AB", feed.Trips[idx].Route.Id);
+            Assert.AreEqual("FULLW", feed.Trips[idx].ServiceId);
+            Assert.AreEqual("AB1", feed.Trips[idx].Id);
+            Assert.AreEqual("to Bullfrog", feed.Trips[idx].Headsign);
+            Assert.AreEqual(DirectionType.OneDirection, feed.Trips[idx].Direction);
+            Assert.AreEqual("1", feed.Trips[idx].BlockId);
+            Assert.IsNotNull(feed.Trips[idx].Shape);
+            Assert.AreEqual(4, feed.Trips[idx].Shape.Count);
+            Assert.AreEqual("shape_1", feed.Trips[idx].Shape[0].Id);
+
+            // @ 10: BFC,FULLW,BFC1,to Furnace Creek Resort,0,1,shape_6
+            idx = 5;
+            Assert.IsNotNull(feed.Trips[idx].Route);
+            Assert.AreEqual("BFC", feed.Trips[idx].Route.Id);
+            Assert.AreEqual("FULLW", feed.Trips[idx].ServiceId);
+            Assert.AreEqual("BFC1", feed.Trips[idx].Id);
+            Assert.AreEqual("to Furnace Creek Resort", feed.Trips[idx].Headsign);
+            Assert.AreEqual(DirectionType.OneDirection, feed.Trips[idx].Direction);
+            Assert.AreEqual("1", feed.Trips[idx].BlockId);
+            Assert.IsNotNull(feed.Trips[idx].Shape);
+            Assert.AreEqual(4, feed.Trips[idx].Shape.Count);
+            Assert.AreEqual("shape_6", feed.Trips[idx].Shape[0].Id);
+        }
     }
 }

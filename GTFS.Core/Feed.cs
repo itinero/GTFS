@@ -76,6 +76,16 @@ namespace GTFS.Core
         public List<Route> Routes { get; private set; }
 
         /// <summary>
+        /// Gets the route with the given id.
+        /// </summary>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
+        public Route GetRoute(string routeId)
+        {
+            return this.Routes.Find(x => x.Id.Equals(routeId));
+        }
+
+        /// <summary>
         /// Gets the list of trips.
         /// </summary>
         public List<Trip> Trips { get; private set; }
@@ -109,6 +119,16 @@ namespace GTFS.Core
         /// Gets the list of shapes.
         /// </summary>
         public List<Shape> Shapes { get; private set; }
+
+        /// <summary>
+        /// Returns a list of shapes for the given id.
+        /// </summary>
+        /// <param name="shapeId"></param>
+        /// <returns></returns>
+        public List<Shape> GetShapes(string shapeId)
+        {
+            return this.Shapes.FindAll(x => x.Id.Equals(shapeId));
+        }
 
         /// <summary>
         /// Gets the list of frequencies.

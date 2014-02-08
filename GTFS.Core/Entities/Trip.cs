@@ -22,6 +22,7 @@
 
 using GTFS.Core.Attributes;
 using GTFS.Core.Entities.Enumerations;
+using System.Collections.Generic;
 
 namespace GTFS.Core.Entities
 {
@@ -68,7 +69,7 @@ namespace GTFS.Core.Entities
         /// Gets or sets the direction of travel for a trip. Use this field to distinguish between bi-directional trips with the same route_id. This field is not used in routing; it provides a way to separate trips by direction when publishing time tables. You can specify names for each direction with the trip_headsign field.
         /// </summary>
         [FieldName("direction_id")]
-        public DirectionType Direction { get; set; }
+        public DirectionType? Direction { get; set; }
 
         /// <summary>
         /// Gets or sets the block to which the trip belongs. A block consists of two or more sequential trips made using the same vehicle, where a passenger can transfer from one trip to the next just by staying in the vehicle. The block_id must be referenced by two or more trips in trips.txt.
@@ -80,12 +81,12 @@ namespace GTFS.Core.Entities
         /// Gets or sets a shape for the trip. This value is referenced from the shapes.txt file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip.
         /// </summary>
         [FieldName("shape_id")]
-        public Shape Shape { get; set; }
+        public List<Shape> Shape { get; set; }
 
         /// <summary>
         /// Gets or sets accessibility information for the trip
         /// </summary>
         [FieldName("wheelchair_accessible")]
-        public WheelchairAccessibilityType AccessibilityType { get; set; }
+        public WheelchairAccessibilityType? AccessibilityType { get; set; }
     }
 }

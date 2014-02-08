@@ -88,7 +88,7 @@ namespace GTFS.Core.IO
                 case "routes":
                     this.Read<Route>(file, feed, this.ParseRoute, feed.Routes);
                     break;
-                case "shape":
+                case "shapes":
                     this.Read<Shape>(file, feed, this.ParseShape, feed.Shapes);
                     break;
                 case "stop":
@@ -97,7 +97,7 @@ namespace GTFS.Core.IO
                 case "transfer":
                     this.Read<StopTime>(file, feed, this.ParseStopTime, feed.StopTimes);
                     break;
-                case "trip":
+                case "trips":
                     this.Read<Trip>(file, feed, this.ParseTrip, feed.Trips);
                     break;
             }
@@ -328,7 +328,48 @@ namespace GTFS.Core.IO
         /// <returns></returns>
         protected virtual Shape ParseShape(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "shape_id");
+            this.CheckRequiredField(header, header.Name, "shape_pt_lat");
+            this.CheckRequiredField(header, header.Name, "shape_pt_lon");
+            this.CheckRequiredField(header, header.Name, "shape_pt_sequence");
+
+            // parse/set all fields.
+            Shape shape = new Shape();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseShapeField(feed, header, shape, header.GetColumn(idx), data[idx]);
+            }
+            return shape;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="shape"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseShapeField(Feed feed, GTFSSourceFileHeader header, Shape shape, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "shape_id":
+                    shape.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "shape_pt_lat":
+                    shape.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    break;
+                case "shape_pt_lon":
+                    shape.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    break;
+                case "shape_pt_sequence":
+                    shape.Sequence = this.ParseFieldUInt(header.Name, fieldName, value).Value;
+                    break;
+                case "shape_dist_traveled":
+                    shape.DistanceTravelled = this.ParseFieldDouble(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -372,7 +413,66 @@ namespace GTFS.Core.IO
         /// <returns></returns>
         protected virtual Trip ParseTrip(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "trip_id");
+            this.CheckRequiredField(header, header.Name, "route_id");
+            this.CheckRequiredField(header, header.Name, "service_id");
+            this.CheckRequiredField(header, header.Name, "shape_pt_sequence");
+
+            // parse/set all fields.
+            Trip trip = new Trip();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseTripField(feed, header, trip, header.GetColumn(idx), data[idx]);
+            }
+            return trip;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="trip"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseTripField(Feed feed, GTFSSourceFileHeader header, Trip trip, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "trip_id":
+                    trip.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "route_id":
+                    string routeId = this.ParseFieldString(header.Name, fieldName, value);
+                    trip.Route = feed.GetRoute(routeId);
+                    if(trip.Route == null)
+                    { // reference agency was not found!
+                        throw new GTFSIntegrityException(header.Name, fieldName, value);
+                    }
+                    break;
+                case "service_id":
+                    trip.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "trip_headsign":
+                    trip.Headsign = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "trip_short_name":
+                    trip.ShortName = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "direction_id":
+                    trip.Direction = this.ParseFieldDirectionType(header.Name, fieldName, value);
+                    break;
+                case "block_id":
+                    trip.BlockId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "shape_id":
+                    string shapeId = this.ParseFieldString(header.Name, fieldName, value);
+                    trip.Shape = feed.GetShapes(shapeId);
+                    break;
+                case "wheelchair_accessible":
+                    trip.AccessibilityType = this.ParseFieldAccessibilityType(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -513,6 +613,106 @@ namespace GTFS.Core.IO
                     return RouteType.Funicular;
             }
             throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses an accessibility-type field.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private WheelchairAccessibilityType? ParseFieldAccessibilityType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            //0 (or empty) - indicates that there is no accessibility information for the trip
+            //1 - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair
+            //2 - indicates that no riders in wheelchairs can be accommodated on this trip
+
+            switch(value)
+            {
+                case "0":
+                    return WheelchairAccessibilityType.NoInformation;
+                case "1":
+                    return WheelchairAccessibilityType.SomeAccessibility;
+                case "2":
+                    return WheelchairAccessibilityType.NoAccessibility;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a direction-type field.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private DirectionType? ParseFieldDirectionType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            //0 - travel in one direction (e.g. outbound travel)
+            //1 - travel in the opposite direction (e.g. inbound travel)
+
+            switch (value)
+            {
+                case "0":
+                    return DirectionType.OneDirection;
+                case "1":
+                    return DirectionType.OppositeDirection;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a positive integer field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual uint? ParseFieldUInt(string name, string fieldName, string value)
+        {
+            if(string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+            uint result;
+            if(!uint.TryParse(value, out result))
+            { // parsing failed!
+                throw new GTFSParseException(name, fieldName, value);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Parses a double field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual double? ParseFieldDouble(string name, string fieldName, string value)
+        {
+            if(string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            double result;
+            if (!double.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
+            { // parsing failed!
+                throw new GTFSParseException(name, fieldName, value);
+            }
+            return result;
         }
     }
 }
