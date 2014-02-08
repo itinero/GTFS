@@ -87,12 +87,12 @@ namespace GTFS.Core.Entities
         /// Gets or sets the location field that identifies whether this stop represents a stop or station. If no location type is specified, or the location type is blank, stops are treated as regular stops. Stations may have different properties from stops when they are represented on a map or used in trip planning.
         /// </summary>
         [FieldName("location_type")]
-        public LocationType LocationType { get; set; }
+        public LocationType? LocationType { get; set; }
 
         /// <summary>
         /// Gets or sets the station associated with the stop. To use this field, a stop must also exist where this stop ID is assigned LocationType=Station.
         /// </summary>
-        [FieldName("location_type")]
+        [FieldName("parent_station")]
         public string ParentStation { get; set; }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace GTFS.Core.Entities
         /// <summary>
         /// Gets or sets whether wheelchair boardings are possible from the specified stop or station. The field can have the following values:
         /// </summary>
-        [FieldName("stop_timezone")]
+        [FieldName(" wheelchair_boarding ")]
         public string WheelchairBoarding { get; set; }
     }
 }

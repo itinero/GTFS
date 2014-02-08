@@ -91,10 +91,10 @@ namespace GTFS.Core.IO
                 case "shapes":
                     this.Read<Shape>(file, feed, this.ParseShape, feed.Shapes);
                     break;
-                case "stop":
+                case "stops":
                     this.Read<Stop>(file, feed, this.ParseStop, feed.Stops);
                     break;
-                case "transfer":
+                case "stop_times":
                     this.Read<StopTime>(file, feed, this.ParseStopTime, feed.StopTimes);
                     break;
                 case "trips":
@@ -380,7 +380,69 @@ namespace GTFS.Core.IO
         /// <returns></returns>
         protected virtual Stop ParseStop(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "stop_id");
+            this.CheckRequiredField(header, header.Name, "stop_name");
+            this.CheckRequiredField(header, header.Name, "stop_lat");
+            this.CheckRequiredField(header, header.Name, "stop_lon");
+
+            // parse/set all fields.
+            Stop stop = new Stop();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseStopField(feed, header, stop, header.GetColumn(idx), data[idx]);
+            }
+            return stop;
+        }
+
+        /// <summary>
+        /// Parses a stop field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="stop"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseStopField(Feed feed, GTFSSourceFileHeader header, Stop stop, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "stop_id":
+                    stop.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_code":
+                    stop.Code = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_name":
+                    stop.Name = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_desc":
+                    stop.Description = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_lat":
+                    stop.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    break;
+                case "stop_lon":
+                    stop.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    break;
+                case "zone_id":
+                    stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_url":
+                    stop.Url = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "location_type":
+                    stop.LocationType = this.ParseFieldLocationType(header.Name, fieldName, value);
+                    break;
+                case "parent_station":
+                    stop.ParentStation = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_timezone":
+                    stop.Timezone = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case " wheelchair_boarding ":
+                    stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -391,7 +453,73 @@ namespace GTFS.Core.IO
         /// <returns></returns>
         protected virtual StopTime ParseStopTime(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "trip_id");
+            this.CheckRequiredField(header, header.Name, "arrival_time");
+            this.CheckRequiredField(header, header.Name, "departure_time");
+            this.CheckRequiredField(header, header.Name, "stop_id");
+            this.CheckRequiredField(header, header.Name, "stop_sequence");
+            this.CheckRequiredField(header, header.Name, "stop_id");
+            this.CheckRequiredField(header, header.Name, "stop_id");
+
+            // parse/set all fields.
+            StopTime stopTime = new StopTime();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseStopTimeField(feed, header, stopTime, header.GetColumn(idx), data[idx]);
+            }
+            return stopTime;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="trip"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseStopTimeField(Feed feed, GTFSSourceFileHeader header, StopTime stopTime, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "trip_id":
+                    string tripId = this.ParseFieldString(header.Name, fieldName, value);
+                    stopTime.Trip = feed.GetTrip(tripId);
+                    if (stopTime.Trip == null)
+                    { // reference agency was not found!
+                        throw new GTFSIntegrityException(header.Name, fieldName, value);
+                    }
+                    break;
+                case "arrival_time":
+                    stopTime.ArrivalTime = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "departure_time":
+                    stopTime.DepartureTime = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "stop_id":
+                    string stopId = this.ParseFieldString(header.Name, fieldName, value);
+                    stopTime.Stop = feed.GetStop(stopId);
+                    if (stopTime.Trip == null)
+                    { // reference agency was not found!
+                        throw new GTFSIntegrityException(header.Name, fieldName, value);
+                    }
+                    break;
+                case "stop_sequence":
+                    stopTime.StopSequence = this.ParseFieldUInt(header.Name, fieldName, value).Value;
+                    break;
+                case "stop_headsign":
+                    stopTime.StopHeadsign = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "pickup_type":
+                    stopTime.PickupType = this.ParseFieldPickupType(header.Name, fieldName, value);
+                    break;
+                case "drop_off_type":
+                    stopTime.DropOffType = this.ParseFieldDropOffType(header.Name, fieldName, value);
+                    break;
+                case "shape_dist_traveled":
+                    stopTime.ShapeDistTravelled = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -633,7 +761,7 @@ namespace GTFS.Core.IO
             //1 - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair
             //2 - indicates that no riders in wheelchairs can be accommodated on this trip
 
-            switch(value)
+            switch (value)
             {
                 case "0":
                     return WheelchairAccessibilityType.NoInformation;
@@ -641,6 +769,99 @@ namespace GTFS.Core.IO
                     return WheelchairAccessibilityType.SomeAccessibility;
                 case "2":
                     return WheelchairAccessibilityType.NoAccessibility;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a drop-off-type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private DropOffType? ParseFieldDropOffType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            //0 - Regularly scheduled drop off
+            //1 - No drop off available
+            //2 - Must phone agency to arrange drop off
+            //3 - Must coordinate with driver to arrange drop off
+
+            switch (value)
+            {
+                case "0":
+                    return DropOffType.Regular;
+                case "1":
+                    return DropOffType.NoPickup;
+                case "2":
+                    return DropOffType.PhoneForPickup;
+                case "3":
+                    return DropOffType.DriverForPickup;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a pickup-type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private PickupType? ParseFieldPickupType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            //0 - Regularly scheduled pickup
+            //1 - No pickup available
+            //2 - Must phone agency to arrange pickup
+            //3 - Must coordinate with driver to arrange pickup
+
+            switch (value)
+            {
+                case "0":
+                    return PickupType.Regular;
+                case "1":
+                    return PickupType.NoPickup;
+                case "2":
+                    return PickupType.PhoneForPickup;
+                case "3":
+                    return PickupType.DriverForPickup;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a location-type field.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private LocationType? ParseFieldLocationType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+            
+            //0 or blank - Stop. A location where passengers board or disembark from a transit vehicle.
+            //1 - Station. A physical structure or area that contains one or more stop.
+
+            switch (value)
+            {
+                case "0":
+                    return LocationType.Stop;
+                case "1":
+                    return LocationType.Station;
             }
             throw new GTFSParseException(name, fieldName, value);
         }

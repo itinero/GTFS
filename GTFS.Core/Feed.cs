@@ -71,6 +71,16 @@ namespace GTFS.Core
         public List<Stop> Stops { get; private set; }
 
         /// <summary>
+        /// Returns the stop with the given id.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public Stop GetStop(string stopId)
+        {
+            return this.Stops.Find(x => x.Id.Equals(stopId));
+        }
+
+        /// <summary>
         /// Gets the list of routes.
         /// </summary>
         public List<Route> Routes { get; private set; }
@@ -89,6 +99,16 @@ namespace GTFS.Core
         /// Gets the list of trips.
         /// </summary>
         public List<Trip> Trips { get; private set; }
+
+        /// <summary>
+        /// Gets the trip with the given id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public Trip GetTrip(string tripId)
+        {
+            return this.Trips.Find(x => x.Id.Equals(tripId));
+        }
 
         /// <summary>
         /// Gets the list of stop times.

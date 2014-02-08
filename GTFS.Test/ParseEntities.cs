@@ -157,7 +157,7 @@ namespace GTFS.Test
         }
 
         /// <summary>
-        /// Tests paresing shapes.
+        /// Tests parsing shapes.
         /// </summary>
         [Test]
         public void ParseShapes()
@@ -257,6 +257,119 @@ namespace GTFS.Test
             Assert.IsNotNull(feed.Trips[idx].Shape);
             Assert.AreEqual(4, feed.Trips[idx].Shape.Count);
             Assert.AreEqual("shape_6", feed.Trips[idx].Shape[0].Id);
+        }
+
+        /// <summary>
+        /// Tests parsing stops.
+        /// </summary>
+        [Test]
+        public void ParseStops()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the source file(s).
+            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[1];
+            source[0] = sourceFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.Stops);
+            Assert.AreEqual(9, feed.Stops.Count);
+
+            // @ 1: stop_id,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url
+            // @ 2: FUR_CREEK_RES,Furnace Creek Resort (Demo),,36.425288,-117.133162,,
+            int idx = 0;
+            Assert.AreEqual("FUR_CREEK_RES", feed.Stops[idx].Id);
+            Assert.AreEqual("Furnace Creek Resort (Demo)", feed.Stops[idx].Name);
+            Assert.AreEqual(string.Empty, feed.Stops[idx].Description);
+            Assert.AreEqual(36.425288, feed.Stops[idx].Latitude);
+            Assert.AreEqual(-117.133162, feed.Stops[idx].Longitude);
+            Assert.AreEqual(string.Empty, feed.Stops[idx].Url);
+
+            // @ 10: AMV,Amargosa Valley (Demo),,36.641496,-116.40094,,
+            idx = 8;
+            Assert.AreEqual("AMV", feed.Stops[idx].Id);
+            Assert.AreEqual("Amargosa Valley (Demo)", feed.Stops[idx].Name);
+            Assert.AreEqual(string.Empty, feed.Stops[idx].Description);
+            Assert.AreEqual(36.641496, feed.Stops[idx].Latitude);
+            Assert.AreEqual(-116.40094, feed.Stops[idx].Longitude);
+            Assert.AreEqual(string.Empty, feed.Stops[idx].Url);
+        }
+
+        /// <summary>
+        /// Tests parsing stops.
+        /// </summary>
+        [Test]
+        public void ParseStopTimes()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the agency source file.
+            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
+            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
+            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
+            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
+            GTFSSourceFileStream stopsFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops");
+            GTFSSourceFileStream stopTimesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stop_times.txt"), "stop_times");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[6];
+            source[0] = agencyFile;
+            source[1] = routeFile;
+            source[2] = shapesFile;
+            source[3] = tripsFile;
+            source[4] = stopsFile;
+            source[5] = stopTimesFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.StopTimes);
+            Assert.AreEqual(28, feed.StopTimes.Count);
+
+            // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
+            // @ 2: STBA,6:00:00,6:00:00,STAGECOACH,1,,,,
+            int idx = 0;
+            Assert.IsNotNull(feed.StopTimes[idx].Trip);
+            Assert.AreEqual("STBA", feed.StopTimes[idx].Trip.Id);
+            Assert.AreEqual("6:00:00", feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual("6:00:00", feed.StopTimes[idx].DepartureTime);
+            Assert.IsNotNull(feed.StopTimes[idx].Stop);
+            Assert.AreEqual("STAGECOACH", feed.StopTimes[idx].Stop.Id);
+            Assert.AreEqual(1, feed.StopTimes[idx].StopSequence);
+            Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
+            Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
+            Assert.AreEqual(null, feed.StopTimes[idx].DropOffType);
+            Assert.AreEqual(string.Empty, feed.StopTimes[idx].ShapeDistTravelled);
+
+            // @ 12: CITY2,6:49:00,6:51:00,NANAA,4,,,,
+            idx = 10;
+            Assert.IsNotNull(feed.StopTimes[idx].Trip);
+            Assert.AreEqual("CITY2", feed.StopTimes[idx].Trip.Id);
+            Assert.AreEqual("6:49:00", feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual("6:51:00", feed.StopTimes[idx].DepartureTime);
+            Assert.IsNotNull(feed.StopTimes[idx].Stop);
+            Assert.AreEqual("NANAA", feed.StopTimes[idx].Stop.Id);
+            Assert.AreEqual(4, feed.StopTimes[idx].StopSequence);
+            Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
+            Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
+            Assert.AreEqual(null, feed.StopTimes[idx].DropOffType);
+            Assert.AreEqual(string.Empty, feed.StopTimes[idx].ShapeDistTravelled);
         }
     }
 }

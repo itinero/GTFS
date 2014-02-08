@@ -76,13 +76,13 @@ namespace GTFS.Core.Entities
         /// Gets or sets the pickup type field that indicates whether passengers are picked up at a stop as part of the normal schedule or whether a pickup at the stop is not available. This field also allows the transit agency to indicate that passengers must call the agency or notify the driver to arrange a pickup at a particular stop.
         /// </summary>
         [FieldName("pickup_type")]
-        public PickupType PickupType { get; set; }
+        public PickupType? PickupType { get; set; }
 
         /// <summary>
         /// Gets or sets the drop off type field that indicates whether passengers are dropped off at a stop as part of the normal schedule or whether a drop off at the stop is not available. This field also allows the transit agency to indicate that passengers must call the agency or notify the driver to arrange a drop off at a particular stop. 
         /// </summary>
         [FieldName("drop_off_type")]
-        public DropOffType DropOffType { get; set; }
+        public DropOffType? DropOffType { get; set; }
 
         /// <summary>
         /// Gets or sets a distance from the first shape point.
