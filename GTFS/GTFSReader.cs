@@ -103,6 +103,65 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Reads one file and it's dependencies from the specified GTFS source into a new GTFS feed object.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public T Read(IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
+        {
+            return this.Read(new T(), source, file);
+        }
+
+        /// <summary>
+        /// Reads one file and it's dependencies from the specified GTFS source into the given GTFS feed object.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public T Read(T feed, IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
+        {
+            // build the files-to-read list from the dependencies.
+            var dependencyTree = this.GetDependencyTree();
+            var filesToRead = new List<string>();
+            filesToRead.Add(file.Name);
+
+            // start with a queue of one file and traverse the dependency tree down.
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue(file.Name);
+            while (queue.Count > 0)
+            {
+                // dequeue current file.
+                string currentFile = queue.Dequeue();
+                filesToRead.Add(currentFile);
+
+                // enqueue dependencies if any.
+                HashSet<string> dependencies = null;
+                if (dependencyTree.TryGetValue(currentFile, out dependencies))
+                {
+                    foreach (var dependency in dependencies)
+                    {
+                        queue.Enqueue(dependency);
+                    }
+                }
+            }
+
+            // loop over the list but starting at the end.
+            var readFiles = new HashSet<string>();
+            for (int idx = filesToRead.Count - 1; idx >= 0; idx--)
+            {
+                string fileToRead = filesToRead[idx];
+                if (!readFiles.Contains(fileToRead))
+                { // files can be in the list more than once.
+
+                    // read the file.
+                    this.Read(source.First(x => x.Name.Equals(fileToRead)), feed);
+                    readFiles.Add(fileToRead);
+                }
+            }
+            return feed;
+        }
+
+        /// <summary>
         /// Returns a list of all required files.
         /// </summary>
         /// <returns></returns>

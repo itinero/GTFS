@@ -25,6 +25,7 @@ using GTFS.IO;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace GTFS.Test
 {
@@ -79,7 +80,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("agency")));
 
             // test result.
             Assert.IsNotNull(feed.Agencies);
@@ -106,7 +107,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("routes")));
 
             // test result.
             Assert.IsNotNull(feed.Routes);
@@ -183,7 +184,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("shapes")));
 
             // test result.
             Assert.IsNotNull(feed.Shapes);
@@ -220,7 +221,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("trips")));
 
             // test result.
             Assert.IsNotNull(feed.Trips);
@@ -261,7 +262,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("stops")));
 
             // test result.
             Assert.IsNotNull(feed.Stops);
@@ -300,7 +301,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("stop_times")));
 
             // test result.
             Assert.IsNotNull(feed.StopTimes);
@@ -345,7 +346,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("frequencies")));
 
             // test result.
             Assert.IsNotNull(feed.Frequencies);
@@ -385,7 +386,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("calendar")));
 
             // test result.
             Assert.IsNotNull(feed.Calendars);
@@ -432,7 +433,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("calendar_dates")));
 
             // test result.
             Assert.IsNotNull(feed.CalendarDates);
@@ -459,7 +460,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("fare_rules")));
 
             // test result.
             Assert.IsNotNull(feed.FareRules);
@@ -513,7 +514,7 @@ namespace GTFS.Test
             var source = this.BuildSource();
 
             // execute the reader.
-            var feed = reader.Read(source);
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("fare_attributes")));
 
             // test result.
             Assert.IsNotNull(feed.FareAttributes);
