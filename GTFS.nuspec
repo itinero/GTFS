@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>GTFS.NET</id>
+        <id>GTFS</id>
         <version>$version$</version>
-        <title>A General Transit Feed Specification (GTFS) feed parser.</title>
+        <title>A GTFS parser.</title>
         <authors>xivk</authors>
         <owners>xivk</owners>
-        <licenseUrl>https://raw.github.com/OsmSharp/GTFSSharp/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/OsmSharp/GTFSSharp</projectUrl>
-        <iconUrl>https://raw.github.com/OsmSharp/GTFSSharp/master/icon.bmp</iconUrl>
+        <licenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/OsmSharp/GTFS</projectUrl>
+        <iconUrl>https://raw.github.com/OsmSharp/GTFS/master/icon.bmp</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.Net/Mono implementation of a General Transit Feed Specification (GTFS) feed parser. (see https://developers.google.com/transit/gtfs/reference)
 
