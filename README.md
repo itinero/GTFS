@@ -7,15 +7,15 @@ GTFS Feed Parser
 
 The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have there specific little perks.
 
-## A short example
+### A short example
 ```csharp
-	// create the reader.
-	var reader = new GTFSReader<GTFSFeed>();
+// create the reader.
+var reader = new GTFSReader<GTFSFeed>();
 
-	// execute the reader.
-	var feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("path/to/feed/directory")));
+// execute the reader.
+var feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("path/to/feed/directory")));
 ```
 
-## Install GTFS
+### Install GTFS
 
     PM> Install-Package GTFS
