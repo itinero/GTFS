@@ -17,5 +17,6 @@ The implementation is deliberate kept very flexible and customizable because man
     </metadata>
     <files>
         <file src="Output\GTFS.dll" target="lib\GTFS.dll" />
+	<file src="Output\GTFS.IO.dll" target="lib\GTFS.IO.dll" />
     </files>
 </package>
