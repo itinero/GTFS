@@ -25,6 +25,7 @@ using GTFS.Entities.Enumerations;
 using GTFS.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GTFS.IO
 {
@@ -38,17 +39,111 @@ namespace GTFS.IO
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public Feed Read(IGTFSSourceFile[] source)
+        public Feed Read(IEnumerable<IGTFSSourceFile> source)
         {
             // create the feed.
             var feed = new Feed();
 
-            foreach (var file in source)
-            { // read each file.
-                this.Read(file, feed);
+            // check if all required files are present.
+            foreach(var file in this.GetRequiredFiles())
+            {
+                if(!source.Any(x => x.Name.Equals(file)))
+                { // oeps, file was found found!
+                    throw new GTFSRequiredFileMissingException(file);
+                }
             }
 
+            // read files one-by-one and in the correct order based on the dependency tree.
+            var readFiles = new HashSet<string>();
+            var dependencyTree = this.GetDependencyTree();
+            while(readFiles.Count < source.Count())
+            {
+                // select a new file based on the dependency tree.
+                IGTFSSourceFile selectedFile = null;
+                foreach(var file in source)
+                {
+                    if (!readFiles.Contains(file.Name))
+                    { // file has not been read yet!
+                        HashSet<string> dependencies = null;
+                        if (!dependencyTree.TryGetValue(file.Name, out dependencies))
+                        { // there is no entry in the dependency tree, file is independant.
+                            selectedFile = file;
+                            break;
+                        }
+                        else
+                        { // file depends on other file, check if they have been read already.
+                            if (dependencies.All(x => readFiles.Contains(x)))
+                            { // all dependencies have been read.
+                                selectedFile = file;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // check if there is a next file.
+                if(selectedFile == null)
+                {
+                    throw new Exception("Could not select a next file based on the current dependency tree and the current file list.");
+                }
+
+                // read the file.
+                this.Read(selectedFile, feed);
+                readFiles.Add(selectedFile.Name);
+            }
             return feed;            
+        }
+
+        /// <summary>
+        /// Returns a list of all required files.
+        /// </summary>
+        /// <returns></returns>
+        public virtual HashSet<string> GetRequiredFiles()
+        {
+            var files = new HashSet<string>();
+            files.Add("agency");
+            files.Add("stops");
+            files.Add("routes");
+            files.Add("trips");
+            files.Add("stop_times");
+            files.Add("calendar");
+            return files;
+        }
+
+        /// <summary>
+        /// Returns the file dependency-tree.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Dictionary<string, HashSet<string>> GetDependencyTree()
+        {
+            var dependencyTree = new Dictionary<string, HashSet<string>>();
+
+            // fare_rules => (routes)
+            var dependencies = new HashSet<string>();
+            dependencies.Add("routes");
+            dependencyTree.Add("fare_rules", dependencies);
+
+            // frequencies => (trips)
+            dependencies = new HashSet<string>();
+            dependencies.Add("trips");
+            dependencyTree.Add("frequencies", dependencies);
+
+            // routes => (agencies)
+            dependencies = new HashSet<string>();
+            dependencies.Add("agency");
+            dependencyTree.Add("routes", dependencies);
+
+            // stop_times => (trips)
+            dependencies = new HashSet<string>();
+            dependencies.Add("trips");
+            dependencyTree.Add("stop_times", dependencies);
+
+            // trips => (routes)
+            dependencies = new HashSet<string>();
+            dependencies.Add("routes");
+            dependencyTree.Add("trips", dependencies);
+
+            return dependencyTree;
         }
 
         /// <summary>

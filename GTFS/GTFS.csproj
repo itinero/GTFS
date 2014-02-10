@@ -70,6 +70,7 @@
     <Compile Include="Exceptions\GTFSIntegrityException.cs" />
     <Compile Include="Exceptions\GTFSParseException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />
+    <Compile Include="Exceptions\GTFSRequiredFileMissingException.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
     <Compile Include="IO\GTFSReader.cs" />

@@ -23,6 +23,7 @@
 using GTFS.Entities.Enumerations;
 using GTFS.IO;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace GTFS.Test
@@ -34,6 +35,38 @@ namespace GTFS.Test
     public class ParseEntities
     {
         /// <summary>
+        /// Builds the source from embedded streams.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<IGTFSSourceFile> BuildSource()
+        {
+            var source = new List<IGTFSSourceFile>();
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar_dates.txt"), "calendar_dates"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_attributes.txt"), "fare_attributes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_rules.txt"), "fare_rules"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.frequencies.txt"), "frequencies"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stop_times.txt"), "stop_times"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips"));
+            return source;
+        }
+
+        /// <summary>
         /// Tests parsing agencies.
         /// </summary>
         [Test]
@@ -42,13 +75,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = sourceFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -74,16 +102,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[2];
-            source[0] = agencyFile;
-            source[1] = routeFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -164,13 +184,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the source file(s).
-            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = sourceFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -206,22 +221,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
-            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
-            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
-            
-            // define the array of source files.
-            var source = new IGTFSSourceFile[4];
-            source[0] = agencyFile;
-            source[1] = routeFile;
-            source[2] = shapesFile;
-            source[3] = tripsFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -267,13 +268,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the source file(s).
-            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = sourceFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -311,28 +307,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
-            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
-            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
-            GTFSSourceFileStream stopsFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops");
-            GTFSSourceFileStream stopTimesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stop_times.txt"), "stop_times");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[6];
-            source[0] = agencyFile;
-            source[1] = routeFile;
-            source[2] = shapesFile;
-            source[3] = tripsFile;
-            source[4] = stopsFile;
-            source[5] = stopTimesFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -380,25 +356,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
-            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
-            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
-            GTFSSourceFileStream frequenciesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.frequencies.txt"), "frequencies");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[5];
-            source[0] = agencyFile;
-            source[1] = routeFile;
-            source[2] = shapesFile;
-            source[3] = tripsFile;
-            source[4] = frequenciesFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -439,13 +398,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the source file(s).
-            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = sourceFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -491,13 +445,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the source file(s).
-            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar_dates.txt"), "calendar_dates");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = sourceFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -523,19 +472,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
-            GTFSSourceFileStream fareRulesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_rules.txt"), "fare_rules");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[3];
-            source[0] = agencyFile;
-            source[1] = routeFile;
-            source[2] = fareRulesFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
@@ -592,13 +530,8 @@ namespace GTFS.Test
             // create the reader.
             GTFSReader<Feed> reader = new GTFSReader<Feed>();
 
-            // define the agency source file.
-            GTFSSourceFileStream fareAttributesFile = new GTFSSourceFileStream(
-                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_attributes.txt"), "fare_attributes");
-
-            // define the array of source files.
-            var source = new IGTFSSourceFile[1];
-            source[0] = fareAttributesFile;
+            // build the source
+            var source = this.BuildSource();
 
             // execute the reader.
             var feed = reader.Read(source);
