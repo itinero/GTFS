@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectorySourceTest.cs" />
     <Compile Include="ParseEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -52,17 +53,39 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="sample-feed\agency.txt" />
-    <EmbeddedResource Include="sample-feed\calendar.txt" />
-    <EmbeddedResource Include="sample-feed\calendar_dates.txt" />
-    <EmbeddedResource Include="sample-feed\fare_attributes.txt" />
-    <EmbeddedResource Include="sample-feed\fare_rules.txt" />
-    <EmbeddedResource Include="sample-feed\frequencies.txt" />
-    <EmbeddedResource Include="sample-feed\routes.txt" />
-    <EmbeddedResource Include="sample-feed\shapes.txt" />
-    <EmbeddedResource Include="sample-feed\stops.txt" />
-    <EmbeddedResource Include="sample-feed\stop_times.txt" />
-    <EmbeddedResource Include="sample-feed\trips.txt" />
+    <EmbeddedResource Include="sample-feed\agency.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\calendar.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\calendar_dates.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\fare_attributes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\fare_rules.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\frequencies.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\routes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\shapes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\stops.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\stop_times.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sample-feed\trips.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GTFS.IO\GTFS.IO.csproj">

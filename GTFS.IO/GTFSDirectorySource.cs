@@ -60,11 +60,12 @@ namespace GTFS.IO
         /// <returns></returns>
         private List<IGTFSSourceFile> BuildSource()
         {
-            FileInfo[] files = _directory.GetFiles("*.txt");
-            List<IGTFSSourceFile> sourceFiles = new List<IGTFSSourceFile>(files.Length);
+            var files = _directory.GetFiles("*.txt");
+            var sourceFiles = new List<IGTFSSourceFile>(files.Length);
             foreach(var file in files)
             {
-                sourceFiles.Add(new GTFSSourceFileStream(file.OpenRead(), file.Name));
+                sourceFiles.Add(new GTFSSourceFileStream(
+                    file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
             }
             return sourceFiles;
         }
