@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="GTFSDirectorySource.cs" />
     <Compile Include="GTFSSourceFileStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
