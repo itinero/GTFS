@@ -20,9 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using GTFS.Core;
-using GTFS.Core.Entities.Enumerations;
-using GTFS.Core.IO;
+using GTFS.Entities.Enumerations;
+using GTFS.IO;
 using NUnit.Framework;
 using System.Reflection;
 

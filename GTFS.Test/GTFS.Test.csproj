@@ -64,9 +64,9 @@
     <EmbeddedResource Include="sample-feed\trips.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GTFS.Core\GTFS.Core.csproj">
+    <ProjectReference Include="..\GTFS\GTFS.csproj">
       <Project>{81f40909-0a8a-4f2a-8f59-a54896bfae89}</Project>
-      <Name>GTFS.Core</Name>
+      <Name>GTFS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
