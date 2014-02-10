@@ -41,7 +41,7 @@ namespace GTFS.Entities
         /// Gets or sets a route.
         /// </summary>
         [FieldName("route_id")]
-        public Route Route { get; set; }
+        public string RouteId { get; set; }
 
         /// <summary>
         /// Gets or sets the fare ID with an origin zone ID. Zone IDs are referenced from the stops.txt file. If you have several origin IDs with the same fare attributes, create a row in fare_rules.txt for each origin ID.

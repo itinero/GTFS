@@ -43,7 +43,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("agency_id")]
-        public Agency Agency { get; set; }
+        public string AgencyId { get; set; }
 
         /// <summary>
         /// Gets or sets the short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves. At least one of route_short_name or route_long_name must be specified, or potentially both if appropriate. If the route does not have a short name, please specify a route_long_name and use an empty string as the value for this field.

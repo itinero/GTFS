@@ -71,9 +71,10 @@
     <Compile Include="Exceptions\GTFSParseException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFileMissingException.cs" />
-    <Compile Include="Feed.cs" />
+    <Compile Include="GTFSFeed.cs" />
+    <Compile Include="IGTFSFeed.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
-    <Compile Include="IO\GTFSReader.cs" />
+    <Compile Include="GTFSReader.cs" />
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
     <Compile Include="IO\GTFSSourceFileStream.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />

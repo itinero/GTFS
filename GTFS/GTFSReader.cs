@@ -23,27 +23,35 @@
 using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using GTFS.Exceptions;
+using GTFS.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GTFS.IO
+namespace GTFS
 {
     /// <summary>
     /// A GTFS reader.
     /// </summary>
-    public class GTFSReader<T> where T : Feed
+    public class GTFSReader<T> where T : IGTFSFeed, new()
     {
         /// <summary>
-        /// Reads the specified GTFS source.
+        /// Reads the specified GTFS source into a new GTFS feed object.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public Feed Read(IEnumerable<IGTFSSourceFile> source)
+        public T Read(IEnumerable<IGTFSSourceFile> source)
         {
-            // create the feed.
-            var feed = new Feed();
+            return this.Read(new T(), source);
+        }
 
+        /// <summary>
+        /// Reads the specified GTFS source into the given GTFS feed object.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public T Read(T feed, IEnumerable<IGTFSSourceFile> source)
+        {
             // check if all required files are present.
             foreach(var file in this.GetRequiredFiles())
             {
@@ -150,53 +158,60 @@ namespace GTFS.IO
         /// A delegate for parsing methods per entity.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
-        private delegate TEntity EntityParseDelegate<TEntity>(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected delegate TEntity EntityParseDelegate<TEntity>(T feed, GTFSSourceFileHeader header, string[] data)
             where TEntity : GTFSEntity;
+
+        /// <summary>
+        /// A delegate to add entities.
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        protected delegate void EntityAddDelegate<TEntity>(TEntity entity);
 
         /// <summary>
         /// Reads the given file and adds the result to the feed.
         /// </summary>
         /// <param name="file"></param>
         /// <param name="feed"></param>
-        protected virtual void Read(IGTFSSourceFile file, Feed feed)
+        protected virtual void Read(IGTFSSourceFile file, T feed)
         {
             switch(file.Name.ToLower())
             {
                 case "agency":
-                    this.Read<Agency>(file, feed, this.ParseAgency, feed.Agencies);
+                    this.Read<Agency>(file, feed, this.ParseAgency, feed.AddAgency);
                     break;
                 case "calendar":
-                    this.Read<Calendar>(file, feed, this.ParseCalender, feed.Calendars);
+                    this.Read<Calendar>(file, feed, this.ParseCalender, feed.AddCalendar);
                     break;
                 case "calendar_dates":
-                    this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.CalendarDates);
+                    this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.AddCalendarDate);
                     break;
                 case "fare_attributes":
-                    this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.FareAttributes);
+                    this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.AddFareAttribute);
                     break;
                 case "fare_rules":
-                    this.Read<FareRule>(file, feed, this.ParseFareRule, feed.FareRules);
+                    this.Read<FareRule>(file, feed, this.ParseFareRule, feed.AddFareRule);
                     break;
                 case "feed_info":
-                    this.Read<FeedInfo>(file, feed, this.ParseFeedInfo, feed.FeedInfo);
+                    this.Read<FeedInfo>(file, feed, this.ParseFeedInfo, feed.AddFeedInfo);
                     break;
                 case "routes":
-                    this.Read<Route>(file, feed, this.ParseRoute, feed.Routes);
+                    this.Read<Route>(file, feed, this.ParseRoute, feed.AddRoute);
                     break;
                 case "shapes":
-                    this.Read<Shape>(file, feed, this.ParseShape, feed.Shapes);
+                    this.Read<Shape>(file, feed, this.ParseShape, feed.AddShape);
                     break;
                 case "stops":
-                    this.Read<Stop>(file, feed, this.ParseStop, feed.Stops);
+                    this.Read<Stop>(file, feed, this.ParseStop, feed.AddStop);
                     break;
                 case "stop_times":
-                    this.Read<StopTime>(file, feed, this.ParseStopTime, feed.StopTimes);
+                    this.Read<StopTime>(file, feed, this.ParseStopTime, feed.AddStopTime);
                     break;
                 case "trips":
-                    this.Read<Trip>(file, feed, this.ParseTrip, feed.Trips);
+                    this.Read<Trip>(file, feed, this.ParseTrip, feed.AddTrip);
                     break;
                 case "frequencies":
-                    this.Read<Frequency>(file, feed, this.ParseFrequency, feed.Frequencies);
+                    this.Read<Frequency>(file, feed, this.ParseFrequency, feed.AddFrequency);
                     break;
             }
         }
@@ -206,7 +221,7 @@ namespace GTFS.IO
         /// </summary>
         /// <param name="file"></param>
         /// <param name="list"></param>
-        private void Read<TEntity>(IGTFSSourceFile file, Feed feed, EntityParseDelegate<TEntity> parser, List<TEntity> list)
+        private void Read<TEntity>(IGTFSSourceFile file, T feed, EntityParseDelegate<TEntity> parser, EntityAddDelegate<TEntity> addDelegate)
             where TEntity : GTFSEntity
         {
             // enumerate all lines.
@@ -222,7 +237,7 @@ namespace GTFS.IO
             // read fields.
             while (enumerator.MoveNext())
             {
-                list.Add(parser.Invoke(feed, header, enumerator.Current));
+                addDelegate.Invoke(parser.Invoke(feed, header, enumerator.Current));
             }
         }
 
@@ -232,7 +247,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Agency ParseAgency(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Agency ParseAgency(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "agency_id");
@@ -287,7 +302,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Calendar ParseCalender(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Calendar ParseCalender(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "service_id");
@@ -317,7 +332,7 @@ namespace GTFS.IO
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseCalendarField(Feed feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
+        protected virtual void ParseCalendarField(T feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -360,7 +375,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual CalendarDate ParseCalendarDate(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual CalendarDate ParseCalendarDate(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "service_id");
@@ -383,7 +398,7 @@ namespace GTFS.IO
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseCalendarDateField(Feed feed, GTFSSourceFileHeader header, CalendarDate calendarDate, string fieldName, string value)
+        protected virtual void ParseCalendarDateField(T feed, GTFSSourceFileHeader header, CalendarDate calendarDate, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -405,7 +420,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual FareAttribute ParseFareAttribute(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual FareAttribute ParseFareAttribute(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "fare_id");
@@ -430,7 +445,7 @@ namespace GTFS.IO
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFareAttributeField(Feed feed, GTFSSourceFileHeader header, FareAttribute fareAttribute, string fieldName, string value)
+        protected virtual void ParseFareAttributeField(T feed, GTFSSourceFileHeader header, FareAttribute fareAttribute, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -461,7 +476,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual FareRule ParseFareRule(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual FareRule ParseFareRule(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "fare_id");
@@ -482,7 +497,7 @@ namespace GTFS.IO
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFareRuleField(Feed feed, GTFSSourceFileHeader header, FareRule fareRule, string fieldName, string value)
+        protected virtual void ParseFareRuleField(T feed, GTFSSourceFileHeader header, FareRule fareRule, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -490,12 +505,7 @@ namespace GTFS.IO
                     fareRule.FareId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_id":
-                    string routeId = this.ParseFieldString(header.Name, fieldName, value);
-                    fareRule.Route = feed.GetRoute(routeId);
-                    if (fareRule.Route == null)
-                    { // reference trip was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    fareRule.RouteId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "origin_id":
                     fareRule.OriginId = this.ParseFieldString(header.Name, fieldName, value);
@@ -515,7 +525,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual FeedInfo ParseFeedInfo(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual FeedInfo ParseFeedInfo(T feed, GTFSSourceFileHeader header, string[] data)
         {
             throw new NotImplementedException();
         }
@@ -526,7 +536,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Frequency ParseFrequency(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Frequency ParseFrequency(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "trip_id");
@@ -550,7 +560,7 @@ namespace GTFS.IO
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFrequencyField(Feed feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
+        protected virtual void ParseFrequencyField(T feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
         {
             this.CheckRequiredField(header, header.Name, "trip_id");
             this.CheckRequiredField(header, header.Name, "start_time");
@@ -559,12 +569,7 @@ namespace GTFS.IO
             switch (fieldName)
             {
                 case "trip_id":
-                    string tripId = this.ParseFieldString(header.Name, fieldName, value);
-                    frequency.Trip = feed.GetTrip(tripId);
-                    if (frequency.Trip == null)
-                    { // reference trip was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    frequency.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "start_time":
                     frequency.StartTime = this.ParseFieldString(header.Name, fieldName, value);
@@ -587,7 +592,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Route ParseRoute(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Route ParseRoute(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "route_id");
@@ -613,7 +618,7 @@ namespace GTFS.IO
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseRouteField(Feed feed, GTFSSourceFileHeader header, Route route, string fieldName, string value)
+        protected virtual void ParseRouteField(T feed, GTFSSourceFileHeader header, Route route, string fieldName, string value)
         {
             switch (fieldName)
             {            
@@ -621,12 +626,7 @@ namespace GTFS.IO
                     route.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "agency_id":
-                    string agencyId = this.ParseFieldString(header.Name, fieldName, value);
-                    route.Agency = feed.GetAgency(agencyId);
-                    if(route.Agency == null)
-                    { // reference agency was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    route.AgencyId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_short_name":
                     route.ShortName = this.ParseFieldString(header.Name, fieldName, value);
@@ -658,7 +658,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Shape ParseShape(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Shape ParseShape(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "shape_id");
@@ -682,7 +682,7 @@ namespace GTFS.IO
         /// <param name="shape"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseShapeField(Feed feed, GTFSSourceFileHeader header, Shape shape, string fieldName, string value)
+        protected virtual void ParseShapeField(T feed, GTFSSourceFileHeader header, Shape shape, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -710,7 +710,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Stop ParseStop(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Stop ParseStop(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "stop_id");
@@ -734,7 +734,7 @@ namespace GTFS.IO
         /// <param name="stop"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseStopField(Feed feed, GTFSSourceFileHeader header, Stop stop, string fieldName, string value)
+        protected virtual void ParseStopField(T feed, GTFSSourceFileHeader header, Stop stop, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -783,7 +783,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual StopTime ParseStopTime(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual StopTime ParseStopTime(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "trip_id");
@@ -810,17 +810,12 @@ namespace GTFS.IO
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseStopTimeField(Feed feed, GTFSSourceFileHeader header, StopTime stopTime, string fieldName, string value)
+        protected virtual void ParseStopTimeField(T feed, GTFSSourceFileHeader header, StopTime stopTime, string fieldName, string value)
         {
             switch (fieldName)
             {
                 case "trip_id":
-                    string tripId = this.ParseFieldString(header.Name, fieldName, value);
-                    stopTime.Trip = feed.GetTrip(tripId);
-                    if (stopTime.Trip == null)
-                    { // reference agency was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    stopTime.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "arrival_time":
                     stopTime.ArrivalTime = this.ParseFieldString(header.Name, fieldName, value);
@@ -829,12 +824,7 @@ namespace GTFS.IO
                     stopTime.DepartureTime = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_id":
-                    string stopId = this.ParseFieldString(header.Name, fieldName, value);
-                    stopTime.Stop = feed.GetStop(stopId);
-                    if (stopTime.Trip == null)
-                    { // reference agency was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    stopTime.StopId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_sequence":
                     stopTime.StopSequence = this.ParseFieldUInt(header.Name, fieldName, value).Value;
@@ -860,7 +850,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Transfer ParseTransfer(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Transfer ParseTransfer(T feed, GTFSSourceFileHeader header, string[] data)
         {
             throw new NotImplementedException();
         }
@@ -871,7 +861,7 @@ namespace GTFS.IO
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected virtual Trip ParseTrip(Feed feed, GTFSSourceFileHeader header, string[] data)
+        protected virtual Trip ParseTrip(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "trip_id");
@@ -895,7 +885,7 @@ namespace GTFS.IO
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseTripField(Feed feed, GTFSSourceFileHeader header, Trip trip, string fieldName, string value)
+        protected virtual void ParseTripField(T feed, GTFSSourceFileHeader header, Trip trip, string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -903,12 +893,7 @@ namespace GTFS.IO
                     trip.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_id":
-                    string routeId = this.ParseFieldString(header.Name, fieldName, value);
-                    trip.Route = feed.GetRoute(routeId);
-                    if(trip.Route == null)
-                    { // reference agency was not found!
-                        throw new GTFSIntegrityException(header.Name, fieldName, value);
-                    }
+                    trip.RouteId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "service_id":
                     trip.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
@@ -926,8 +911,7 @@ namespace GTFS.IO
                     trip.BlockId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "shape_id":
-                    string shapeId = this.ParseFieldString(header.Name, fieldName, value);
-                    trip.Shape = feed.GetShapes(shapeId);
+                    trip.ShapeId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "wheelchair_accessible":
                     trip.AccessibilityType = this.ParseFieldAccessibilityType(header.Name, fieldName, value);

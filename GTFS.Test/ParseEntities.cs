@@ -73,7 +73,7 @@ namespace GTFS.Test
         public void ParseAgencies()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -100,7 +100,7 @@ namespace GTFS.Test
         public void ParseRoutes()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -117,8 +117,7 @@ namespace GTFS.Test
             //AB,DTA,10,Airport - Bullfrog,,3,,,
             int idx = 0;
             Assert.AreEqual("AB", feed.Routes[idx].Id);
-            Assert.IsNotNull(feed.Routes[idx].Agency);
-            Assert.AreEqual("DTA", feed.Routes[idx].Agency.Id);
+            Assert.AreEqual("DTA", feed.Routes[idx].AgencyId);
             Assert.AreEqual("10", feed.Routes[idx].ShortName);
             Assert.AreEqual("Airport - Bullfrog", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
@@ -129,8 +128,7 @@ namespace GTFS.Test
             //BFC,DTA,20,Bullfrog - Furnace Creek Resort,,3,,,
             idx = 1;
             Assert.AreEqual("BFC", feed.Routes[idx].Id);
-            Assert.IsNotNull(feed.Routes[idx].Agency);
-            Assert.AreEqual("DTA", feed.Routes[idx].Agency.Id);
+            Assert.AreEqual("DTA", feed.Routes[idx].AgencyId);
             Assert.AreEqual("20", feed.Routes[idx].ShortName);
             Assert.AreEqual("Bullfrog - Furnace Creek Resort", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
@@ -141,8 +139,7 @@ namespace GTFS.Test
             //STBA,DTA,30,Stagecoach - Airport Shuttle,,3,,,
             idx = 2;
             Assert.AreEqual("STBA", feed.Routes[idx].Id);
-            Assert.IsNotNull(feed.Routes[idx].Agency);
-            Assert.AreEqual("DTA", feed.Routes[idx].Agency.Id);
+            Assert.AreEqual("DTA", feed.Routes[idx].AgencyId);
             Assert.AreEqual("30", feed.Routes[idx].ShortName);
             Assert.AreEqual("Stagecoach - Airport Shuttle", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
@@ -153,8 +150,7 @@ namespace GTFS.Test
             //CITY,DTA,40,City,,3,,,
             idx = 3;
             Assert.AreEqual("CITY", feed.Routes[idx].Id);
-            Assert.IsNotNull(feed.Routes[idx].Agency);
-            Assert.AreEqual("DTA", feed.Routes[idx].Agency.Id);
+            Assert.AreEqual("DTA", feed.Routes[idx].AgencyId);
             Assert.AreEqual("40", feed.Routes[idx].ShortName);
             Assert.AreEqual("City", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
@@ -165,8 +161,7 @@ namespace GTFS.Test
             //AAMV,DTA,50,Airport - Amargosa Valley,,3,,,
             idx = 4;
             Assert.AreEqual("AAMV", feed.Routes[idx].Id);
-            Assert.IsNotNull(feed.Routes[idx].Agency);
-            Assert.AreEqual("DTA", feed.Routes[idx].Agency.Id);
+            Assert.AreEqual("DTA", feed.Routes[idx].AgencyId);
             Assert.AreEqual("50", feed.Routes[idx].ShortName);
             Assert.AreEqual("Airport - Amargosa Valley", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
@@ -182,7 +177,7 @@ namespace GTFS.Test
         public void ParseShapes()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -219,7 +214,7 @@ namespace GTFS.Test
         public void ParseTrips()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -234,29 +229,23 @@ namespace GTFS.Test
             // @ 1: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
             // @ 2: AB,FULLW,AB1,to Bullfrog,0,1,shape_1
             int idx = 0;
-            Assert.IsNotNull(feed.Trips[idx].Route);
-            Assert.AreEqual("AB", feed.Trips[idx].Route.Id);
+            Assert.AreEqual("AB", feed.Trips[idx].RouteId);
             Assert.AreEqual("FULLW", feed.Trips[idx].ServiceId);
             Assert.AreEqual("AB1", feed.Trips[idx].Id);
             Assert.AreEqual("to Bullfrog", feed.Trips[idx].Headsign);
             Assert.AreEqual(DirectionType.OneDirection, feed.Trips[idx].Direction);
             Assert.AreEqual("1", feed.Trips[idx].BlockId);
-            Assert.IsNotNull(feed.Trips[idx].Shape);
-            Assert.AreEqual(4, feed.Trips[idx].Shape.Count);
-            Assert.AreEqual("shape_1", feed.Trips[idx].Shape[0].Id);
+            Assert.AreEqual("shape_1", feed.Trips[idx].ShapeId);
 
             // @ 10: BFC,FULLW,BFC1,to Furnace Creek Resort,0,1,shape_6
             idx = 5;
-            Assert.IsNotNull(feed.Trips[idx].Route);
-            Assert.AreEqual("BFC", feed.Trips[idx].Route.Id);
+            Assert.AreEqual("BFC", feed.Trips[idx].RouteId);
             Assert.AreEqual("FULLW", feed.Trips[idx].ServiceId);
             Assert.AreEqual("BFC1", feed.Trips[idx].Id);
             Assert.AreEqual("to Furnace Creek Resort", feed.Trips[idx].Headsign);
             Assert.AreEqual(DirectionType.OneDirection, feed.Trips[idx].Direction);
             Assert.AreEqual("1", feed.Trips[idx].BlockId);
-            Assert.IsNotNull(feed.Trips[idx].Shape);
-            Assert.AreEqual(4, feed.Trips[idx].Shape.Count);
-            Assert.AreEqual("shape_6", feed.Trips[idx].Shape[0].Id);
+            Assert.AreEqual("shape_6", feed.Trips[idx].ShapeId);
         }
 
         /// <summary>
@@ -266,7 +255,7 @@ namespace GTFS.Test
         public void ParseStops()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -305,7 +294,7 @@ namespace GTFS.Test
         public void ParseStopTimes()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -320,12 +309,10 @@ namespace GTFS.Test
             // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
             // @ 2: STBA,6:00:00,6:00:00,STAGECOACH,1,,,,
             int idx = 0;
-            Assert.IsNotNull(feed.StopTimes[idx].Trip);
-            Assert.AreEqual("STBA", feed.StopTimes[idx].Trip.Id);
+            Assert.AreEqual("STBA", feed.StopTimes[idx].TripId);
             Assert.AreEqual("6:00:00", feed.StopTimes[idx].ArrivalTime);
             Assert.AreEqual("6:00:00", feed.StopTimes[idx].DepartureTime);
-            Assert.IsNotNull(feed.StopTimes[idx].Stop);
-            Assert.AreEqual("STAGECOACH", feed.StopTimes[idx].Stop.Id);
+            Assert.AreEqual("STAGECOACH", feed.StopTimes[idx].StopId);
             Assert.AreEqual(1, feed.StopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
             Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
@@ -334,12 +321,10 @@ namespace GTFS.Test
 
             // @ 12: CITY2,6:49:00,6:51:00,NANAA,4,,,,
             idx = 10;
-            Assert.IsNotNull(feed.StopTimes[idx].Trip);
-            Assert.AreEqual("CITY2", feed.StopTimes[idx].Trip.Id);
+            Assert.AreEqual("CITY2", feed.StopTimes[idx].TripId);
             Assert.AreEqual("6:49:00", feed.StopTimes[idx].ArrivalTime);
             Assert.AreEqual("6:51:00", feed.StopTimes[idx].DepartureTime);
-            Assert.IsNotNull(feed.StopTimes[idx].Stop);
-            Assert.AreEqual("NANAA", feed.StopTimes[idx].Stop.Id);
+            Assert.AreEqual("NANAA", feed.StopTimes[idx].StopId);
             Assert.AreEqual(4, feed.StopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
             Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
@@ -354,7 +339,7 @@ namespace GTFS.Test
         public void ParseFrequencies()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -372,8 +357,7 @@ namespace GTFS.Test
             // @ 1: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
             // @ 2: AB,FULLW,AB1,to Bullfrog,0,1,shape_1
             int idx = 0;
-            Assert.IsNotNull(feed.Frequencies[idx].Trip);
-            Assert.AreEqual("STBA", feed.Frequencies[idx].Trip.Id);
+            Assert.AreEqual("STBA", feed.Frequencies[idx].TripId);
             Assert.AreEqual("6:00:00", feed.Frequencies[idx].StartTime);
             Assert.AreEqual("22:00:00", feed.Frequencies[idx].EndTime);
             Assert.AreEqual("1800", feed.Frequencies[idx].HeadwaySecs);
@@ -381,8 +365,7 @@ namespace GTFS.Test
 
             // @ 10: CITY2,16:00:00,18:59:59,600
             idx = 8;
-            Assert.IsNotNull(feed.Frequencies[idx].Trip);
-            Assert.AreEqual("CITY2", feed.Frequencies[idx].Trip.Id);
+            Assert.AreEqual("CITY2", feed.Frequencies[idx].TripId);
             Assert.AreEqual("16:00:00", feed.Frequencies[idx].StartTime);
             Assert.AreEqual("18:59:59", feed.Frequencies[idx].EndTime);
             Assert.AreEqual("600", feed.Frequencies[idx].HeadwaySecs);
@@ -396,7 +379,7 @@ namespace GTFS.Test
         public void ParseCalendars()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -443,7 +426,7 @@ namespace GTFS.Test
         public void ParseCalendarDates()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -470,7 +453,7 @@ namespace GTFS.Test
         public void ParseFareRules()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -486,8 +469,7 @@ namespace GTFS.Test
 
             //p,AB,,,
             int idx = 0;
-            Assert.IsNotNull(feed.FareRules[idx].Route);
-            Assert.AreEqual("AB", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("AB", feed.FareRules[idx].RouteId);
             Assert.AreEqual("p", feed.FareRules[idx].FareId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
@@ -495,8 +477,7 @@ namespace GTFS.Test
 
             //p,STBA,,,
             idx = 1;
-            Assert.IsNotNull(feed.FareRules[idx].Route);
-            Assert.AreEqual("STBA", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("STBA", feed.FareRules[idx].RouteId);
             Assert.AreEqual("p", feed.FareRules[idx].FareId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
@@ -504,8 +485,7 @@ namespace GTFS.Test
 
             //p,BFC,,,
             idx = 2;
-            Assert.IsNotNull(feed.FareRules[idx].Route);
-            Assert.AreEqual("BFC", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("BFC", feed.FareRules[idx].RouteId);
             Assert.AreEqual("p", feed.FareRules[idx].FareId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
@@ -513,8 +493,7 @@ namespace GTFS.Test
 
             //a,AAMV,,,
             idx = 3;
-            Assert.IsNotNull(feed.FareRules[idx].Route);
-            Assert.AreEqual("AAMV", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("AAMV", feed.FareRules[idx].RouteId);
             Assert.AreEqual("a", feed.FareRules[idx].FareId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
@@ -528,7 +507,7 @@ namespace GTFS.Test
         public void ParseFareAttributes()
         {
             // create the reader.
-            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();

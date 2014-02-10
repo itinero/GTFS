@@ -44,7 +44,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("route_id")]
-        public Route Route { get; set; }
+        public string RouteId { get; set; }
 
         /// <summary>
         /// Gets or sets an ID that uniquely identifies a set of dates when service is available for one or more routes. This value is referenced from the Calendar or CalendarDates entity.
@@ -81,7 +81,7 @@ namespace GTFS.Entities
         /// Gets or sets a shape for the trip. This value is referenced from the shapes.txt file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip.
         /// </summary>
         [FieldName("shape_id")]
-        public List<Shape> Shape { get; set; }
+        public string ShapeId { get; set; }
 
         /// <summary>
         /// Gets or sets accessibility information for the trip

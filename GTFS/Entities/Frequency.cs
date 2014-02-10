@@ -35,7 +35,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("trip_id")]
-        public Trip Trip { get; set; }
+        public string TripId { get; set; }
 
         /// <summary>
         /// Gets or sets the time at which service begins with the specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service date. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00.

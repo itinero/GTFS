@@ -28,12 +28,12 @@ namespace GTFS
     /// <summary>
     /// Represents an entire GTFS feed.
     /// </summary>
-    public class Feed
+    public class GTFSFeed : IGTFSFeed
     {
         /// <summary>
         /// Creates a new feed.
         /// </summary>
-        public Feed()
+        public GTFSFeed()
         {
             this.Agencies = new List<Agency>();
             this.CalendarDates = new List<CalendarDate>();
@@ -164,5 +164,122 @@ namespace GTFS
         /// Gets the feed info.
         /// </summary>
         public List<FeedInfo> FeedInfo { get; private set; }
+
+        /// <summary>
+        /// Adds a new agency.
+        /// </summary>
+        /// <param name="agency"></param>
+        public void AddAgency(Agency agency)
+        {
+            this.Agencies.Add(agency);
+        }
+
+        /// <summary>
+        /// Adds a new calendar.
+        /// </summary>
+        /// <param name="calendar"></param>
+        public void AddCalendar(Calendar calendar)
+        {
+            this.Calendars.Add(calendar);
+        }
+
+        /// <summary>
+        /// Adds a new calendar date.
+        /// </summary>
+        /// <param name="calendar"></param>
+        public void AddCalendarDate(CalendarDate calendar)
+        {
+            this.CalendarDates.Add(calendar);
+        }
+
+        /// <summary>
+        /// Adds a new fare attribute.
+        /// </summary>
+        /// <param name="fareAttribute"></param>
+        public void AddFareAttribute(FareAttribute fareAttribute)
+        {
+            this.FareAttributes.Add(fareAttribute);
+        }
+
+        /// <summary>
+        /// Adds a new fare rule.
+        /// </summary>
+        /// <param name="fareRule"></param>
+        public void AddFareRule(FareRule fareRule)
+        {
+            this.FareRules.Add(fareRule);
+        }
+
+        /// <summary>
+        /// Adds a new feed info.
+        /// </summary>
+        /// <param name="feedInfo"></param>
+        public void AddFeedInfo(FeedInfo feedInfo)
+        {
+            this.FeedInfo.Add(feedInfo);
+        }
+
+        /// <summary>
+        /// Adds a new frequency.
+        /// </summary>
+        /// <param name="frequency"></param>
+        public void AddFrequency(Frequency frequency)
+        {
+            this.Frequencies.Add(frequency);
+        }
+
+        /// <summary>
+        /// Adds a new route.
+        /// </summary>
+        /// <param name="route"></param>
+        public void AddRoute(Route route)
+        {
+            this.Routes.Add(route);
+        }
+
+        /// <summary>
+        /// Adds a new shape.
+        /// </summary>
+        /// <param name="shape"></param>
+        public void AddShape(Shape shape)
+        {
+            this.Shapes.Add(shape);
+        }
+
+        /// <summary>
+        /// Adds a new stop.
+        /// </summary>
+        /// <param name="stop"></param>
+        public void AddStop(Stop stop)
+        {
+            this.Stops.Add(stop);
+        }
+
+        /// <summary>
+        /// Adds a new stop time.
+        /// </summary>
+        /// <param name="stopTime"></param>
+        public void AddStopTime(StopTime stopTime)
+        {
+            this.StopTimes.Add(stopTime);
+        }
+
+        /// <summary>
+        /// Adds a new transfer.
+        /// </summary>
+        /// <param name="transfer"></param>
+        public void AddTransfer(Transfer transfer)
+        {
+            this.Transfers.Add(transfer);
+        }
+
+        /// <summary>
+        /// Adds a new trip.
+        /// </summary>
+        /// <param name="trip"></param>
+        public void AddTrip(Trip trip)
+        {
+            this.Trips.Add(trip);
+        }
     }
 }
