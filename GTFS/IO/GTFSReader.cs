@@ -100,6 +100,9 @@ namespace GTFS.IO
                 case "trips":
                     this.Read<Trip>(file, feed, this.ParseTrip, feed.Trips);
                     break;
+                case "frequencies":
+                    this.Read<Frequency>(file, feed, this.ParseFrequency, feed.Frequencies);
+                    break;
             }
         }
 
@@ -246,7 +249,57 @@ namespace GTFS.IO
         /// <returns></returns>
         protected virtual Frequency ParseFrequency(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "trip_id");
+            this.CheckRequiredField(header, header.Name, "start_time");
+            this.CheckRequiredField(header, header.Name, "end_time");
+            this.CheckRequiredField(header, header.Name, "headway_secs");
+
+            // parse/set all fields.
+            Frequency frequency = new Frequency();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseFrequencyField(feed, header, frequency, header.GetColumn(idx), data[idx]);
+            }
+            return frequency;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="route"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseFrequencyField(Feed feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
+        {
+            this.CheckRequiredField(header, header.Name, "trip_id");
+            this.CheckRequiredField(header, header.Name, "start_time");
+            this.CheckRequiredField(header, header.Name, "end_time");
+            this.CheckRequiredField(header, header.Name, "headway_secs");
+            switch (fieldName)
+            {
+                case "trip_id":
+                    string tripId = this.ParseFieldString(header.Name, fieldName, value);
+                    frequency.Trip = feed.GetTrip(tripId);
+                    if (frequency.Trip == null)
+                    { // reference trip was not found!
+                        throw new GTFSIntegrityException(header.Name, fieldName, value);
+                    }
+                    break;
+                case "start_time":
+                    frequency.StartTime = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "end_time":
+                    frequency.EndTime = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "headway_secs":
+                    frequency.HeadwaySecs = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "exact_times":
+                    frequency.ExactTimes = this.ParseFieldBool(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -934,6 +987,30 @@ namespace GTFS.IO
                 throw new GTFSParseException(name, fieldName, value);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Parses a boolean field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool? ParseFieldBool(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            switch (value)
+            {
+                case "0":
+                    return false;
+                case "1":
+                    return true;
+            }
+            throw new GTFSParseException(name, fieldName, value);
         }
     }
 }

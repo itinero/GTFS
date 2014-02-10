@@ -62,6 +62,6 @@ namespace GTFS.Entities
         /// Gets or sets a value that determines if frequency-based trips should be exactly scheduled based on the specified headway information. Valid values for this field are:
         /// </summary>
         [FieldName("exact_times")]
-        public bool ExactTimes { get; set; }
+        public bool? ExactTimes { get; set; }
     }
 }

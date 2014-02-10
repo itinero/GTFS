@@ -370,5 +370,64 @@ namespace GTFS.Test
             Assert.AreEqual(null, feed.StopTimes[idx].DropOffType);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].ShapeDistTravelled);
         }
+
+        /// <summary>
+        /// Tests parsing frequencies.
+        /// </summary>
+        [Test]
+        public void ParseFrequencies()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the agency source file.
+            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
+            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
+            GTFSSourceFileStream shapesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes");
+            GTFSSourceFileStream tripsFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips");
+            GTFSSourceFileStream frequenciesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.frequencies.txt"), "frequencies");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[5];
+            source[0] = agencyFile;
+            source[1] = routeFile;
+            source[2] = shapesFile;
+            source[3] = tripsFile;
+            source[4] = frequenciesFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.Frequencies);
+            Assert.AreEqual(11, feed.Frequencies.Count);
+
+            // @ 1: trip_id,start_time,end_time,headway_secs
+            // @ 2: STBA,6:00:00,22:00:00,1800
+
+            // @ 1: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
+            // @ 2: AB,FULLW,AB1,to Bullfrog,0,1,shape_1
+            int idx = 0;
+            Assert.IsNotNull(feed.Frequencies[idx].Trip);
+            Assert.AreEqual("STBA", feed.Frequencies[idx].Trip.Id);
+            Assert.AreEqual("6:00:00", feed.Frequencies[idx].StartTime);
+            Assert.AreEqual("22:00:00", feed.Frequencies[idx].EndTime);
+            Assert.AreEqual("1800", feed.Frequencies[idx].HeadwaySecs);
+            Assert.AreEqual(null, feed.Frequencies[idx].ExactTimes);
+
+            // @ 10: CITY2,16:00:00,18:59:59,600
+            idx = 8;
+            Assert.IsNotNull(feed.Frequencies[idx].Trip);
+            Assert.AreEqual("CITY2", feed.Frequencies[idx].Trip.Id);
+            Assert.AreEqual("16:00:00", feed.Frequencies[idx].StartTime);
+            Assert.AreEqual("18:59:59", feed.Frequencies[idx].EndTime);
+            Assert.AreEqual("600", feed.Frequencies[idx].HeadwaySecs);
+            Assert.AreEqual(null, feed.Frequencies[idx].ExactTimes);
+        }
     }
 }
