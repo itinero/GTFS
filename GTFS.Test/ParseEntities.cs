@@ -582,5 +582,50 @@ namespace GTFS.Test
             Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
             Assert.AreEqual(string.Empty, feed.FareRules[idx].ContainsId);
         }
+
+        /// <summary>
+        /// Tests parsing routes.
+        /// </summary>
+        [Test]
+        public void ParseFareAttributes()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the agency source file.
+            GTFSSourceFileStream fareAttributesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_attributes.txt"), "fare_attributes");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[1];
+            source[0] = fareAttributesFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.FareAttributes);
+            Assert.AreEqual(2, feed.FareAttributes.Count);
+
+            //fare_id,price,currency_type,payment_method,transfers,transfer_duration
+
+            //p,1.25,USD,0,0,
+            int idx = 0;
+            Assert.AreEqual("p", feed.FareAttributes[idx].FareId);
+            Assert.AreEqual("1.25", feed.FareAttributes[idx].Price);
+            Assert.AreEqual("USD", feed.FareAttributes[idx].CurrencyType);
+            Assert.AreEqual(PaymentMethodType.OnBoard, feed.FareAttributes[idx].PaymentMethod);
+            Assert.AreEqual(0, feed.FareAttributes[idx].Transfers);
+            Assert.AreEqual(string.Empty, feed.FareAttributes[idx].TransferDuration);
+
+            //a,5.25,USD,0,0,
+            idx = 1;
+            Assert.AreEqual("a", feed.FareAttributes[idx].FareId);
+            Assert.AreEqual("5.25", feed.FareAttributes[idx].Price);
+            Assert.AreEqual("USD", feed.FareAttributes[idx].CurrencyType);
+            Assert.AreEqual(PaymentMethodType.OnBoard, feed.FareAttributes[idx].PaymentMethod);
+            Assert.AreEqual(0, feed.FareAttributes[idx].Transfers);
+            Assert.AreEqual(string.Empty, feed.FareAttributes[idx].TransferDuration);
+        }
     }
 }

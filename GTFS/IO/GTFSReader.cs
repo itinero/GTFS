@@ -76,7 +76,7 @@ namespace GTFS.IO
                 case "calendar_dates":
                     this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.CalendarDates);
                     break;
-                case "fare_attribute":
+                case "fare_attributes":
                     this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.FareAttributes);
                     break;
                 case "fare_rules":
@@ -312,7 +312,52 @@ namespace GTFS.IO
         /// <returns></returns>
         protected virtual FareAttribute ParseFareAttribute(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "fare_id");
+            this.CheckRequiredField(header, header.Name, "price");
+            this.CheckRequiredField(header, header.Name, "currency_type");
+            this.CheckRequiredField(header, header.Name, "payment_method");
+            this.CheckRequiredField(header, header.Name, "transfers");
+
+            // parse/set all fields.
+            FareAttribute fareAttribute = new FareAttribute();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseFareAttributeField(feed, header, fareAttribute, header.GetColumn(idx), data[idx]);
+            }
+            return fareAttribute;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="trip"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseFareAttributeField(Feed feed, GTFSSourceFileHeader header, FareAttribute fareAttribute, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "fare_id":
+                    fareAttribute.FareId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "price":
+                    fareAttribute.Price = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "currency_type":
+                    fareAttribute.CurrencyType = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "payment_method":
+                    fareAttribute.PaymentMethod = this.ParseFieldPaymentMethodType(header.Name, fieldName, value);
+                    break;
+                case "transfers":
+                    fareAttribute.Transfers = this.ParseFieldUInt(header.Name, fieldName, value);
+                    break;
+                case "transfer_duration":
+                    fareAttribute.TransferDuration = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -368,7 +413,6 @@ namespace GTFS.IO
                     break;
             }
         }
-
 
         /// <summary>
         /// Parses a feed info row.
@@ -955,6 +999,28 @@ namespace GTFS.IO
                     return ExceptionType.Added;
                 case "2":
                     return ExceptionType.Removed;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a payment-method type field.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual PaymentMethodType ParseFieldPaymentMethodType(string name, string fieldName, string value)
+        {
+            //0 - Fare is paid on board.
+            //1 - Fare must be paid before boarding.
+
+            switch (value)
+            {
+                case "0":
+                    return PaymentMethodType.OnBoard;
+                case "1":
+                    return PaymentMethodType.BeforeBoarding;
             }
             throw new GTFSParseException(name, fieldName, value);
         }

@@ -42,14 +42,14 @@ namespace GTFS.Entities
         /// Gets or sets the fare price, in the unit specified by CurrencyType.
         /// </summary>
         [Required]
-        [FieldName("fare_id")]
+        [FieldName("price")]
         public string Price { get; set; }
 
         /// <summary>
         /// Gets or sets the currency used to pay the fare. Uses the ISO 4217 alphabetical currency codes which can be found at the following URL: http://www.iso.org/iso/home/standards/iso4217.htm. 
         /// </summary>
         [Required]
-        [FieldName("fare_id")]
+        [FieldName("currency_type")]
         public string CurrencyType { get; set; }
 
         /// <summary>
@@ -69,7 +69,6 @@ namespace GTFS.Entities
         /// <summary>
         /// Gets or sets the length of time in seconds before a transfer expires.
         /// </summary>
-        [Required]
         [FieldName("transfer_duration")]
         public string TransferDuration { get; set; }
     }
