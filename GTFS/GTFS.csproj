@@ -7,8 +7,8 @@
     <ProjectGuid>{81F40909-0A8A-4F2A-8F59-A54896BFAE89}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GTFS.Core</RootNamespace>
-    <AssemblyName>GTFS.Core</AssemblyName>
+    <RootNamespace>GTFS</RootNamespace>
+    <AssemblyName>GTFS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.Core.XML</DocumentationFile>
+    <DocumentationFile>..\Output\GTFS.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.Core.XML</DocumentationFile>
+    <DocumentationFile>..\Output\GTFS.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
