@@ -481,5 +481,37 @@ namespace GTFS.Test
             Assert.AreEqual("20070101", feed.Calendars[idx].StartDate);
             Assert.AreEqual("20101231", feed.Calendars[idx].EndDate);
         }
+
+        /// <summary>
+        /// Tests parsing calendar dates.
+        /// </summary>
+        [Test]
+        public void ParseCalendarDates()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the source file(s).
+            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar_dates.txt"), "calendar_dates");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[1];
+            source[0] = sourceFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.CalendarDates);
+            Assert.AreEqual(1, feed.CalendarDates.Count);
+
+            // @ 1: service_id,date,exception_type
+            // @ 2: FULLW,20070604,2
+            int idx = 0;
+            Assert.AreEqual("FULLW", feed.CalendarDates[idx].ServiceId);
+            Assert.AreEqual("20070604", feed.CalendarDates[idx].Date);
+            Assert.AreEqual(ExceptionType.Removed, feed.CalendarDates[idx].ExceptionType);
+        }
     }
 }

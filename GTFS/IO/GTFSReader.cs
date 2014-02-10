@@ -195,10 +195,16 @@ namespace GTFS.IO
         protected virtual Calendar ParseCalender(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "trip_id");
-            this.CheckRequiredField(header, header.Name, "start_time");
-            this.CheckRequiredField(header, header.Name, "end_time");
-            this.CheckRequiredField(header, header.Name, "headway_secs");
+            this.CheckRequiredField(header, header.Name, "service_id");
+            this.CheckRequiredField(header, header.Name, "monday");
+            this.CheckRequiredField(header, header.Name, "tuesday");
+            this.CheckRequiredField(header, header.Name, "wednesday");
+            this.CheckRequiredField(header, header.Name, "thursday");
+            this.CheckRequiredField(header, header.Name, "friday");
+            this.CheckRequiredField(header, header.Name, "saturday");
+            this.CheckRequiredField(header, header.Name, "sunday");
+            this.CheckRequiredField(header, header.Name, "start_date");
+            this.CheckRequiredField(header, header.Name, "end_date");
 
             // parse/set all fields.
             Calendar calendar = new Calendar();
@@ -218,17 +224,6 @@ namespace GTFS.IO
         /// <param name="value"></param>
         protected virtual void ParseCalendarField(Feed feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
         {
-            this.CheckRequiredField(header, header.Name, "service_id");
-            this.CheckRequiredField(header, header.Name, "monday");
-            this.CheckRequiredField(header, header.Name, "tuesday");
-            this.CheckRequiredField(header, header.Name, "wednesday");
-            this.CheckRequiredField(header, header.Name, "thursday");
-            this.CheckRequiredField(header, header.Name, "friday");
-            this.CheckRequiredField(header, header.Name, "saturday");
-            this.CheckRequiredField(header, header.Name, "sunday");
-            this.CheckRequiredField(header, header.Name, "start_date");
-            this.CheckRequiredField(header, header.Name, "end_date");
-
             switch (fieldName)
             {
                 case "service_id":
@@ -272,7 +267,41 @@ namespace GTFS.IO
         /// <returns></returns>
         protected virtual CalendarDate ParseCalendarDate(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "service_id");
+            this.CheckRequiredField(header, header.Name, "date");
+            this.CheckRequiredField(header, header.Name, "exception_type");
+
+            // parse/set all fields.
+            CalendarDate calendarDate = new CalendarDate();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseCalendarDateField(feed, header, calendarDate, header.GetColumn(idx), data[idx]);
+            }
+            return calendarDate;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="route"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseCalendarDateField(Feed feed, GTFSSourceFileHeader header, CalendarDate calendarDate, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "service_id":
+                    calendarDate.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "date":
+                    calendarDate.Date = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "exception_type":
+                    calendarDate.ExceptionType = this.ParseFieldExceptionType(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -859,6 +888,29 @@ namespace GTFS.IO
                     return RouteType.Gondola;
                 case "7":
                     return RouteType.Funicular;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+
+        /// <summary>
+        /// Parses an exception-type field.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual ExceptionType ParseFieldExceptionType(string name, string fieldName, string value)
+        {
+            //A value of 1 indicates that service has been added for the specified date.
+            //A value of 2 indicates that service has been removed for the specified date.
+
+            switch (value)
+            {
+                case "1":
+                    return ExceptionType.Added;
+                case "2":
+                    return ExceptionType.Removed;
             }
             throw new GTFSParseException(name, fieldName, value);
         }
