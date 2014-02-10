@@ -49,7 +49,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("tuesday")]
-        public bool Tuesdah { get; set; }
+        public bool Tuesday { get; set; }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Wednesdays.

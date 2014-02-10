@@ -73,7 +73,7 @@ namespace GTFS.IO
                 case "calendar":
                     this.Read<Calendar>(file, feed, this.ParseCalender, feed.Calendars);
                     break;
-                case "calendar_date":
+                case "calendar_dates":
                     this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.CalendarDates);
                     break;
                 case "fare_attribute":
@@ -194,7 +194,74 @@ namespace GTFS.IO
         /// <returns></returns>
         protected virtual Calendar ParseCalender(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "trip_id");
+            this.CheckRequiredField(header, header.Name, "start_time");
+            this.CheckRequiredField(header, header.Name, "end_time");
+            this.CheckRequiredField(header, header.Name, "headway_secs");
+
+            // parse/set all fields.
+            Calendar calendar = new Calendar();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseCalendarField(feed, header, calendar, header.GetColumn(idx), data[idx]);
+            }
+            return calendar;
+        }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="route"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseCalendarField(Feed feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
+        {
+            this.CheckRequiredField(header, header.Name, "service_id");
+            this.CheckRequiredField(header, header.Name, "monday");
+            this.CheckRequiredField(header, header.Name, "tuesday");
+            this.CheckRequiredField(header, header.Name, "wednesday");
+            this.CheckRequiredField(header, header.Name, "thursday");
+            this.CheckRequiredField(header, header.Name, "friday");
+            this.CheckRequiredField(header, header.Name, "saturday");
+            this.CheckRequiredField(header, header.Name, "sunday");
+            this.CheckRequiredField(header, header.Name, "start_date");
+            this.CheckRequiredField(header, header.Name, "end_date");
+
+            switch (fieldName)
+            {
+                case "service_id":
+                    calendar.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "monday":
+                    calendar.Monday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "tuesday":
+                    calendar.Tuesday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "wednesday":
+                    calendar.Wednesday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "thursday":
+                    calendar.Thursday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "friday":
+                    calendar.Friday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "saturday":
+                    calendar.Saturday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "sunday":
+                    calendar.Sunday = this.ParseFieldBool(header.Name, fieldName, value).Value;
+                    break;
+                case "start_date":
+                    calendar.StartDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "end_date":
+                    calendar.EndDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>

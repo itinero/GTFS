@@ -429,5 +429,57 @@ namespace GTFS.Test
             Assert.AreEqual("600", feed.Frequencies[idx].HeadwaySecs);
             Assert.AreEqual(null, feed.Frequencies[idx].ExactTimes);
         }
+
+        /// <summary>
+        /// Tests parsing calendars.
+        /// </summary>
+        [Test]
+        public void ParseCalendars()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the source file(s).
+            GTFSSourceFileStream sourceFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[1];
+            source[0] = sourceFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.Calendars);
+            Assert.AreEqual(2, feed.Calendars.Count);
+
+            // @ 1: service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
+            // @ 2: FULLW,1,1,1,1,1,1,1,20070101,20101231
+            int idx = 0;
+            Assert.AreEqual("FULLW", feed.Calendars[idx].ServiceId);
+            Assert.AreEqual(true, feed.Calendars[idx].Monday);
+            Assert.AreEqual(true, feed.Calendars[idx].Tuesday);
+            Assert.AreEqual(true, feed.Calendars[idx].Wednesday);
+            Assert.AreEqual(true, feed.Calendars[idx].Thursday);
+            Assert.AreEqual(true, feed.Calendars[idx].Friday);
+            Assert.AreEqual(true, feed.Calendars[idx].Saturday);
+            Assert.AreEqual(true, feed.Calendars[idx].Sunday);
+            Assert.AreEqual("20070101", feed.Calendars[idx].StartDate);
+            Assert.AreEqual("20101231", feed.Calendars[idx].EndDate);
+
+            // @3: WE,0,0,0,0,0,1,1,20070101,20101231
+            idx = 1;
+            Assert.AreEqual("WE", feed.Calendars[idx].ServiceId);
+            Assert.AreEqual(false, feed.Calendars[idx].Monday);
+            Assert.AreEqual(false, feed.Calendars[idx].Tuesday);
+            Assert.AreEqual(false, feed.Calendars[idx].Wednesday);
+            Assert.AreEqual(false, feed.Calendars[idx].Thursday);
+            Assert.AreEqual(false, feed.Calendars[idx].Friday);
+            Assert.AreEqual(true, feed.Calendars[idx].Saturday);
+            Assert.AreEqual(true, feed.Calendars[idx].Sunday);
+            Assert.AreEqual("20070101", feed.Calendars[idx].StartDate);
+            Assert.AreEqual("20101231", feed.Calendars[idx].EndDate);
+        }
     }
 }
