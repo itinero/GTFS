@@ -513,5 +513,74 @@ namespace GTFS.Test
             Assert.AreEqual("20070604", feed.CalendarDates[idx].Date);
             Assert.AreEqual(ExceptionType.Removed, feed.CalendarDates[idx].ExceptionType);
         }
+
+        /// <summary>
+        /// Tests parsing routes.
+        /// </summary>
+        [Test]
+        public void ParseFareRules()
+        {
+            // create the reader.
+            GTFSReader<Feed> reader = new GTFSReader<Feed>();
+
+            // define the agency source file.
+            GTFSSourceFileStream agencyFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
+            GTFSSourceFileStream routeFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes");
+            GTFSSourceFileStream fareRulesFile = new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_rules.txt"), "fare_rules");
+
+            // define the array of source files.
+            var source = new IGTFSSourceFile[3];
+            source[0] = agencyFile;
+            source[1] = routeFile;
+            source[2] = fareRulesFile;
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // test result.
+            Assert.IsNotNull(feed.FareRules);
+            Assert.AreEqual(4, feed.FareRules.Count);
+
+            // fare_id,route_id,origin_id,destination_id,contains_id
+
+            //p,AB,,,
+            int idx = 0;
+            Assert.IsNotNull(feed.FareRules[idx].Route);
+            Assert.AreEqual("AB", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("p", feed.FareRules[idx].FareId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].ContainsId);
+
+            //p,STBA,,,
+            idx = 1;
+            Assert.IsNotNull(feed.FareRules[idx].Route);
+            Assert.AreEqual("STBA", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("p", feed.FareRules[idx].FareId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].ContainsId);
+
+            //p,BFC,,,
+            idx = 2;
+            Assert.IsNotNull(feed.FareRules[idx].Route);
+            Assert.AreEqual("BFC", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("p", feed.FareRules[idx].FareId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].ContainsId);
+
+            //a,AAMV,,,
+            idx = 3;
+            Assert.IsNotNull(feed.FareRules[idx].Route);
+            Assert.AreEqual("AAMV", feed.FareRules[idx].Route.Id);
+            Assert.AreEqual("a", feed.FareRules[idx].FareId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].OriginId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].DestinationId);
+            Assert.AreEqual(string.Empty, feed.FareRules[idx].ContainsId);
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("fare_id")]
-        public FareAttribute FareAttribute { get; set; }
+        public string FareId { get; set; }
 
         /// <summary>
         /// Gets or sets a route.
@@ -58,7 +58,7 @@ namespace GTFS.Entities
         /// <summary>
         /// Gets or sets the fare ID with a zone ID, referenced from the stops.txt file. The fare ID is then associated with itineraries that pass through every contains_id zone.
         /// </summary>
-        [FieldName("destination_id")]
+        [FieldName("contains_id")]
         public string ContainsId { get; set; }
     }
 }

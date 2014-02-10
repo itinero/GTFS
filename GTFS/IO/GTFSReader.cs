@@ -79,7 +79,7 @@ namespace GTFS.IO
                 case "fare_attribute":
                     this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.FareAttributes);
                     break;
-                case "fare_rule":
+                case "fare_rules":
                     this.Read<FareRule>(file, feed, this.ParseFareRule, feed.FareRules);
                     break;
                 case "feed_info":
@@ -323,8 +323,52 @@ namespace GTFS.IO
         /// <returns></returns>
         protected virtual FareRule ParseFareRule(Feed feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, "fare_id");
+
+            // parse/set all fields.
+            FareRule fareRule = new FareRule();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseFareRuleField(feed, header, fareRule, header.GetColumn(idx), data[idx]);
+            }
+            return fareRule;
         }
+
+        /// <summary>
+        /// Parses a route field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="trip"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseFareRuleField(Feed feed, GTFSSourceFileHeader header, FareRule fareRule, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "fare_id":
+                    fareRule.FareId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "route_id":
+                    string routeId = this.ParseFieldString(header.Name, fieldName, value);
+                    fareRule.Route = feed.GetRoute(routeId);
+                    if (fareRule.Route == null)
+                    { // reference trip was not found!
+                        throw new GTFSIntegrityException(header.Name, fieldName, value);
+                    }
+                    break;
+                case "origin_id":
+                    fareRule.OriginId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "destination_id":
+                    fareRule.DestinationId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "contains_id":
+                    fareRule.ContainsId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
+        }
+
 
         /// <summary>
         /// Parses a feed info row.
