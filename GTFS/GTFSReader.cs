@@ -1015,62 +1015,37 @@ namespace GTFS
         /// <returns></returns>
         protected virtual int? ParseFieldColor(string name, string fieldName, string value)
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             { // detect empty strings.
                 return null;
             }
 
-            int red = -1;
-            int green = -1;
-            int blue = -1;
-            int alpha = 255;
-
-            if(value.Length == 7)
-            {
-                try
-                {
-                    // a pre-defined RGB value.
-                    string rString = value.Substring(1, 2);
-                    string gString = value.Substring(3, 2);
-                    string bString = value.Substring(5, 2);
-
-                    red = int.Parse(rString);
-                    green = int.Parse(gString);
-                    blue = int.Parse(bString);
-                }
-                catch(Exception ex)
-                {// hmm, some unknow exception, field not in correct format, give inner exception as a clue.
-                    throw new GTFSParseException(name, fieldName, value, ex);
-                }
-            }
-            else
-            { // hmm, what kind of string is this going to be? if it is a color, augment the parser.
-                throw new GTFSParseException(name, fieldName, value);
-            }
-
             try
             {
-                if ((alpha > 255) || (alpha < 0))
-                {
-                    // alpha out of range!
-                    throw new ArgumentOutOfRangeException("alpha", "Value has to be in the range 0-255!");
+                if(value.Length == 6)
+                { // assume # is missing.
+                    return Int32.Parse("FF" + value, System.Globalization.NumberStyles.HexNumber,
+                                        System.Globalization.CultureInfo.InvariantCulture);
                 }
-                if ((red > 255) || (red < 0))
-                {
-                    // red out of range!
-                    throw new ArgumentOutOfRangeException("red", "Value has to be in the range 0-255!");
+                else if (value.Length == 7)
+                { // assume #rrggbb
+                    return Int32.Parse("FF" + value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
+                                        System.Globalization.CultureInfo.InvariantCulture);
                 }
-                if ((green > 255) || (green < 0))
+                else if (value.Length == 9)
                 {
-                    // green out of range!
-                    throw new ArgumentOutOfRangeException("green", "Value has to be in the range 0-255!");
+                    return Int32.Parse(value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
+                        System.Globalization.CultureInfo.InvariantCulture);
                 }
-                if ((blue > 255) || (blue < 0))
+                else if (value.Length == 10)
                 {
-                    // red out of range!
-                    throw new ArgumentOutOfRangeException("blue", "Value has to be in the range 0-255!");
+                    return Int32.Parse(value.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber,
+                        System.Globalization.CultureInfo.InvariantCulture);
                 }
-                return (int)((uint)alpha << 24) + (red << 16) + (green << 8) + blue;
+                else
+                {
+                    throw new ArgumentOutOfRangeException("value", string.Format("The given string can is not a hex-color: {0}.", value));
+                }
             }
             catch (Exception ex)
             {// hmm, some unknow exception, field not in correct format, give inner exception as a clue.

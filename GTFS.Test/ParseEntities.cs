@@ -123,7 +123,7 @@ namespace GTFS.Test
             Assert.AreEqual("Airport - Bullfrog", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
             Assert.AreEqual(RouteType.Bus, feed.Routes[idx].Type);
-            Assert.AreEqual(null, feed.Routes[idx].Color);
+            Assert.AreEqual(-3932017, feed.Routes[idx].Color);
             Assert.AreEqual(null, feed.Routes[idx].TextColor);
 
             //BFC,DTA,20,Bullfrog - Furnace Creek Resort,,3,,,
@@ -134,7 +134,7 @@ namespace GTFS.Test
             Assert.AreEqual("Bullfrog - Furnace Creek Resort", feed.Routes[idx].LongName);
             Assert.AreEqual(string.Empty, feed.Routes[idx].Description);
             Assert.AreEqual(RouteType.Bus, feed.Routes[idx].Type);
-            Assert.AreEqual(null, feed.Routes[idx].Color);
+            Assert.AreEqual(-1, feed.Routes[idx].Color);
             Assert.AreEqual(null, feed.Routes[idx].TextColor);
 
             //STBA,DTA,30,Stagecoach - Airport Shuttle,,3,,,
