@@ -3,7 +3,7 @@
     <metadata>
         <id>GTFS</id>
         <version>$version$</version>
-        <title>A GTFS parser.</title>
+        <title>GTFS Parser</title>
         <authors>xivk</authors>
         <owners>xivk</owners>
         <licenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</licenseUrl>
