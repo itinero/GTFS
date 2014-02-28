@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Output\GTFS.xml</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -80,6 +81,9 @@
     <Compile Include="IGTFSFeed.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
     <Compile Include="GTFSReader.cs" />
+    <Compile Include="IO\CSV\CSVStreamWriter.cs" />
+    <Compile Include="IO\CSV\ICSVReader.cs" />
+    <Compile Include="IO\CSV\ICSVWriter.cs" />
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

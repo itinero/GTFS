@@ -42,6 +42,7 @@ namespace GTFS.IO
         /// <summary>
         /// Creates a new header.
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="columns"></param>
         public GTFSSourceFileHeader(string name, string[] columns)
         {

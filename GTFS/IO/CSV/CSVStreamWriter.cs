@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace GTFS.IO.CSV
@@ -29,12 +28,12 @@ namespace GTFS.IO.CSV
     /// <summary>
     /// Holds a CSV stream reader.
     /// </summary>
-    public class CSVStreamReader : ICSVReader
+    public class CSVStreamWriter : ICSVWriter
     {
         /// <summary>
         /// Holds the stream reader.
         /// </summary>
-        private readonly StreamReader _stream;
+        private readonly StreamWriter _stream;
 
         /// <summary>
         /// Holds the serperator char.
@@ -45,29 +44,31 @@ namespace GTFS.IO.CSV
         /// Creates a new CSV stream.
         /// </summary>
         /// <param name="stream"></param>
-        public CSVStreamReader(Stream stream)
+        public CSVStreamWriter(Stream stream)
         {
-            _stream = new StreamReader(stream);
+            _stream = new StreamWriter(stream);
         }
 
         /// <summary>
-        /// Holds the current line.
+        /// Writes one line into the target csv-stream.
         /// </summary>
-        private string[] _current = null;
-
-        /// <summary>
-        /// Returns the current line.
-        /// </summary>
-        public string[] Current
+        /// <param name="line"></param>
+        public void Write(string[] line)
         {
-            get
-            {
-                if(_current == null)
-                {
-                    throw new InvalidOperationException("No current data available, use MoveNext() to move to the first line or Reset() to reset the reader.");
-                }
-                return _current;
+            if (line == null) { throw new ArgumentNullException("line"); }
+
+            if (line.Length == 0)
+            { // not data, just write an empty line.
+                _stream.WriteLine();
+                return;
             }
+
+            for (int idx = 0; idx < line.Length - 1; idx++)
+            {
+                _stream.Write(line[idx]);
+                _stream.Write(_seperator);
+            }
+            _stream.WriteLine(line[line.Length - 1]);
         }
 
         /// <summary>
@@ -76,42 +77,6 @@ namespace GTFS.IO.CSV
         public void Dispose()
         {
             _stream.Dispose();
-        }
-
-
-        /// <summary>
-        /// Returns the current line.
-        /// </summary>
-        object System.Collections.IEnumerator.Current
-        {
-            get { return this.Current; }
-        }
-
-        /// <summary>
-        /// Move to the next line.
-        /// </summary>
-        /// <returns></returns>
-        public bool MoveNext()
-        {
-            if(_stream.Peek() > -1)
-            {
-                string line = _stream.ReadLine();
-                _current = line.Split(_seperator);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Resets this enumerator.
-        /// </summary>
-        public void Reset()
-        {
-            if (!_stream.BaseStream.CanSeek) { throw new NotSupportedException("Resetting a CSVStreamReader encapsulating an unseekable stream is not supported! Make sure the stream is seekable."); }
-
-            // move the base-stream back to the beginning.
-            _stream.BaseStream.Seek(0, SeekOrigin.Begin);
-            _current = null; // reset current data.
         }
     }
 }

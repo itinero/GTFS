@@ -49,6 +49,7 @@ namespace GTFS
         /// Reads the specified GTFS source into the given GTFS feed object.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="feed"></param>
         /// <returns></returns>
         public T Read(T feed, IEnumerable<IGTFSSourceFile> source)
         {
@@ -116,7 +117,9 @@ namespace GTFS
         /// <summary>
         /// Reads one file and it's dependencies from the specified GTFS source into the given GTFS feed object.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="source"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
         public T Read(T feed, IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
         {
@@ -278,8 +281,11 @@ namespace GTFS
         /// <summary>
         /// Reads the agency file.
         /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
         /// <param name="file"></param>
-        /// <param name="list"></param>
+        /// <param name="feed"></param>
+        /// <param name="parser"></param>
+        /// <param name="addDelegate"></param>
         private void Read<TEntity>(IGTFSSourceFile file, T feed, EntityParseDelegate<TEntity> parser, EntityAddDelegate<TEntity> addDelegate)
             where TEntity : GTFSEntity
         {
@@ -303,6 +309,7 @@ namespace GTFS
         /// <summary>
         /// Parses an agency row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -327,7 +334,7 @@ namespace GTFS
         /// Parses an agency field.
         /// </summary>
         /// <param name="header"></param>
-        /// <param name="name"></param>
+        /// <param name="agency"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseAgencyField(GTFSSourceFileHeader header, Agency agency, string fieldName, string value)
@@ -358,6 +365,7 @@ namespace GTFS
         /// <summary>
         /// Parses a calendar row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -387,8 +395,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="route"></param>
+        /// <param name="calendar"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseCalendarField(T feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
@@ -431,6 +440,7 @@ namespace GTFS
         /// <summary>
         /// Parses a calendar date row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -453,8 +463,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="route"></param>
+        /// <param name="calendarDate"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseCalendarDateField(T feed, GTFSSourceFileHeader header, CalendarDate calendarDate, string fieldName, string value)
@@ -476,6 +487,7 @@ namespace GTFS
         /// <summary>
         /// Parses a fare attribute row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -500,8 +512,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="trip"></param>
+        /// <param name="fareAttribute"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseFareAttributeField(T feed, GTFSSourceFileHeader header, FareAttribute fareAttribute, string fieldName, string value)
@@ -532,6 +545,7 @@ namespace GTFS
         /// <summary>
         /// Parses a fare rule row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -552,8 +566,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="trip"></param>
+        /// <param name="fareRule"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseFareRuleField(T feed, GTFSSourceFileHeader header, FareRule fareRule, string fieldName, string value)
@@ -581,6 +596,7 @@ namespace GTFS
         /// <summary>
         /// Parses a feed info row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -592,6 +608,7 @@ namespace GTFS
         /// <summary>
         /// Parses a frequency row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -615,8 +632,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="route"></param>
+        /// <param name="frequency"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseFrequencyField(T feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
@@ -648,6 +666,7 @@ namespace GTFS
         /// <summary>
         /// Parses a route row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -673,6 +692,7 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
@@ -714,6 +734,7 @@ namespace GTFS
         /// <summary>
         /// Parses a shapte row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -737,6 +758,7 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="shape"></param>
         /// <param name="fieldName"></param>
@@ -766,6 +788,7 @@ namespace GTFS
         /// <summary>
         /// Parses a stop row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -789,6 +812,7 @@ namespace GTFS
         /// <summary>
         /// Parses a stop field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="stop"></param>
         /// <param name="fieldName"></param>
@@ -839,6 +863,7 @@ namespace GTFS
         /// <summary>
         /// Parses a stop time row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -865,8 +890,9 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
-        /// <param name="trip"></param>
+        /// <param name="stopTime"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         protected virtual void ParseStopTimeField(T feed, GTFSSourceFileHeader header, StopTime stopTime, string fieldName, string value)
@@ -906,6 +932,7 @@ namespace GTFS
         /// <summary>
         /// Parses a transfer row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -917,6 +944,7 @@ namespace GTFS
         /// <summary>
         /// Parses a trip row.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -940,6 +968,7 @@ namespace GTFS
         /// <summary>
         /// Parses a route field.
         /// </summary>
+        /// <param name="feed"></param>
         /// <param name="header"></param>
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
@@ -998,7 +1027,6 @@ namespace GTFS
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        /// <param name="result"></param>
         /// <returns></returns>
         protected virtual string ParseFieldString(string name, string fieldName, string value)
         {
@@ -1056,7 +1084,7 @@ namespace GTFS
         /// <summary>
         /// Parses a route-type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -1097,7 +1125,7 @@ namespace GTFS
         /// <summary>
         /// Parses an exception-type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -1119,7 +1147,7 @@ namespace GTFS
         /// <summary>
         /// Parses a payment-method type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -1141,7 +1169,7 @@ namespace GTFS
         /// <summary>
         /// Parses an accessibility-type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -1237,7 +1265,7 @@ namespace GTFS
         /// <summary>
         /// Parses a location-type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -1264,7 +1292,7 @@ namespace GTFS
         /// <summary>
         /// Parses a direction-type field.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
