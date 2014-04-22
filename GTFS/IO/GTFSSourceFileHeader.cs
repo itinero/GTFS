@@ -72,7 +72,10 @@ namespace GTFS.IO
         public int GetColumnIndex(string column)
         {
             int value = -1;
-            _indexPerColumn.TryGetValue(column, out value);
+            if(!_indexPerColumn.TryGetValue(column, out value))
+            { // column not there!
+                return -1;
+            }
             return value;
         }
 

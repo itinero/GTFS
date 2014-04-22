@@ -37,14 +37,33 @@ namespace GTFS.IO
         private Stream _stream;
 
         /// <summary>
+        /// Holds a custom seperator.
+        /// </summary>
+        private char? _customSeperator;
+
+        /// <summary>
         /// Creates a new GTFS file stream.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="name"></param>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="name">The name associated with this file stream.</param>
         public GTFSSourceFileStream(Stream stream, string name)
         {
             _stream = stream;
             this.Name = name;
+            _customSeperator = null;
+        }
+
+        /// <summary>
+        /// Creates a new GTFS file stream.
+        /// </summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="name">The name associated with this file stream.</param>
+        /// <param name="seperator">A custom seperator.</param>
+        public GTFSSourceFileStream(Stream stream, string name, char seperator)
+        {
+            _stream = stream;
+            this.Name = name;
+            _customSeperator = seperator;
         }
 
         /// <summary>
@@ -71,7 +90,14 @@ namespace GTFS.IO
             {
                 throw new InvalidOperationException("A GTFSSourceFileStream can only spawn one enumerator.");
             }
-            _reader = new CSVStreamReader(_stream);
+            if (_customSeperator.HasValue)
+            { // create reader with custom seperator.
+                _reader = new CSVStreamReader(_stream, _customSeperator.Value);
+            }
+            else
+            { // no seperator here!
+                _reader = new CSVStreamReader(_stream);
+            }
             return _reader;
         }
 

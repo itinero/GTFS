@@ -36,6 +36,28 @@ namespace GTFS
     public class GTFSReader<T> where T : IGTFSFeed, new()
     {
         /// <summary>
+        /// Flag making this reader very strict about the GTFS-spec.
+        /// </summary>
+        private bool _strict = true;
+
+        /// <summary>
+        /// Creates a new GTFS reader.
+        /// </summary>
+        public GTFSReader()
+        {
+            _strict = true;
+        }
+
+        /// <summary>
+        /// Creates a new GTFS reader.
+        /// </summary>
+        /// <param name="strict">Flag to set strict behaviour.</param>
+        public GTFSReader(bool strict)
+        {
+            _strict = strict;
+        }
+
+        /// <summary>
         /// Reads the specified GTFS source into a new GTFS feed object.
         /// </summary>
         /// <param name="source"></param>
@@ -54,16 +76,19 @@ namespace GTFS
         public T Read(T feed, IEnumerable<IGTFSSourceFile> source)
         {
             // check if all required files are present.
-            foreach(var file in this.GetRequiredFiles())
+            if (_strict)
             {
-                if(!source.Any(x => x.Name.Equals(file)))
-                { // oeps, file was found found!
-                    throw new GTFSRequiredFileMissingException(file);
+                foreach (var file in this.GetRequiredFiles())
+                {
+                    if (!source.Any(x => x.Name.Equals(file)))
+                    { // oeps, file was found found!
+                        throw new GTFSRequiredFileMissingException(file);
+                    }
                 }
             }
 
             // read files one-by-one and in the correct order based on the dependency tree.
-            var readFiles = new HashSet<string>();
+            var readFiles = this.ReadCustomFilesBefore();
             var dependencyTree = this.GetDependencyTree();
             while(readFiles.Count < source.Count())
             {
@@ -101,6 +126,15 @@ namespace GTFS
                 readFiles.Add(selectedFile.Name);
             }
             return feed;            
+        }
+
+        /// <summary>
+        /// Reads custom files and returns a list of files that have already been read.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual HashSet<string> ReadCustomFilesBefore()
+        {
+            return new HashSet<string>();
         }
 
         /// <summary>
@@ -602,7 +636,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual FeedInfo ParseFeedInfo(T feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
@@ -1015,9 +1049,12 @@ namespace GTFS
         /// <param name="column"></param>
         protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, string column)
         {
-            if(!header.HasColumn(column))
-            {
-                throw new GTFSRequiredFieldMissingException(name, column);
+            if (_strict)
+            { // do not check the requeted fields stuff when not strict.
+                if (!header.HasColumn(column))
+                {
+                    throw new GTFSRequiredFieldMissingException(name, column);
+                }
             }
         }
 
@@ -1043,6 +1080,9 @@ namespace GTFS
         /// <returns></returns>
         protected virtual int? ParseFieldColor(string name, string fieldName, string value)
         {
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             if (string.IsNullOrWhiteSpace(value))
             { // detect empty strings.
                 return null;
@@ -1090,6 +1130,9 @@ namespace GTFS
         /// <returns></returns>
         protected virtual RouteType ParseFieldRouteType(string name, string fieldName, string value)
         {
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             //0 - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.
             //1 - Subway, Metro. Any underground rail system within a metropolitan area.
             //2 - Rail. Used for intercity or long-distance travel.
@@ -1131,6 +1174,9 @@ namespace GTFS
         /// <returns></returns>
         protected virtual ExceptionType ParseFieldExceptionType(string name, string fieldName, string value)
         {
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             //A value of 1 indicates that service has been added for the specified date.
             //A value of 2 indicates that service has been removed for the specified date.
 
@@ -1153,6 +1199,9 @@ namespace GTFS
         /// <returns></returns>
         protected virtual PaymentMethodType ParseFieldPaymentMethodType(string name, string fieldName, string value)
         {
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             //0 - Fare is paid on board.
             //1 - Fare must be paid before boarding.
 
@@ -1179,6 +1228,9 @@ namespace GTFS
             { // there is no value.
                 return null;
             }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
 
             //0 (or empty) - indicates that there is no accessibility information for the trip
             //1 - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair
@@ -1209,6 +1261,9 @@ namespace GTFS
             { // there is no value.
                 return null;
             }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
 
             //0 - Regularly scheduled drop off
             //1 - No drop off available
@@ -1243,6 +1298,9 @@ namespace GTFS
                 return null;
             }
 
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             //0 - Regularly scheduled pickup
             //1 - No pickup available
             //2 - Must phone agency to arrange pickup
@@ -1275,6 +1333,9 @@ namespace GTFS
             { // there is no value.
                 return null;
             }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
             
             //0 or blank - Stop. A location where passengers board or disembark from a transit vehicle.
             //1 - Station. A physical structure or area that contains one or more stop.
@@ -1303,6 +1364,9 @@ namespace GTFS
                 return null;
             }
 
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             //0 - travel in one direction (e.g. outbound travel)
             //1 - travel in the opposite direction (e.g. inbound travel)
 
@@ -1329,6 +1393,10 @@ namespace GTFS
             { // there is no value.
                 return null;
             }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             uint result;
             if(!uint.TryParse(value, out result))
             { // parsing failed!
@@ -1350,6 +1418,9 @@ namespace GTFS
             { // there is no value.
                 return null;
             }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
 
             double result;
             if (!double.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
@@ -1373,6 +1444,9 @@ namespace GTFS
                 return null;
             }
 
+            // clean first.
+            value = this.CleanFieldValue(value);
+
             switch (value)
             {
                 case "0":
@@ -1381,6 +1455,31 @@ namespace GTFS
                     return true;
             }
             throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Cleans a field-value for parsing into a boolean, int, double or date.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual string CleanFieldValue(string value)
+        {
+            if (!_strict)
+            { // no cleaning when strict!
+                value = value.Trim();
+                if (value != null && value.Length > 0)
+                { // test some stuff.
+                    if (value.Length >= 2)
+                    { // test for quotes
+                        if (value[0] == '"' &&
+                            value[value.Length - 1] == '"')
+                        { // quotes on both ends.
+                            return value.Substring(1, value.Length - 2);
+                        }
+                    }
+                }
+            }
+            return value;
         }
     }
 }

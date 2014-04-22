@@ -36,9 +36,14 @@ namespace GTFS.IO
         private DirectoryInfo _directory;
 
         /// <summary>
+        /// Holds a custom seperator.
+        /// </summary>
+        private char? _customSeperator;
+
+        /// <summary>
         /// Creates a new GTFS directory source.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to the directory contain all GTFS-files.</param>
         public GTFSDirectorySource(string path)
             : this(new DirectoryInfo(path))
         {
@@ -48,10 +53,33 @@ namespace GTFS.IO
         /// <summary>
         /// Creates a new GTFS directory source.
         /// </summary>
-        /// <param name="directory"></param>
+        /// <param name="directory">The directory contain all GTFS-files.</param>
         public GTFSDirectorySource(DirectoryInfo directory)
         {
             _directory = directory;
+            _customSeperator = null;
+        }
+
+        /// <summary>
+        /// Creates a new GTFS directory source.
+        /// </summary>
+        /// <param name="path">The path to the directory contain all GTFS-files.</param>
+        /// <param name="seperator">A custom seperator.</param>
+        public GTFSDirectorySource(string path, char seperator)
+            : this(new DirectoryInfo(path), seperator)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new GTFS directory source.
+        /// </summary>
+        /// <param name="directory">The directory contain all GTFS-files.</param>
+        /// <param name="seperator">A custom seperator.</param>
+        public GTFSDirectorySource(DirectoryInfo directory, char seperator)
+        {
+            _directory = directory;
+            _customSeperator = seperator;
         }
 
         /// <summary>
@@ -64,8 +92,16 @@ namespace GTFS.IO
             var sourceFiles = new List<IGTFSSourceFile>(files.Length);
             foreach(var file in files)
             {
-                sourceFiles.Add(new GTFSSourceFileStream(
-                    file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
+                if(_customSeperator.HasValue)
+                { // add source file with custom seperator.
+                    sourceFiles.Add(new GTFSSourceFileStream(
+                        file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length), _customSeperator.Value));
+                }
+                else
+                { // no custom seperator here!
+                    sourceFiles.Add(new GTFSSourceFileStream(
+                        file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
+                }
             }
             return sourceFiles;
         }

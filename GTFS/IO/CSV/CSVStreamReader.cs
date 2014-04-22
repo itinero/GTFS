@@ -39,15 +39,26 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Holds the serperator char.
         /// </summary>
-        private readonly char _seperator = ',';
+        private char _seperator = ',';
 
         /// <summary>
         /// Creates a new CSV stream.
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">The stream to read from.</param>
         public CSVStreamReader(Stream stream)
         {
             _stream = new StreamReader(stream);
+        }
+
+        /// <summary>
+        /// Creates a new CSV stream.
+        /// </summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="seperator">A custom seperator.</param>
+        public CSVStreamReader(Stream stream, char seperator)
+        {
+            _stream = new StreamReader(stream);
+            _seperator = seperator;
         }
 
         /// <summary>
