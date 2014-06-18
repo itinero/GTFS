@@ -46,6 +46,15 @@ namespace GTFS
         public GTFSReader()
         {
             _strict = true;
+
+            this.DateTimeReader = (dateString) =>
+                {
+                    return DateTime.Parse(dateString, System.Globalization.CultureInfo.InvariantCulture);
+                };
+            this.DateTimeWriter = (date) =>
+                {
+                    return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                };
         }
 
         /// <summary>
@@ -55,7 +64,26 @@ namespace GTFS
         public GTFSReader(bool strict)
         {
             _strict = strict;
+
+            this.DateTimeReader = (dateString) =>
+            {
+                return DateTime.Parse(dateString, System.Globalization.CultureInfo.InvariantCulture);
+            };
+            this.DateTimeWriter = (date) =>
+            {
+                return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            };
         }
+
+        /// <summary>
+        /// Gets or sets the date time reader.
+        /// </summary>
+        public Func<string, DateTime> DateTimeReader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date time writer.
+        /// </summary>
+        public Func<DateTime, string> DateTimeWriter { get; set; }
 
         /// <summary>
         /// Reads the specified GTFS source into a new GTFS feed object.
@@ -510,7 +538,7 @@ namespace GTFS
                     calendarDate.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "date":
-                    calendarDate.Date = this.ParseFieldString(header.Name, fieldName, value);
+                    calendarDate.Date = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "exception_type":
                     calendarDate.ExceptionType = this.ParseFieldExceptionType(header.Name, fieldName, value);

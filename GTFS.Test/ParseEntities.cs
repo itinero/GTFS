@@ -428,6 +428,13 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            reader.DateTimeReader = (dateString) =>
+            {
+                var year = int.Parse(dateString.Substring(0, 4));
+                var month = int.Parse(dateString.Substring(4, 2));
+                var day = int.Parse(dateString.Substring(6, 2));
+                return new System.DateTime(year, month, day);
+            };
 
             // build the source
             var source = this.BuildSource();
@@ -443,7 +450,7 @@ namespace GTFS.Test
             // @ 2: FULLW,20070604,2
             int idx = 0;
             Assert.AreEqual("FULLW", feed.CalendarDates[idx].ServiceId);
-            Assert.AreEqual("20070604", feed.CalendarDates[idx].Date);
+            Assert.AreEqual(new System.DateTime(2007, 06, 04), feed.CalendarDates[idx].Date);
             Assert.AreEqual(ExceptionType.Removed, feed.CalendarDates[idx].ExceptionType);
         }
 

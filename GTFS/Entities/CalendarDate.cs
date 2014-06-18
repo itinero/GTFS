@@ -22,6 +22,7 @@
 
 using GTFS.Attributes;
 using GTFS.Entities.Enumerations;
+using System;
 
 namespace GTFS.Entities
 {
@@ -43,7 +44,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("date")]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         /// Gets or sets the exception type that indicates whether service is available on the date specified in the date field.
