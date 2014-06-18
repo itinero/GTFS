@@ -624,7 +624,7 @@ namespace GTFS
                     calendarDate.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "date":
-                    calendarDate.Date = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
+                    calendarDate.Date = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "exception_type":
                     calendarDate.ExceptionType = this.ParseFieldExceptionType(header.Name, fieldName, value);
