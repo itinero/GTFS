@@ -123,6 +123,23 @@ namespace GTFS
         public Func<string, DateTime> DateTimeReader { get; set; }
 
         /// <summary>
+        /// Reads a datetime.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private DateTime ReadDateTime(string name, string fieldName, string value)
+        {
+            try
+            {
+                return this.DateTimeReader.Invoke(value);
+            }
+            catch(Exception ex)
+            { // throw a GFTS parse exception instead.
+                throw new GTFSParseException(name, fieldName, value, ex);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the date time writer.
         /// </summary>
         public Func<DateTime, string> DateTimeWriter { get; set; }
@@ -131,6 +148,23 @@ namespace GTFS
         /// Gets or sets the time of day reader.
         /// </summary>
         public Func<string, TimeOfDay> TimeOfDayReader { get; set; }
+
+        /// <summary>
+        /// Reads a timeofday.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private TimeOfDay ReadTimeOfDay(string name, string fieldName, string value)
+        {
+            try
+            {
+                return this.TimeOfDayReader.Invoke(value);
+            }
+            catch (Exception ex)
+            { // throw a GFTS parse exception instead.
+                throw new GTFSParseException(name, fieldName, value, ex);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the time of day writer.
@@ -543,10 +577,10 @@ namespace GTFS
                     calendar.Sunday = this.ParseFieldBool(header.Name, fieldName, value).Value;
                     break;
                 case "start_date":
-                    calendar.StartDate = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
+                    calendar.StartDate = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "end_date":
-                    calendar.EndDate = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
+                    calendar.EndDate = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
             }
         }
@@ -1017,7 +1051,7 @@ namespace GTFS
                     stopTime.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "arrival_time":
-                    stopTime.ArrivalTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
+                    stopTime.ArrivalTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "departure_time":
                     stopTime.DepartureTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
