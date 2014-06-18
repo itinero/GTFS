@@ -491,10 +491,10 @@ namespace GTFS
                     calendar.Sunday = this.ParseFieldBool(header.Name, fieldName, value).Value;
                     break;
                 case "start_date":
-                    calendar.StartDate = this.ParseFieldString(header.Name, fieldName, value);
+                    calendar.StartDate = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "end_date":
-                    calendar.EndDate = this.ParseFieldString(header.Name, fieldName, value);
+                    calendar.EndDate = this.DateTimeReader(this.ParseFieldString(header.Name, fieldName, value));
                     break;
             }
         }

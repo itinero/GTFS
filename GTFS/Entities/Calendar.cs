@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using GTFS.Attributes;
+using System;
 
 namespace GTFS.Entities
 {
@@ -91,13 +92,13 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("start_date")]
-        public string StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the end date for the service. This date is included in the service interval.
         /// </summary>
         [Required]
         [FieldName("end_date")]
-        public string EndDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

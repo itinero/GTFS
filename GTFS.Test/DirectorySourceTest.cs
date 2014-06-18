@@ -23,6 +23,7 @@
 using GTFS.Entities.Enumerations;
 using GTFS.IO;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -359,6 +360,13 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            reader.DateTimeReader = (dateString) =>
+            {
+                var year = int.Parse(dateString.Substring(0, 4));
+                var month = int.Parse(dateString.Substring(4, 2));
+                var day = int.Parse(dateString.Substring(6, 2));
+                return new System.DateTime(year, month, day);
+            };
 
             // build the source
             var source = this.BuildSource();
@@ -381,8 +389,8 @@ namespace GTFS.Test
             Assert.AreEqual(true, feed.Calendars[idx].Friday);
             Assert.AreEqual(true, feed.Calendars[idx].Saturday);
             Assert.AreEqual(true, feed.Calendars[idx].Sunday);
-            Assert.AreEqual("20070101", feed.Calendars[idx].StartDate);
-            Assert.AreEqual("20101231", feed.Calendars[idx].EndDate);
+            Assert.AreEqual(new DateTime(2007, 01, 01), feed.Calendars[idx].StartDate);
+            Assert.AreEqual(new DateTime(2010, 12, 31), feed.Calendars[idx].EndDate);
 
             // @3: WE,0,0,0,0,0,1,1,20070101,20101231
             idx = 1;
@@ -394,8 +402,8 @@ namespace GTFS.Test
             Assert.AreEqual(false, feed.Calendars[idx].Friday);
             Assert.AreEqual(true, feed.Calendars[idx].Saturday);
             Assert.AreEqual(true, feed.Calendars[idx].Sunday);
-            Assert.AreEqual("20070101", feed.Calendars[idx].StartDate);
-            Assert.AreEqual("20101231", feed.Calendars[idx].EndDate);
+            Assert.AreEqual(new DateTime(2007, 01, 01), feed.Calendars[idx].StartDate);
+            Assert.AreEqual(new DateTime(2010, 12, 31), feed.Calendars[idx].EndDate);
         }
 
         /// <summary>
