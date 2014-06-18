@@ -121,9 +121,29 @@ namespace GTFS
         public List<Calendar> Calendars { get; private set; }
 
         /// <summary>
+        /// Returns the calendar for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public Calendar GetCalendar(string serviceId)
+        {
+            return this.Calendars.Find(x => x.ServiceId == serviceId);
+        }
+
+        /// <summary>
         /// Gets the list of calendar dates.
         /// </summary>
         public List<CalendarDate> CalendarDates { get; private set; }
+
+        /// <summary>
+        /// Returns the calendar dates for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public IEnumerable<CalendarDate> GetCalendarDates(string serviceId)
+        {
+            return this.CalendarDates.FindAll(x => x.ServiceId == serviceId);
+        }
 
         /// <summary>
         /// Gets the list of fare attributes.
