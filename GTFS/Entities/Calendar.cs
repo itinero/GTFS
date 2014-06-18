@@ -100,5 +100,36 @@ namespace GTFS.Entities
         [Required]
         [FieldName("end_date")]
         public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// Returns true if this calendar covers the given date.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public bool CoversDate(DateTime date)
+        {
+            date = date.Date;
+            if (this.StartDate <= date && this.EndDate >= date)
+            { // ok in range.
+                switch(date.DayOfWeek)
+                {
+                    case DayOfWeek.Monday:
+                        return this.Monday;
+                    case DayOfWeek.Tuesday:
+                        return this.Tuesday;
+                    case DayOfWeek.Wednesday:
+                        return this.Wednesday;
+                    case DayOfWeek.Thursday:
+                        return this.Thursday;
+                    case DayOfWeek.Friday:
+                        return this.Friday;
+                    case DayOfWeek.Saturday:
+                        return this.Saturday;
+                    case DayOfWeek.Sunday:
+                        return this.Sunday;
+                }
+            }
+            return false;
+        }
     }
 }
