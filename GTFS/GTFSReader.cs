@@ -55,6 +55,27 @@ namespace GTFS
                 {
                     return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 };
+            this.TimeOfDayReader = (timeOfDayString) =>
+                {
+                    if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
+
+                    var timeOfDay = new TimeOfDay();
+                    if (timeOfDayString.Length == 8)
+                    {
+                        timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 2));
+                        timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(3, 2));
+                        timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(6, 2));
+                        return timeOfDay;
+                    }
+                    timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 1));
+                    timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(2, 2));
+                    timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(5, 2));
+                    return timeOfDay;
+                };
+            this.TimeOfDayWriter = (timeOfDay) =>
+                {
+                    throw new NotImplementedException();
+                };
         }
 
         /// <summary>
@@ -73,6 +94,27 @@ namespace GTFS
             {
                 return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
             };
+            this.TimeOfDayReader = (timeOfDayString) =>
+            {
+                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
+
+                var timeOfDay = new TimeOfDay();
+                if (timeOfDayString.Length == 8)
+                {
+                    timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 2));
+                    timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(3, 2));
+                    timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(6, 2));
+                    return timeOfDay;
+                }
+                timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 1));
+                timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(2, 2));
+                timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(5, 2));
+                return timeOfDay;
+            };
+            this.TimeOfDayWriter = (timeOfDay) =>
+            {
+                throw new NotImplementedException();
+            };
         }
 
         /// <summary>
@@ -84,6 +126,16 @@ namespace GTFS
         /// Gets or sets the date time writer.
         /// </summary>
         public Func<DateTime, string> DateTimeWriter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time of day reader.
+        /// </summary>
+        public Func<string, TimeOfDay> TimeOfDayReader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time of day writer.
+        /// </summary>
+        public Func<TimeOfDay, string> TimeOfDayWriter { get; set; }
 
         /// <summary>
         /// Reads the specified GTFS source into a new GTFS feed object.
@@ -965,10 +1017,10 @@ namespace GTFS
                     stopTime.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "arrival_time":
-                    stopTime.ArrivalTime = this.ParseFieldString(header.Name, fieldName, value);
+                    stopTime.ArrivalTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "departure_time":
-                    stopTime.DepartureTime = this.ParseFieldString(header.Name, fieldName, value);
+                    stopTime.DepartureTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "stop_id":
                     stopTime.StopId = this.ParseFieldString(header.Name, fieldName, value);

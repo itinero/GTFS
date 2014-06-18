@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using GTFS.IO;
 using NUnit.Framework;
@@ -290,8 +291,8 @@ namespace GTFS.Test
             // @ 2: STBA,6:00:00,6:00:00,STAGECOACH,1,,,,
             int idx = 0;
             Assert.AreEqual("STBA", feed.StopTimes[idx].TripId);
-            Assert.AreEqual("6:00:00", feed.StopTimes[idx].ArrivalTime);
-            Assert.AreEqual("6:00:00", feed.StopTimes[idx].DepartureTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6 }, feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6 }, feed.StopTimes[idx].DepartureTime);
             Assert.AreEqual("STAGECOACH", feed.StopTimes[idx].StopId);
             Assert.AreEqual(1, feed.StopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
@@ -302,8 +303,8 @@ namespace GTFS.Test
             // @ 12: CITY2,6:49:00,6:51:00,NANAA,4,,,,
             idx = 10;
             Assert.AreEqual("CITY2", feed.StopTimes[idx].TripId);
-            Assert.AreEqual("6:49:00", feed.StopTimes[idx].ArrivalTime);
-            Assert.AreEqual("6:51:00", feed.StopTimes[idx].DepartureTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 49 }, feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 51 }, feed.StopTimes[idx].DepartureTime);
             Assert.AreEqual("NANAA", feed.StopTimes[idx].StopId);
             Assert.AreEqual(4, feed.StopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);

@@ -70,6 +70,7 @@
     <Compile Include="Entities\Shape.cs" />
     <Compile Include="Entities\Stop.cs" />
     <Compile Include="Entities\StopTime.cs" />
+    <Compile Include="Entities\TimeOfDay.cs" />
     <Compile Include="Entities\Transfers.cs" />
     <Compile Include="Entities\Trip.cs" />
     <Compile Include="Exceptions\GTFSIntegrityException.cs" />
