@@ -106,5 +106,14 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName(" wheelchair_boarding ")]
         public string WheelchairBoarding { get; set; }
+
+        /// <summary>
+        /// Returns a description of this trip.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1} - {2}", this.Id, this.Code, this.Description);
+        }
     }
 }

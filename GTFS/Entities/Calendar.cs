@@ -131,5 +131,22 @@ namespace GTFS.Entities
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns a description of this trip.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] mon-sun {1}:{2}:{3}:{4}:{5}:{6}:{7}",
+                this.ServiceId,
+                this.Monday ? "1" : "0",
+                this.Tuesday ? "1" : "0",
+                this.Wednesday ? "1" : "0",
+                this.Thursday ? "1" : "0",
+                this.Friday ? "1" : "0",
+                this.Saturday ? "1" : "0",
+                this.Sunday ? "1" : "0");
+        }
     }
 }

@@ -88,5 +88,14 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("wheelchair_accessible")]
         public WheelchairAccessibilityType? AccessibilityType { get; set; }
+
+        /// <summary>
+        /// Returns a description of this trip.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1}", this.ShortName, this.Headsign);
+        }
     }
 }

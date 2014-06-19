@@ -52,5 +52,14 @@ namespace GTFS.Entities
         [Required]
         [FieldName("exception_type")]
         public ExceptionType ExceptionType { get; set; }
+
+        /// <summary>
+        /// Returns a description of this trip.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1} {2}", this.ServiceId, this.Date, this.ExceptionType.ToString());
+        }
     }
 }

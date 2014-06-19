@@ -75,5 +75,14 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("agency_fare_url")]
         public string FareURL { get; set; }
+
+        /// <summary>
+        /// Returns a description of this trip.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1}", this.Id, this.Name);
+        }
     }
 }
