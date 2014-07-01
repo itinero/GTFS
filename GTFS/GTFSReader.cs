@@ -822,10 +822,8 @@ namespace GTFS
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, "route_id");
-            this.CheckRequiredField(header, header.Name, "agency_id");
             this.CheckRequiredField(header, header.Name, "route_short_name");
             this.CheckRequiredField(header, header.Name, "route_long_name");
-            this.CheckRequiredField(header, header.Name, "route_desc");
             this.CheckRequiredField(header, header.Name, "route_type");
 
             // parse/set all fields.
