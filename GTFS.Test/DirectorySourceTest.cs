@@ -361,13 +361,6 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
-            reader.DateTimeReader = (dateString) =>
-            {
-                var year = int.Parse(dateString.Substring(0, 4));
-                var month = int.Parse(dateString.Substring(4, 2));
-                var day = int.Parse(dateString.Substring(6, 2));
-                return new System.DateTime(year, month, day);
-            };
 
             // build the source
             var source = this.BuildSource();
@@ -415,13 +408,6 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
-            reader.DateTimeReader = (dateString) =>
-            {
-                var year = int.Parse(dateString.Substring(0, 4));
-                var month = int.Parse(dateString.Substring(4, 2));
-                var day = int.Parse(dateString.Substring(6, 2));
-                return new System.DateTime(year, month, day);
-            };
 
             // build the source
             var source = this.BuildSource();

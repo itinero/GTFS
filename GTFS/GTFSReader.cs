@@ -49,7 +49,7 @@ namespace GTFS
 
             this.DateTimeReader = (dateString) =>
                 {
-                    return DateTime.Parse(dateString, System.Globalization.CultureInfo.InvariantCulture);
+                    return DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 };
             this.DateTimeWriter = (date) =>
                 {
