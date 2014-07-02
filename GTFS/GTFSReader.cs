@@ -1100,7 +1100,6 @@ namespace GTFS
             this.CheckRequiredField(header, header.Name, "trip_id");
             this.CheckRequiredField(header, header.Name, "route_id");
             this.CheckRequiredField(header, header.Name, "service_id");
-            this.CheckRequiredField(header, header.Name, "shape_pt_sequence");
 
             // parse/set all fields.
             Trip trip = new Trip();
