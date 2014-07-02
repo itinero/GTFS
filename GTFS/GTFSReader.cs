@@ -1458,6 +1458,8 @@ namespace GTFS
                     return LocationType.Stop;
                 case "1":
                     return LocationType.Station;
+                default: //undefined
+                    return null;
             }
             throw new GTFSParseException(name, fieldName, value);
         }
