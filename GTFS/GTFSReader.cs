@@ -23,6 +23,7 @@
 using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using GTFS.Exceptions;
+using GTFS.Fields;
 using GTFS.IO;
 using System;
 using System.Collections.Generic;
@@ -130,7 +131,8 @@ namespace GTFS
         /// <summary>
         /// Reads a datetime.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
         /// <returns></returns>
         private DateTime ReadDateTime(string name, string fieldName, string value)
         {
@@ -157,7 +159,8 @@ namespace GTFS
         /// <summary>
         /// Reads a timeofday.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
         /// <returns></returns>
         private TimeOfDay ReadTimeOfDay(string name, string fieldName, string value)
         {
@@ -432,6 +435,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the agency fieldmap.
+        /// </summary>
+        public FieldMap AgencyMap { get; private set; }
+
+        /// <summary>
         /// Reads the agency file.
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
@@ -472,10 +480,10 @@ namespace GTFS
         protected virtual Agency ParseAgency(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "agency_id");
-            this.CheckRequiredField(header, header.Name, "agency_name");
-            this.CheckRequiredField(header, header.Name, "agency_url");
-            this.CheckRequiredField(header, header.Name, "agency_timezone");
+            this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_id");
+            this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_name");
+            this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_url");
+            this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_timezone");
 
             // parse/set all fields.
             Agency agency = new Agency();
@@ -519,6 +527,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the calendar fieldmap.
+        /// </summary>
+        public FieldMap CalendarMap { get; private set; }
+
+        /// <summary>
         /// Parses a calendar row.
         /// </summary>
         /// <param name="feed"></param>
@@ -528,16 +541,16 @@ namespace GTFS
         protected virtual Calendar ParseCalender(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "service_id");
-            this.CheckRequiredField(header, header.Name, "monday");
-            this.CheckRequiredField(header, header.Name, "tuesday");
-            this.CheckRequiredField(header, header.Name, "wednesday");
-            this.CheckRequiredField(header, header.Name, "thursday");
-            this.CheckRequiredField(header, header.Name, "friday");
-            this.CheckRequiredField(header, header.Name, "saturday");
-            this.CheckRequiredField(header, header.Name, "sunday");
-            this.CheckRequiredField(header, header.Name, "start_date");
-            this.CheckRequiredField(header, header.Name, "end_date");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "service_id");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "monday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "tuesday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "wednesday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "thursday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "friday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "saturday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "sunday");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "start_date");
+            this.CheckRequiredField(header, header.Name, this.CalendarMap, "end_date");
 
             // parse/set all fields.
             Calendar calendar = new Calendar();
@@ -594,6 +607,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the calendar date fieldmap.
+        /// </summary>
+        public FieldMap CalendarDateMap { get; private set; }
+
+        /// <summary>
         /// Parses a calendar date row.
         /// </summary>
         /// <param name="feed"></param>
@@ -603,9 +621,9 @@ namespace GTFS
         protected virtual CalendarDate ParseCalendarDate(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "service_id");
-            this.CheckRequiredField(header, header.Name, "date");
-            this.CheckRequiredField(header, header.Name, "exception_type");
+            this.CheckRequiredField(header, header.Name, this.CalendarDateMap, "service_id");
+            this.CheckRequiredField(header, header.Name, this.CalendarDateMap, "date");
+            this.CheckRequiredField(header, header.Name, this.CalendarDateMap, "exception_type");
 
             // parse/set all fields.
             CalendarDate calendarDate = new CalendarDate();
@@ -641,6 +659,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the fare attribute fieldmap.
+        /// </summary>
+        public FieldMap FareAttributeMap { get; private set; }
+
+        /// <summary>
         /// Parses a fare attribute row.
         /// </summary>
         /// <param name="feed"></param>
@@ -650,11 +673,11 @@ namespace GTFS
         protected virtual FareAttribute ParseFareAttribute(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "fare_id");
-            this.CheckRequiredField(header, header.Name, "price");
-            this.CheckRequiredField(header, header.Name, "currency_type");
-            this.CheckRequiredField(header, header.Name, "payment_method");
-            this.CheckRequiredField(header, header.Name, "transfers");
+            this.CheckRequiredField(header, header.Name, this.FareAttributeMap, "fare_id");
+            this.CheckRequiredField(header, header.Name, this.FareAttributeMap, "price");
+            this.CheckRequiredField(header, header.Name, this.FareAttributeMap, "currency_type");
+            this.CheckRequiredField(header, header.Name, this.FareAttributeMap, "payment_method");
+            this.CheckRequiredField(header, header.Name, this.FareAttributeMap, "transfers");
 
             // parse/set all fields.
             FareAttribute fareAttribute = new FareAttribute();
@@ -699,6 +722,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the fare rule fieldmap.
+        /// </summary>
+        public FieldMap FareRuleMap { get; private set; }
+
+        /// <summary>
         /// Parses a fare rule row.
         /// </summary>
         /// <param name="feed"></param>
@@ -708,7 +736,7 @@ namespace GTFS
         protected virtual FareRule ParseFareRule(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "fare_id");
+            this.CheckRequiredField(header, header.Name, this.FareRuleMap, "fare_id");
 
             // parse/set all fields.
             FareRule fareRule = new FareRule();
@@ -750,6 +778,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the feed info fieldmap.
+        /// </summary>
+        public FieldMap FeedInfoMap { get; private set; }
+
+        /// <summary>
         /// Parses a feed info row.
         /// </summary>
         /// <param name="feed"></param>
@@ -762,6 +795,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the frequence fieldmap.
+        /// </summary>
+        public FieldMap FrequencyMap { get; private set; }
+
+        /// <summary>
         /// Parses a frequency row.
         /// </summary>
         /// <param name="feed"></param>
@@ -771,10 +809,10 @@ namespace GTFS
         protected virtual Frequency ParseFrequency(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "trip_id");
-            this.CheckRequiredField(header, header.Name, "start_time");
-            this.CheckRequiredField(header, header.Name, "end_time");
-            this.CheckRequiredField(header, header.Name, "headway_secs");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "trip_id");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "start_time");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "end_time");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "headway_secs");
 
             // parse/set all fields.
             Frequency frequency = new Frequency();
@@ -786,6 +824,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the route fieldmap.
+        /// </summary>
+        public FieldMap RouteMap { get; private set; }
+
+        /// <summary>
         /// Parses a route field.
         /// </summary>
         /// <param name="feed"></param>
@@ -795,10 +838,10 @@ namespace GTFS
         /// <param name="value"></param>
         protected virtual void ParseFrequencyField(T feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
         {
-            this.CheckRequiredField(header, header.Name, "trip_id");
-            this.CheckRequiredField(header, header.Name, "start_time");
-            this.CheckRequiredField(header, header.Name, "end_time");
-            this.CheckRequiredField(header, header.Name, "headway_secs");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "trip_id");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "start_time");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "end_time");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "headway_secs");
             switch (fieldName)
             {
                 case "trip_id":
@@ -829,12 +872,12 @@ namespace GTFS
         protected virtual Route ParseRoute(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "route_id");
-            this.CheckRequiredField(header, header.Name, "agency_id");
-            this.CheckRequiredField(header, header.Name, "route_short_name");
-            this.CheckRequiredField(header, header.Name, "route_long_name");
-            this.CheckRequiredField(header, header.Name, "route_desc");
-            this.CheckRequiredField(header, header.Name, "route_type");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_id");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "agency_id");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_short_name");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_long_name");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_desc");
+            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_type");
 
             // parse/set all fields.
             Route route = new Route();
@@ -888,7 +931,12 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Parses a shapte row.
+        /// Gets the shape fieldmap.
+        /// </summary>
+        public FieldMap ShapeMap { get; private set; }
+
+        /// <summary>
+        /// Parses a shape row.
         /// </summary>
         /// <param name="feed"></param>
         /// <param name="header"></param>
@@ -897,10 +945,10 @@ namespace GTFS
         protected virtual Shape ParseShape(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "shape_id");
-            this.CheckRequiredField(header, header.Name, "shape_pt_lat");
-            this.CheckRequiredField(header, header.Name, "shape_pt_lon");
-            this.CheckRequiredField(header, header.Name, "shape_pt_sequence");
+            this.CheckRequiredField(header, header.Name, this.ShapeMap, "shape_id");
+            this.CheckRequiredField(header, header.Name, this.ShapeMap, "shape_pt_lat");
+            this.CheckRequiredField(header, header.Name, this.ShapeMap, "shape_pt_lon");
+            this.CheckRequiredField(header, header.Name, this.ShapeMap, "shape_pt_sequence");
 
             // parse/set all fields.
             Shape shape = new Shape();
@@ -942,6 +990,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the stop fieldmap.
+        /// </summary>
+        public FieldMap StopMap { get; private set; }
+
+        /// <summary>
         /// Parses a stop row.
         /// </summary>
         /// <param name="feed"></param>
@@ -951,10 +1004,10 @@ namespace GTFS
         protected virtual Stop ParseStop(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "stop_id");
-            this.CheckRequiredField(header, header.Name, "stop_name");
-            this.CheckRequiredField(header, header.Name, "stop_lat");
-            this.CheckRequiredField(header, header.Name, "stop_lon");
+            this.CheckRequiredField(header, header.Name, this.StopMap, "stop_id");
+            this.CheckRequiredField(header, header.Name, this.StopMap, "stop_name");
+            this.CheckRequiredField(header, header.Name, this.StopMap, "stop_lat");
+            this.CheckRequiredField(header, header.Name, this.StopMap, "stop_lon");
 
             // parse/set all fields.
             Stop stop = new Stop();
@@ -1017,6 +1070,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the stop time fieldmap.
+        /// </summary>
+        public FieldMap StopTimeMap { get; private set; }
+
+        /// <summary>
         /// Parses a stop time row.
         /// </summary>
         /// <param name="feed"></param>
@@ -1026,13 +1084,13 @@ namespace GTFS
         protected virtual StopTime ParseStopTime(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "trip_id");
-            this.CheckRequiredField(header, header.Name, "arrival_time");
-            this.CheckRequiredField(header, header.Name, "departure_time");
-            this.CheckRequiredField(header, header.Name, "stop_id");
-            this.CheckRequiredField(header, header.Name, "stop_sequence");
-            this.CheckRequiredField(header, header.Name, "stop_id");
-            this.CheckRequiredField(header, header.Name, "stop_id");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "trip_id");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "arrival_time");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "departure_time");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_sequence");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
+            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
 
             // parse/set all fields.
             StopTime stopTime = new StopTime();
@@ -1086,6 +1144,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the transfer fieldmap.
+        /// </summary>
+        public FieldMap TransferMap { get; private set; }
+
+        /// <summary>
         /// Parses a transfer row.
         /// </summary>
         /// <param name="feed"></param>
@@ -1098,6 +1161,11 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Gets the trip fieldmap.
+        /// </summary>
+        public FieldMap TripMap { get; private set; }
+
+        /// <summary>
         /// Parses a trip row.
         /// </summary>
         /// <param name="feed"></param>
@@ -1107,10 +1175,10 @@ namespace GTFS
         protected virtual Trip ParseTrip(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, "trip_id");
-            this.CheckRequiredField(header, header.Name, "route_id");
-            this.CheckRequiredField(header, header.Name, "service_id");
-            this.CheckRequiredField(header, header.Name, "shape_pt_sequence");
+            this.CheckRequiredField(header, header.Name, this.TripMap, "trip_id");
+            this.CheckRequiredField(header, header.Name, this.TripMap, "route_id");
+            this.CheckRequiredField(header, header.Name, this.TripMap, "service_id");
+            this.CheckRequiredField(header, header.Name, this.TripMap, "shape_pt_sequence");
 
             // parse/set all fields.
             Trip trip = new Trip();
@@ -1169,13 +1237,14 @@ namespace GTFS
         /// <param name="header"></param>
         /// <param name="name"></param>
         /// <param name="column"></param>
-        protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, string column)
+        protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, FieldMap fieldMap, string column)
         {
             if (_strict)
             { // do not check the requeted fields stuff when not strict.
-                if (!header.HasColumn(column))
+                string actual = fieldMap.GetActual(column);
+                if (!header.HasColumn(actual))
                 {
-                    throw new GTFSRequiredFieldMissingException(name, column);
+                    throw new GTFSRequiredFieldMissingException(name, actual);
                 }
             }
         }
