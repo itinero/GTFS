@@ -123,6 +123,11 @@ namespace GTFS
         public Func<string, DateTime> DateTimeReader { get; set; }
 
         /// <summary>
+        /// Gets or sets the line preprocessor.
+        /// </summary>
+        public Func<string, string> LinePreprocessor { get; set; }
+
+        /// <summary>
         /// Reads a datetime.
         /// </summary>
         /// <param name="value"></param>
@@ -437,6 +442,9 @@ namespace GTFS
         private void Read<TEntity>(IGTFSSourceFile file, T feed, EntityParseDelegate<TEntity> parser, EntityAddDelegate<TEntity> addDelegate)
             where TEntity : GTFSEntity
         {
+            // set line preprocessor if any.
+            file.LinePreprocessor = this.LinePreprocessor;
+
             // enumerate all lines.
             var enumerator = file.GetEnumerator();
             if(!enumerator.MoveNext())

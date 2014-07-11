@@ -82,6 +82,11 @@ namespace GTFS.IO.CSV
         }
 
         /// <summary>
+        /// Gets or sets the line preprocessor.
+        /// </summary>
+        public Func<string, string> LinePreprocessor { get; set; }
+
+        /// <summary>
         /// Disposes of all resources associated with this object.
         /// </summary>
         public void Dispose()
@@ -107,6 +112,10 @@ namespace GTFS.IO.CSV
             if(_stream.Peek() > -1)
             {
                 string line = _stream.ReadLine();
+                if(this.LinePreprocessor != null)
+                {
+                    line = this.LinePreprocessor.Invoke(line);
+                }
                 _current = line.Split(_seperator);
                 return true;
             }

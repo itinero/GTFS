@@ -67,6 +67,11 @@ namespace GTFS.IO
         }
 
         /// <summary>
+        /// Gets or sets the line preprocessor.
+        /// </summary>
+        public Func<string, string> LinePreprocessor { get; set; }
+
+        /// <summary>
         /// Gets the name of this file.
         /// </summary>
         public string Name
@@ -98,6 +103,8 @@ namespace GTFS.IO
             { // no seperator here!
                 _reader = new CSVStreamReader(_stream);
             }
+
+            _reader.LinePreprocessor = this.LinePreprocessor;
             return _reader;
         }
 
