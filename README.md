@@ -5,7 +5,7 @@ GTFS Feed Parser
 
 <img src="http://build.osmsharp.com:8080/app/rest/builds/buildType:(id:OsmSharp_GitHubOsmSharpGtfs)/statusIcon"/>
 
-The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have there specific little perks.
+The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have their specific little perks.
 
 ### A short example
 ```csharp
