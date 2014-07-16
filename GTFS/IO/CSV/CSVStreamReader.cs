@@ -109,14 +109,48 @@ namespace GTFS.IO.CSV
         /// <returns></returns>
         public bool MoveNext()
         {
-            if(_stream.Peek() > -1)
+            if (_stream.Peek() > -1)
             {
                 string line = _stream.ReadLine();
-                if(this.LinePreprocessor != null)
+                if (this.LinePreprocessor != null)
                 {
                     line = this.LinePreprocessor.Invoke(line);
                 }
-                _current = line.Split(_seperator);
+                if (_current == null)
+                { // overestimate column count, one resize per file.
+                    _current = new string[20];
+                }
+                int idx = 0;
+                bool between = false;
+                int previousCharIdx = 0;
+                for (int charIdx = 0; charIdx < line.Length; charIdx++)
+                {
+                    var curChar = line[charIdx];
+                    if (curChar == '"')
+                    { // do nothing when in between quotes.
+                        between = !between;
+                    }
+                    else if (!between && curChar == _seperator)
+                    { // not between quotes and a seperator means a new column.
+                        if (idx >= _current.Length)
+                        { // this is extremely ineffecient but should almost never happen except when parsing invalid feeds.
+                            Array.Resize(ref _current, _current.Length + 1);
+                        }
+                        _current[idx] = line.Substring(previousCharIdx, charIdx - previousCharIdx);
+                        idx++;
+                        previousCharIdx = charIdx + 1;
+                    }
+                }
+                if (idx >= _current.Length)
+                { // this is extremely ineffecient but should almost never happen except when parsing invalid feeds.
+                    Array.Resize(ref _current, _current.Length + 1);
+                }
+                _current[idx] = line.Substring(previousCharIdx, line.Length - previousCharIdx);
+                if (_current.Length > idx + 1)
+                { // current array is too long.
+                    // this is extremely ineffecient but should almost never happen except when parsing invalid feeds.
+                    Array.Resize(ref _current, idx + 1);
+                }
                 return true;
             }
             return false;
