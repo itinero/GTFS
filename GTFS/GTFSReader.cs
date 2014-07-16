@@ -45,53 +45,9 @@ namespace GTFS
         /// Creates a new GTFS reader.
         /// </summary>
         public GTFSReader()
+            : this(true)
         {
-            _strict = true;
 
-            this.DateTimeReader = (dateString) =>
-                {
-                    return DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                };
-            this.DateTimeWriter = (date) =>
-                {
-                    return date.ToString("yyyyMMdd");
-                };
-            this.TimeOfDayReader = (timeOfDayString) =>
-                {
-                    if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
-
-                    var timeOfDay = new TimeOfDay();
-                    if (timeOfDayString.Length == 8)
-                    {
-                        timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 2));
-                        timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(3, 2));
-                        timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(6, 2));
-                        return timeOfDay;
-                    }
-                    timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 1));
-                    timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(2, 2));
-                    timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(5, 2));
-                    return timeOfDay;
-                };
-            this.TimeOfDayWriter = (timeOfDay) =>
-                {
-                    throw new NotImplementedException();
-                };
-
-            // initialize maps.
-            this.AgencyMap = new FieldMap();
-            this.CalendarDateMap = new FieldMap();
-            this.CalendarMap = new FieldMap();
-            this.FareAttributeMap = new FieldMap();
-            this.FareRuleMap = new FieldMap();
-            this.FeedInfoMap = new FieldMap();
-            this.FrequencyMap = new FieldMap();
-            this.RouteMap = new FieldMap();
-            this.ShapeMap = new FieldMap();
-            this.StopMap = new FieldMap();
-            this.StopTimeMap = new FieldMap();
-            this.TransferMap = new FieldMap();
-            this.TripMap = new FieldMap();
         }
 
         /// <summary>
@@ -104,11 +60,11 @@ namespace GTFS
 
             this.DateTimeReader = (dateString) =>
             {
-                return DateTime.Parse(dateString, System.Globalization.CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
             };
             this.DateTimeWriter = (date) =>
             {
-                return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                return date.ToString("yyyyMMdd");
             };
             this.TimeOfDayReader = (timeOfDayString) =>
             {
@@ -131,6 +87,21 @@ namespace GTFS
             {
                 throw new NotImplementedException();
             };
+
+            // initialize maps.
+            this.AgencyMap = new FieldMap();
+            this.CalendarDateMap = new FieldMap();
+            this.CalendarMap = new FieldMap();
+            this.FareAttributeMap = new FieldMap();
+            this.FareRuleMap = new FieldMap();
+            this.FeedInfoMap = new FieldMap();
+            this.FrequencyMap = new FieldMap();
+            this.RouteMap = new FieldMap();
+            this.ShapeMap = new FieldMap();
+            this.StopMap = new FieldMap();
+            this.StopTimeMap = new FieldMap();
+            this.TransferMap = new FieldMap();
+            this.TripMap = new FieldMap();
         }
 
         /// <summary>
