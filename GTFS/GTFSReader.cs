@@ -77,6 +77,21 @@ namespace GTFS
                 {
                     throw new NotImplementedException();
                 };
+
+            // initialize maps.
+            this.AgencyMap = new FieldMap();
+            this.CalendarDateMap = new FieldMap();
+            this.CalendarMap = new FieldMap();
+            this.FareAttributeMap = new FieldMap();
+            this.FareRuleMap = new FieldMap();
+            this.FeedInfoMap = new FieldMap();
+            this.FrequencyMap = new FieldMap();
+            this.RouteMap = new FieldMap();
+            this.ShapeMap = new FieldMap();
+            this.StopMap = new FieldMap();
+            this.StopTimeMap = new FieldMap();
+            this.TransferMap = new FieldMap();
+            this.TripMap = new FieldMap();
         }
 
         /// <summary>
