@@ -148,6 +148,7 @@ namespace GTFS
         /// </summary>
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         private DateTime ReadDateTime(string name, string fieldName, string value)
         {
@@ -476,7 +477,12 @@ namespace GTFS
             }
 
             // read the header.
-            var header = new GTFSSourceFileHeader(file.Name, enumerator.Current);
+            var headerColumns = new string[enumerator.Current.Length];
+            for(int idx = 0; idx < headerColumns.Length; idx++)
+            { // 'clean' header columns.
+                headerColumns[idx] = this.CleanFieldValue(enumerator.Current[idx]);
+            }
+            var header = new GTFSSourceFileHeader(file.Name, headerColumns);
 
             // read fields.
             while (enumerator.MoveNext())
@@ -1273,8 +1279,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string ParseFieldString(string name, string fieldName, string value)
         {
-            // throw new GTFSParseException(name, fieldName, value);
-            return value;
+            return this.CleanFieldValue(value);
         }
 
         /// <summary>
@@ -1553,7 +1558,11 @@ namespace GTFS
                 case "1":
                     return LocationType.Station;
             }
-            throw new GTFSParseException(name, fieldName, value);
+            if(_strict)
+            { // invalid location type.
+                throw new GTFSParseException(name, fieldName, value);
+            }
+            return null;
         }
 
         /// <summary>
