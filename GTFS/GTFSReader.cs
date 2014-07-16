@@ -73,14 +73,14 @@ namespace GTFS
                 var timeOfDay = new TimeOfDay();
                 if (timeOfDayString.Length == 8)
                 {
-                    timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 2));
-                    timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(3, 2));
-                    timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(6, 2));
+                    timeOfDay.Hours = timeOfDayString.FastParse(0, 2);
+                    timeOfDay.Minutes = timeOfDayString.FastParse(3, 2);
+                    timeOfDay.Seconds = timeOfDayString.FastParse(6, 2);
                     return timeOfDay;
                 }
-                timeOfDay.Hours = int.Parse(timeOfDayString.Substring(0, 1));
-                timeOfDay.Minutes = int.Parse(timeOfDayString.Substring(2, 2));
-                timeOfDay.Seconds = int.Parse(timeOfDayString.Substring(5, 2));
+                timeOfDay.Hours = timeOfDayString.FastParse(0, 1);
+                timeOfDay.Minutes = timeOfDayString.FastParse(2, 2);
+                timeOfDay.Seconds = timeOfDayString.FastParse(5, 2);
                 return timeOfDay;
             };
             this.TimeOfDayWriter = (timeOfDay) =>
@@ -455,10 +455,27 @@ namespace GTFS
             }
             var header = new GTFSSourceFileHeader(file.Name, headerColumns);
 
-            // read fields.
-            while (enumerator.MoveNext())
+            // read fields and keep them sorted.
+            if (typeof(IComparable).IsAssignableFrom(typeof(TEntity)))
             {
-                addDelegate.Invoke(parser.Invoke(feed, header, enumerator.Current));
+                var entities = new SortedDictionary<TEntity, TEntity>();
+                while (enumerator.MoveNext())
+                {
+                    var entity = parser.Invoke(feed, header, enumerator.Current);
+                    entities.Add(entity, null);
+                }
+                foreach (var entity in entities.Keys)
+                {
+                    addDelegate.Invoke(entity);
+                }
+            }
+            else
+            {
+                while (enumerator.MoveNext())
+                {
+                    var entity = parser.Invoke(feed, header, enumerator.Current);
+                    addDelegate.Invoke(entity);
+                }
             }
         }
 

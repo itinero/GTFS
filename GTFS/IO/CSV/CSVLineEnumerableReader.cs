@@ -1,40 +1,19 @@
-﻿// The MIT License (MIT)
-
-// Copyright (c) 2014 Ben Abelshausen
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace GTFS.IO.CSV
 {
     /// <summary>
-    /// Holds a CSV stream reader.
+    /// Wraps an IEnumerable containing line strings are a CSV reader.
     /// </summary>
-    public class CSVStreamReader : ICSVReader
+    public class CSVLineEnumerableReader : ICSVReader
     {
         /// <summary>
-        /// Holds the stream reader.
+        /// Holds the lines.
         /// </summary>
-        private readonly StreamReader _stream;
+        private readonly IEnumerable<string> _lines;
 
         /// <summary>
         /// Holds the serperator char.
@@ -44,20 +23,20 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Creates a new CSV stream.
         /// </summary>
-        /// <param name="stream">The stream to read from.</param>
-        public CSVStreamReader(Stream stream)
+        /// <param name="lines">The lines to read from.</param>
+        public CSVLineEnumerableReader(IEnumerable<string> lines)
         {
-            _stream = new StreamReader(stream);
+            _lines = lines;
         }
 
         /// <summary>
         /// Creates a new CSV stream.
         /// </summary>
-        /// <param name="stream">The stream to read from.</param>
+        /// <param name="lines">The lines to read from.</param>
         /// <param name="seperator">A custom seperator.</param>
-        public CSVStreamReader(Stream stream, char seperator)
+        public CSVLineEnumerableReader(IEnumerable<string> lines, char seperator)
         {
-            _stream = new StreamReader(stream);
+            _lines = lines;
             _seperator = seperator;
         }
 
@@ -91,9 +70,8 @@ namespace GTFS.IO.CSV
         /// </summary>
         public void Dispose()
         {
-            _stream.Dispose();
-        }
 
+        }
 
         /// <summary>
         /// Returns the current line.
@@ -104,14 +82,23 @@ namespace GTFS.IO.CSV
         }
 
         /// <summary>
+        /// Holds the enumerator.
+        /// </summary>
+        private IEnumerator<string> _enumerator = null;
+
+        /// <summary>
         /// Move to the next line.
         /// </summary>
         /// <returns></returns>
         public bool MoveNext()
         {
-            if (_stream.Peek() > -1)
+            if(_enumerator == null)
             {
-                string line = _stream.ReadLine();
+                _enumerator = _lines.GetEnumerator();
+            }
+            if (_enumerator.MoveNext())
+            {
+                string line = _enumerator.Current;
                 if (this.LinePreprocessor != null)
                 {
                     line = this.LinePreprocessor.Invoke(line);
@@ -123,7 +110,6 @@ namespace GTFS.IO.CSV
                 int idx = 0;
                 bool between = false;
                 int previousCharIdx = 0;
-                var chars = new List<char>();
                 for (int charIdx = 0; charIdx < line.Length; charIdx++)
                 {
                     var curChar = line[charIdx];
@@ -137,15 +123,9 @@ namespace GTFS.IO.CSV
                         { // this is extremely ineffecient but should almost never happen except when parsing invalid feeds.
                             Array.Resize(ref _current, _current.Length + 1);
                         }
-                        _current[idx] = new string(chars.ToArray());
-                        // _current[idx] = line.Substring(previousCharIdx, charIdx - previousCharIdx);
-                        chars.Clear();
+                        _current[idx] = line.Substring(previousCharIdx, charIdx - previousCharIdx);
                         idx++;
                         previousCharIdx = charIdx + 1;
-                    }
-                    else
-                    { // keep char list.
-                        chars.Add(curChar);
                     }
                 }
                 if (idx >= _current.Length)
@@ -168,10 +148,7 @@ namespace GTFS.IO.CSV
         /// </summary>
         public void Reset()
         {
-            if (!_stream.BaseStream.CanSeek) { throw new NotSupportedException("Resetting a CSVStreamReader encapsulating an unseekable stream is not supported! Make sure the stream is seekable."); }
-
-            // move the base-stream back to the beginning.
-            _stream.BaseStream.Seek(0, SeekOrigin.Begin);
+            _enumerator = null;
             _current = null; // reset current data.
         }
     }

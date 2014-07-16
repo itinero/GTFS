@@ -113,8 +113,7 @@ namespace GTFS
         /// <summary>
         /// Gets the list of stop times.
         /// </summary>
-        public List<StopTime> StopTimes { get; private set; }
-
+        public IList<StopTime> StopTimes { get; private set; }
         /// <summary>
         /// Gets the list of calendars.
         /// </summary>
