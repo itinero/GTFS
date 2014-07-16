@@ -54,7 +54,7 @@ namespace GTFS
                 };
             this.DateTimeWriter = (date) =>
                 {
-                    return date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    return date.ToString("yyyyMMdd");
                 };
             this.TimeOfDayReader = (timeOfDayString) =>
                 {
@@ -1199,7 +1199,6 @@ namespace GTFS
             this.CheckRequiredField(header, header.Name, this.TripMap, "trip_id");
             this.CheckRequiredField(header, header.Name, this.TripMap, "route_id");
             this.CheckRequiredField(header, header.Name, this.TripMap, "service_id");
-            this.CheckRequiredField(header, header.Name, this.TripMap, "shape_pt_sequence");
 
             // parse/set all fields.
             Trip trip = new Trip();
