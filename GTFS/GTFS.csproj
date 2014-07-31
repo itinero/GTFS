@@ -47,6 +47,8 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Attributes\FileNameAttribute.cs" />
+    <Compile Include="DB\IGTFSFeedDB.cs" />
+    <Compile Include="DB\Memory\GTFSFeedDB.cs" />
     <Compile Include="Entities\Enumerations\ExceptionType.cs" />
     <Compile Include="Attributes\FieldNameAttribute.cs" />
     <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />

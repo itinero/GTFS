@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace GTFS
 {
     /// <summary>
-    /// Represents an entire GTFS feed.
+    /// Represents an entire GTFS feed as it exists on disk.
     /// </summary>
     public class GTFSFeed : IGTFSFeed
     {

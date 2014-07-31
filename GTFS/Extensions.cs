@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GTFS
 {
+    /// <summary>
+    /// Contains common extensions for this GTFS library.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>
