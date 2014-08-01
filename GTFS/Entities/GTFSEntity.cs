@@ -27,6 +27,10 @@ namespace GTFS.Entities
     /// </summary>
     public abstract class GTFSEntity
     {
-
+        /// <summary>
+        /// Gets or sets a tag.
+        /// </summary>
+        /// <remarks>Can be used to attach extra information.</remarks>
+        public object Tag { get; set; }
     }
 }
