@@ -288,25 +288,25 @@ namespace GTFS.Test
             Assert.AreEqual(28, feed.StopTimes.Count);
 
             // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
-            // @ 2: STBA,6:00:00,6:00:00,STAGECOACH,1,,,,
+            // @ SORTED: AAMV1,8:00:00,8:00:00,BEATTY_AIRPORT,1
             int idx = 0;
-            Assert.AreEqual("STBA", feed.StopTimes[idx].TripId);
-            Assert.AreEqual(new TimeOfDay() { Hours = 6 }, feed.StopTimes[idx].ArrivalTime);
-            Assert.AreEqual(new TimeOfDay() { Hours = 6 }, feed.StopTimes[idx].DepartureTime);
-            Assert.AreEqual("STAGECOACH", feed.StopTimes[idx].StopId);
+            Assert.AreEqual("AAMV1", feed.StopTimes[idx].TripId);
+            Assert.AreEqual(new TimeOfDay() { Hours = 8 }, feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 8 }, feed.StopTimes[idx].DepartureTime);
+            Assert.AreEqual("BEATTY_AIRPORT", feed.StopTimes[idx].StopId);
             Assert.AreEqual(1, feed.StopTimes[idx].StopSequence);
-            Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
+            Assert.AreEqual(null, feed.StopTimes[idx].StopHeadsign);
             Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
             Assert.AreEqual(null, feed.StopTimes[idx].DropOffType);
-            Assert.AreEqual(string.Empty, feed.StopTimes[idx].ShapeDistTravelled);
+            Assert.AreEqual(null, feed.StopTimes[idx].ShapeDistTravelled);
 
-            // @ 12: CITY2,6:49:00,6:51:00,NANAA,4,,,,
-            idx = 10;
-            Assert.AreEqual("CITY2", feed.StopTimes[idx].TripId);
-            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 49 }, feed.StopTimes[idx].ArrivalTime);
-            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 51 }, feed.StopTimes[idx].DepartureTime);
-            Assert.AreEqual("NANAA", feed.StopTimes[idx].StopId);
-            Assert.AreEqual(4, feed.StopTimes[idx].StopSequence);
+            // @ SORTED: STBA,6:20:00,6:20:00,BEATTY_AIRPORT,2,,,,
+            idx = 27;
+            Assert.AreEqual("STBA", feed.StopTimes[idx].TripId);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 20 }, feed.StopTimes[idx].ArrivalTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 20 }, feed.StopTimes[idx].DepartureTime);
+            Assert.AreEqual("BEATTY_AIRPORT", feed.StopTimes[idx].StopId);
+            Assert.AreEqual(2, feed.StopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, feed.StopTimes[idx].StopHeadsign);
             Assert.AreEqual(null, feed.StopTimes[idx].PickupType);
             Assert.AreEqual(null, feed.StopTimes[idx].DropOffType);
@@ -361,13 +361,6 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
-            reader.DateTimeReader = (dateString) =>
-            {
-                var year = int.Parse(dateString.Substring(0, 4));
-                var month = int.Parse(dateString.Substring(4, 2));
-                var day = int.Parse(dateString.Substring(6, 2));
-                return new System.DateTime(year, month, day);
-            };
 
             // build the source
             var source = this.BuildSource();
@@ -415,13 +408,6 @@ namespace GTFS.Test
         {
             // create the reader.
             GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
-            reader.DateTimeReader = (dateString) =>
-            {
-                var year = int.Parse(dateString.Substring(0, 4));
-                var month = int.Parse(dateString.Substring(4, 2));
-                var day = int.Parse(dateString.Substring(6, 2));
-                return new System.DateTime(year, month, day);
-            };
 
             // build the source
             var source = this.BuildSource();

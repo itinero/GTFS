@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.IO.CSV;
 using System.Collections.Generic;
 using System.IO;
 
@@ -94,13 +95,13 @@ namespace GTFS.IO
             {
                 if(_customSeperator.HasValue)
                 { // add source file with custom seperator.
-                    sourceFiles.Add(new GTFSSourceFileStream(
-                        file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length), _customSeperator.Value));
+                    sourceFiles.Add(
+                        new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length), _customSeperator.Value));
                 }
                 else
                 { // no custom seperator here!
-                    sourceFiles.Add(new GTFSSourceFileStream(
-                        file.OpenRead(), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
+                    sourceFiles.Add(
+                        new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
                 }
             }
             return sourceFiles;

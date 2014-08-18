@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTFS.IO", "GTFS.IO\GTFS.IO.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTFS.Validator", "GTFS.Validator\GTFS.Validator.csproj", "{64CE547A-C275-4724-9784-4078DBE5950A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTFS.DeLijn", "GTFS.DeLijn\GTFS.DeLijn.csproj", "{06754FBD-CF4C-4C37-B209-87890FC2977D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{64CE547A-C275-4724-9784-4078DBE5950A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64CE547A-C275-4724-9784-4078DBE5950A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64CE547A-C275-4724-9784-4078DBE5950A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06754FBD-CF4C-4C37-B209-87890FC2977D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06754FBD-CF4C-4C37-B209-87890FC2977D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06754FBD-CF4C-4C37-B209-87890FC2977D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06754FBD-CF4C-4C37-B209-87890FC2977D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

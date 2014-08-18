@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace GTFS
 {
     /// <summary>
-    /// Represents an entire GTFS feed.
+    /// Represents an entire GTFS feed as it exists on disk.
     /// </summary>
     public class GTFSFeed : IGTFSFeed
     {
@@ -113,8 +113,7 @@ namespace GTFS
         /// <summary>
         /// Gets the list of stop times.
         /// </summary>
-        public List<StopTime> StopTimes { get; private set; }
-
+        public IList<StopTime> StopTimes { get; private set; }
         /// <summary>
         /// Gets the list of calendars.
         /// </summary>

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 
 namespace GTFS.IO
@@ -29,6 +30,11 @@ namespace GTFS.IO
     /// </summary>
     public interface IGTFSSourceFile : IEnumerable<string[]>
     {
+        /// <summary>
+        /// Gets or sets the line preprocessor.
+        /// </summary>
+        Func<string, string> LinePreprocessor { get; set; }
+
         /// <summary>
         /// Returns the name of the file (ex: agency, route, shape, ...).
         /// </summary>

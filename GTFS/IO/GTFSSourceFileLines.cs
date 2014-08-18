@@ -1,40 +1,20 @@
-﻿// The MIT License (MIT)
-
-// Copyright (c) 2014 Ben Abelshausen
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
-using GTFS.IO.CSV;
+﻿using GTFS.IO.CSV;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace GTFS.IO.CSV
+namespace GTFS.IO
 {
     /// <summary>
-    /// Represents a GTFS source file wrapping a stream.
+    /// Represents a GTFS source file wrapping an enumerable of lines.
     /// </summary>
-    public class GTFSSourceFileStream : IGTFSSourceFile
+    public class GTFSSourceFileLines : IGTFSSourceFile
     {
         /// <summary>
-        /// Holds the stream.
+        /// Holds the lines.
         /// </summary>
-        private Stream _stream;
+        private IEnumerable<string> _lines;
 
         /// <summary>
         /// Holds a custom seperator.
@@ -44,11 +24,11 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Creates a new GTFS file stream.
         /// </summary>
-        /// <param name="stream">The stream to read from.</param>
+        /// <param name="lines">The lines to read from.</param>
         /// <param name="name">The name associated with this file stream.</param>
-        public GTFSSourceFileStream(Stream stream, string name)
+        public GTFSSourceFileLines(IEnumerable<string> lines, string name)
         {
-            _stream = stream;
+            _lines = lines;
             this.Name = name;
             _customSeperator = null;
         }
@@ -56,12 +36,12 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Creates a new GTFS file stream.
         /// </summary>
-        /// <param name="stream">The stream to read from.</param>
+        /// <param name="lines">The lines to read from.</param>
         /// <param name="name">The name associated with this file stream.</param>
         /// <param name="seperator">A custom seperator.</param>
-        public GTFSSourceFileStream(Stream stream, string name, char seperator)
+        public GTFSSourceFileLines(IEnumerable<string> lines, string name, char seperator)
         {
-            _stream = stream;
+            _lines = lines;
             this.Name = name;
             _customSeperator = seperator;
         }
@@ -83,7 +63,7 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Holds the current reader.
         /// </summary>
-        private CSVStreamReader _reader;
+        private CSVLineEnumerableReader _reader;
 
         /// <summary>
         /// Requests a new enumerator.
@@ -93,15 +73,15 @@ namespace GTFS.IO.CSV
         {
             if(_reader != null)
             {
-                throw new InvalidOperationException("A GTFSSourceFileStream can only spawn one enumerator.");
+                throw new InvalidOperationException("A CSVStreamReader can only spawn one enumerator.");
             }
             if (_customSeperator.HasValue)
             { // create reader with custom seperator.
-                _reader = new CSVStreamReader(_stream, _customSeperator.Value);
+                _reader = new CSVLineEnumerableReader(_lines, _customSeperator.Value);
             }
             else
             { // no seperator here!
-                _reader = new CSVStreamReader(_stream);
+                _reader = new CSVLineEnumerableReader(_lines);
             }
 
             _reader.LinePreprocessor = this.LinePreprocessor;

@@ -47,6 +47,8 @@
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Attributes\FileNameAttribute.cs" />
+    <Compile Include="DB\IGTFSFeedDB.cs" />
+    <Compile Include="DB\Memory\GTFSFeedDB.cs" />
     <Compile Include="Entities\Enumerations\ExceptionType.cs" />
     <Compile Include="Attributes\FieldNameAttribute.cs" />
     <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />
@@ -77,15 +79,19 @@
     <Compile Include="Exceptions\GTFSParseException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFileMissingException.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Fields\FieldMapping.cs" />
     <Compile Include="GTFSFeed.cs" />
     <Compile Include="GTFSFeedBase.cs" />
     <Compile Include="IGTFSFeed.cs" />
+    <Compile Include="IO\CSV\CSVLineEnumerableReader.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
     <Compile Include="GTFSReader.cs" />
     <Compile Include="IO\CSV\CSVStreamWriter.cs" />
     <Compile Include="IO\CSV\ICSVReader.cs" />
     <Compile Include="IO\CSV\ICSVWriter.cs" />
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
+    <Compile Include="IO\GTFSSourceFileLines.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

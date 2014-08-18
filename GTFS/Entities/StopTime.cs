@@ -22,6 +22,7 @@
 
 using GTFS.Attributes;
 using GTFS.Entities.Enumerations;
+using System;
 
 namespace GTFS.Entities
 {
@@ -29,7 +30,7 @@ namespace GTFS.Entities
     /// Represents a stop time. Times that a vehicle arrives at and departs from individual stops for each trip.
     /// </summary>
     [FileName("stop_time")]
-    public class StopTime : GTFSEntity
+    public class StopTime : GTFSEntity, IComparable
     {
         /// <summary>
         /// Gets or sets a trip.
@@ -97,6 +98,22 @@ namespace GTFS.Entities
         public override string ToString()
         {
             return string.Format("[{0}:{1}] {2}", this.TripId, this.StopId, this.StopHeadsign);
+        }
+
+        /// <summary>
+        /// Compares this StopTime to the given object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            var other = (obj as StopTime);
+            if (this.TripId.Equals(other.TripId))
+            { // trip id's equal compare stop sequence.
+                return this.StopSequence.CompareTo(other.StopSequence);
+            }
+            return this.TripId.CompareTo(other.TripId);
+
         }
     }
 }
