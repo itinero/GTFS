@@ -3,7 +3,7 @@
     <metadata>
         <id>GTFS</id>
         <version>$version$</version>
-        <title>GTFS Parser</title>
+        <title>GTFS</title>
         <authors>xivk</authors>
         <owners>xivk</owners>
         <licenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</licenseUrl>
@@ -16,7 +16,7 @@ The implementation is deliberately kept very flexible and customizable because m
 	<tags>routing, gtfs</tags>
     </metadata>
     <files>
-        <file src="Output\GTFS.dll" target="lib\GTFS.dll" />
-	<file src="Output\GTFS.IO.dll" target="lib\GTFS.IO.dll" />
+      <file src="Output\GTFS.dll" target="lib\GTFS.dll" />
+	    <file src="Output\GTFS.IO.dll" target="lib\GTFS.IO.dll" />
     </files>
 </package>
