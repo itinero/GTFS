@@ -34,7 +34,7 @@ namespace GTFS
     /// <summary>
     /// A GTFS reader.
     /// </summary>
-    public class GTFSReader<T> where T : IGTFSFeed, new()
+    public class GTFSReader<T> where T : IGTFSFeed
     {
         /// <summary>
         /// Flag making this reader very strict about the GTFS-spec.
@@ -167,16 +167,6 @@ namespace GTFS
         public Func<TimeOfDay, string> TimeOfDayWriter { get; set; }
 
         /// <summary>
-        /// Reads the specified GTFS source into a new GTFS feed object.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public T Read(IEnumerable<IGTFSSourceFile> source)
-        {
-            return this.Read(new T(), source);
-        }
-
-        /// <summary>
         /// Reads the specified GTFS source into the given GTFS feed object.
         /// </summary>
         /// <param name="source"></param>
@@ -244,17 +234,6 @@ namespace GTFS
         protected virtual HashSet<string> ReadCustomFilesBefore()
         {
             return new HashSet<string>();
-        }
-
-        /// <summary>
-        /// Reads one file and it's dependencies from the specified GTFS source into a new GTFS feed object.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public T Read(IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
-        {
-            return this.Read(new T(), source, file);
         }
 
         /// <summary>
@@ -1682,6 +1661,39 @@ namespace GTFS
                 }
             }
             return value;
+        }
+    }
+
+    /// <summary>
+    /// Contains extension methods for the GTFS reader.
+    /// </summary>
+    public static class GTFSReaderExtensions
+    {
+        /// <summary>
+        /// Reads a GTFS feed from the given source.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static T Read<T>(this GTFSReader<T> reader, IEnumerable<IGTFSSourceFile> source)
+            where T : IGTFSFeed, new()
+        {
+            return reader.Read(new T(), source);
+        }
+
+        /// <summary>
+        /// Reads a GTFS feed from the given source.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <param name="source"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static T Read<T>(this GTFSReader<T> reader, IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
+            where T : IGTFSFeed, new()
+        {
+            return reader.Read(new T(), source, file);
         }
     }
 }
