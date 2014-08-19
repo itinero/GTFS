@@ -149,6 +149,7 @@ namespace GTFS
         /// </summary>
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         private TimeOfDay ReadTimeOfDay(string name, string fieldName, string value)
         {
@@ -1224,6 +1225,7 @@ namespace GTFS
         /// </summary>
         /// <param name="header"></param>
         /// <param name="name"></param>
+        /// <param name="fieldMap"></param>
         /// <param name="column"></param>
         protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, FieldMap fieldMap, string column)
         {

@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 
 namespace GTFS.DB.SQLite
@@ -59,29 +60,91 @@ namespace GTFS.DB.SQLite
             // build database.
             this.RebuildDB();
         }
+
+        /// <summary>
+        /// Adds a new empty feed.
+        /// </summary>
+        /// <returns></returns>
         public int AddFeed()
         {
-            throw new NotImplementedException();
+            string sqlInsertNewFeed = "INSERT INTO feed;";
+            using(var command = _connection.CreateCommand())
+            {
+                command.CommandText = sqlInsertNewFeed;
+                command.ExecuteNonQuery();
+            }
+            return (int)_connection.LastInsertRowId;
         }
 
+        /// <summary>
+        /// Adds the given feed.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <returns></returns>
         public int AddFeed(IGTFSFeed feed)
         {
-            throw new NotImplementedException();
+            int newId = this.AddFeed();
+            feed.CopyTo(this.GetFeed(newId));
+            return newId;
         }
 
+        /// <summary>
+        /// Removes the given feed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool RemoveFeed(int id)
         {
-            throw new NotImplementedException();
+            this.RemoveAll("agency", id);
+            this.RemoveAll("calendar", id);
+            this.RemoveAll("calendar_date", id);
+            this.RemoveAll("fare_attribute", id);
+            this.RemoveAll("fare_rule", id);
+            this.RemoveAll("frequency", id);
+            this.RemoveAll("route", id);
+            this.RemoveAll("shape", id);
+            this.RemoveAll("stop", id);
+            this.RemoveAll("stop_time", id);
+            this.RemoveAll("transfer", id);
+            this.RemoveAll("trip", id);
+
+            string sql = "DELETE FROM feed WHERE ID = :id"; ;
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
+                command.Parameters[0].Value = id;
+                return command.ExecuteNonQuery() > 0;
+            }
         }
 
+        /// <summary>
+        /// Returns all feeds.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<int> GetFeeds()
         {
-            throw new NotImplementedException();
+            string sql = "SELECT id FROM feeds";
+            var ids = new List<int>();
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                using (var reader = command.ExecuteReader())
+                {
+                    ids.Add((int)reader.GetInt64(0));
+                }
+            }
+            return ids;
         }
 
+        /// <summary>
+        /// Returns the feed for the given id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IGTFSFeed GetFeed(int id)
         {
-            throw new NotImplementedException();
+            return new SQLiteGTFSFeed(_connection, id);
         }
 
         /// <summary>
@@ -102,6 +165,23 @@ namespace GTFS.DB.SQLite
             this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [stop_time] ( [FEED_ID] INTEGER NOT NULL, [trip_id] TEXT NOT NULL, [arrival_time] INTEGER, [departure_time] INTEGER, [stop_id] TEXT, [stop_sequence] INTEGER, [stop_headsign] TEXT, [pickup_type] INTEGER, [drop_off_type] INTEGER, [shape_dist_traveled] TEXT );");
             this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [transfer] ( [FEED_ID] INTEGER NOT NULL, [from_stop_id] TEXT, [to_stop_id] TEXT, [transfer_type] INTEGER, [min_transfer_time] TEXT );");
             this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [trip] ( [FEED_ID] INTEGER NOT NULL, [id] TEXT NOT NULL, [route_id] TEXT, [service_id] TEXT, [trip_headsign] TEXT, [trip_short_name] TEXT, [direction_id] INTEGER, [block_id] TEXT, [shape_id] TEXT, [wheelchair_accessible] INTEGER );");
+        }
+
+        /// <summary>
+        /// Deletes all info from one table about one feed.
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="id"></param>
+        private void RemoveAll(string table, int id)
+        {
+            string sql = string.Format("DELETE FROM {0} WHERE FEED_ID = :feed_id", table);
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters[0].Value = id;
+                command.ExecuteNonQuery();
+            }
         }
 
         /// <summary>

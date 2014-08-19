@@ -369,7 +369,7 @@ namespace GTFS
         /// <summary>
         /// Removes the given trip.
         /// </summary>
-        /// <param name="trip"></param>
+        /// <param name="tripId"></param>
         bool RemoveTrip(string tripId);
     }
 }

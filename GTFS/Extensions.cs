@@ -1,7 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// The MIT License (MIT)
+
+// Copyright (c) 2014 Ben Abelshausen
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+using System;
 
 namespace GTFS
 {
@@ -78,6 +97,68 @@ namespace GTFS
                     return 9;
             }
             throw new ArgumentOutOfRangeException("value", value.ToString());
+        }
+
+        /// <summary>
+        /// Copies this feed to the given feed.
+        /// </summary>
+        /// <param name="thisFeed"></param>
+        /// <param name="feed"></param>
+        public static void CopyTo(this IGTFSFeed thisFeed, IGTFSFeed feed)
+        {
+            var feedInfo = thisFeed.GetFeedInfo();
+            if(feedInfo != null)
+            {
+                feed.SetFeedInfo(feedInfo);
+            }
+            foreach(var entity in thisFeed.GetAgencies())
+            {
+                feed.AddAgency(entity);
+            }
+            foreach (var entity in thisFeed.GetCalendarDates())
+            {
+                feed.AddCalendarDate(entity);
+            }
+            foreach (var entity in thisFeed.GetCalendars())
+            {
+                feed.AddCalendar(entity);
+            }
+            foreach (var entity in thisFeed.GetFareAttributes())
+            {
+                feed.AddFareAttribute(entity);
+            }
+            foreach (var entity in thisFeed.GetFareRules())
+            {
+                feed.AddFareRule(entity);
+            }
+            foreach (var entity in thisFeed.GetFrequencies())
+            {
+                feed.AddFrequency(entity);
+            }
+            foreach (var entity in thisFeed.GetRoutes())
+            {
+                feed.AddRoute(entity);
+            }
+            foreach (var entity in thisFeed.GetShapes())
+            {
+                feed.AddShape(entity);
+            }
+            foreach (var entity in thisFeed.GetStops())
+            {
+                feed.AddStop(entity);
+            }
+            foreach (var entity in thisFeed.GetStopTimes())
+            {
+                feed.AddStopTime(entity);
+            }
+            foreach (var entity in thisFeed.GetTransfers())
+            {
+                feed.AddTransfer(entity);
+            }
+            foreach (var entity in thisFeed.GetTrips())
+            {
+                feed.AddTrip(entity);
+            }
         }
     }
 }

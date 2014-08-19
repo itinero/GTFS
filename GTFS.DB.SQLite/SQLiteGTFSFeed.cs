@@ -20,8 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,13 +35,33 @@ namespace GTFS.DB.SQLite
     /// </summary>
     internal class SQLiteGTFSFeed : IGTFSFeed
     {
+        /// <summary>
+        /// Holds the connection.
+        /// </summary>
+        private SQLiteConnection _connection;
 
-        public void AddAgency(Entities.Agency agency)
+        /// <summary>
+        /// Holds the id.
+        /// </summary>
+        private int _id;
+
+        /// <summary>
+        /// Creates a new SQLite GTFS feed.
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="id"></param>
+        internal SQLiteGTFSFeed(SQLiteConnection connection, int id)
+        {
+            _connection = connection;
+            _id = id;
+        }
+
+        public void AddAgency(Agency agency)
         {
             throw new NotImplementedException();
         }
 
-        public Entities.Agency GetAgency(string agencyId)
+        public Agency GetAgency(string agencyId)
         {
             throw new NotImplementedException();
         }
@@ -49,22 +71,22 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Agency> GetAgencies()
+        public IEnumerable<Agency> GetAgencies()
         {
             throw new NotImplementedException();
         }
 
-        public void AddCalendar(Entities.Calendar calendar)
+        public void AddCalendar(Calendar calendar)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Calendar> GetCalendars()
+        public IEnumerable<Calendar> GetCalendars()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Calendar> GetCalendars(string serviceId)
+        public IEnumerable<Calendar> GetCalendars(string serviceId)
         {
             throw new NotImplementedException();
         }
@@ -74,17 +96,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddCalendarDate(Entities.CalendarDate calendar)
+        public void AddCalendarDate(CalendarDate calendar)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.CalendarDate> GetCalendarDates()
+        public IEnumerable<CalendarDate> GetCalendarDates()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.CalendarDate> GetCalendarDates(string serviceId)
+        public IEnumerable<CalendarDate> GetCalendarDates(string serviceId)
         {
             throw new NotImplementedException();
         }
@@ -94,17 +116,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddFareAttribute(Entities.FareAttribute fareAttribute)
+        public void AddFareAttribute(FareAttribute fareAttribute)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.FareAttribute> GetFareAttributes()
+        public IEnumerable<FareAttribute> GetFareAttributes()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.FareAttribute> GetFareAttributes(string fareId)
+        public IEnumerable<FareAttribute> GetFareAttributes(string fareId)
         {
             throw new NotImplementedException();
         }
@@ -114,17 +136,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddFareRule(Entities.FareRule fareRule)
+        public void AddFareRule(FareRule fareRule)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.FareRule> GetFareRules()
+        public IEnumerable<FareRule> GetFareRules()
         {
             throw new NotImplementedException();
         }
 
-        public Entities.FareRule GetFareRule(string fareId)
+        public FareRule GetFareRule(string fareId)
         {
             throw new NotImplementedException();
         }
@@ -134,27 +156,27 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void SetFeedInfo(Entities.FeedInfo feedInfo)
+        public void SetFeedInfo(FeedInfo feedInfo)
         {
             throw new NotImplementedException();
         }
 
-        public Entities.FeedInfo GetFeedInfo()
+        public FeedInfo GetFeedInfo()
         {
             throw new NotImplementedException();
         }
 
-        public void AddFrequency(Entities.Frequency frequency)
+        public void AddFrequency(Frequency frequency)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Frequency> GetFrequencies()
+        public IEnumerable<Frequency> GetFrequencies()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Frequency> GetFrequencies(string tripId)
+        public IEnumerable<Frequency> GetFrequencies(string tripId)
         {
             throw new NotImplementedException();
         }
@@ -164,17 +186,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddRoute(Entities.Route route)
+        public void AddRoute(Route route)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Route> GetRoutes()
+        public IEnumerable<Route> GetRoutes()
         {
             throw new NotImplementedException();
         }
 
-        public Entities.Route GetRoute(string routeId)
+        public Route GetRoute(string routeId)
         {
             throw new NotImplementedException();
         }
@@ -184,17 +206,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddShape(Entities.Shape shape)
+        public void AddShape(Shape shape)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Shape> GetShapes()
+        public IEnumerable<Shape> GetShapes()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Shape> GetShapes(string tripId)
+        public IEnumerable<Shape> GetShapes(string tripId)
         {
             throw new NotImplementedException();
         }
@@ -204,17 +226,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddStop(Entities.Stop stop)
+        public void AddStop(Stop stop)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Stop> GetStops()
+        public IEnumerable<Stop> GetStops()
         {
             throw new NotImplementedException();
         }
 
-        public Entities.Stop GetStop(string stopId)
+        public Stop GetStop(string stopId)
         {
             throw new NotImplementedException();
         }
@@ -224,17 +246,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddStopTime(Entities.StopTime stopTime)
+        public void AddStopTime(StopTime stopTime)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.StopTime> GetStopTimes()
+        public IEnumerable<StopTime> GetStopTimes()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.StopTime> GetStopTimesForTrip(string tripId)
+        public IEnumerable<StopTime> GetStopTimesForTrip(string tripId)
         {
             throw new NotImplementedException();
         }
@@ -243,8 +265,7 @@ namespace GTFS.DB.SQLite
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<Entities.StopTime> GetStopTimesForStop(string stopId)
+        public IEnumerable<StopTime> GetStopTimesForStop(string stopId)
         {
             throw new NotImplementedException();
         }
@@ -254,17 +275,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddTransfer(Entities.Transfer transfer)
+        public void AddTransfer(Transfer transfer)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Transfer> GetTransfers()
+        public IEnumerable<Transfer> GetTransfers()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Transfer> GetTransfersForFromStop(string stopId)
+        public IEnumerable<Transfer> GetTransfersForFromStop(string stopId)
         {
             throw new NotImplementedException();
         }
@@ -274,7 +295,7 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Transfer> GetTransfersForToStop(string stopId)
+        public IEnumerable<Transfer> GetTransfersForToStop(string stopId)
         {
             throw new NotImplementedException();
         }
@@ -284,17 +305,17 @@ namespace GTFS.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public void AddTrip(Entities.Trip trip)
+        public void AddTrip(Trip trip)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Entities.Trip> GetTrips()
+        public IEnumerable<Trip> GetTrips()
         {
             throw new NotImplementedException();
         }
 
-        public Entities.Trip GetTrip(string tripId)
+        public Trip GetTrip(string tripId)
         {
             throw new NotImplementedException();
         }
