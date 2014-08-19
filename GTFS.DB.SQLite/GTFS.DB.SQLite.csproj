@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GTFSFeedSQLiteDB.cs" />
+    <Compile Include="SQLiteGTFSFeed.cs" />
+    <Compile Include="SQLiteGTFSFeedDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

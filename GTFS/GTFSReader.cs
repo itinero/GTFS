@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.DB;
 using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using GTFS.Exceptions;
@@ -1694,6 +1695,20 @@ namespace GTFS
             where T : IGTFSFeed, new()
         {
             return reader.Read(new T(), source, file);
+        }
+
+        /// <summary>
+        /// Reads a GTFS feed directly into a GTFS feed db.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="db"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static int Read(this GTFSReader<IGTFSFeed> reader, IGTFSFeedDB db, IEnumerable<IGTFSSourceFile> source)
+        {
+            int newFeed = db.AddFeed();
+            reader.Read(db.GetFeed(newFeed), source);
+            return newFeed;
         }
     }
 }
