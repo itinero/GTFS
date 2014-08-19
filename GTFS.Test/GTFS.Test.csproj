@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\GTFSFeedDBTests.cs" />
+    <Compile Include="DB\Memory\GTFSFeedDBTests.cs" />
     <Compile Include="DB\SQLite\SQLiteGTFSFeedDBTests.cs" />
     <Compile Include="DirectorySourceTest.cs" />
+    <Compile Include="GTFSAssert.cs" />
     <Compile Include="ParseEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,9 +107,7 @@
       <Name>GTFS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DB\Memory\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
