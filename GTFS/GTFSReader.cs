@@ -398,7 +398,7 @@ namespace GTFS
                     this.Read<FareRule>(file, feed, this.ParseFareRule, feed.AddFareRule);
                     break;
                 case "feed_info":
-                    this.Read<FeedInfo>(file, feed, this.ParseFeedInfo, feed.AddFeedInfo);
+                    this.Read<FeedInfo>(file, feed, this.ParseFeedInfo, feed.SetFeedInfo);
                     break;
                 case "routes":
                     this.Read<Route>(file, feed, this.ParseRoute, feed.AddRoute);

@@ -82,7 +82,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Fields\FieldMapping.cs" />
     <Compile Include="GTFSFeed.cs" />
-    <Compile Include="GTFSFeedBase.cs" />
     <Compile Include="IGTFSFeed.cs" />
     <Compile Include="IO\CSV\CSVLineEnumerableReader.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />

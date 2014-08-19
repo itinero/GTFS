@@ -34,11 +34,17 @@ namespace GTFS.DB
     public interface IGTFSFeedDB
     {
         /// <summary>
-        /// Adds a new GTFS feed to this db.
+        /// Adds a new feed to this db.
+        /// </summary>
+        /// <returns></returns>
+        int AddFeed();
+
+        /// <summary>
+        /// Adds an existing GTFS feed to this db.
         /// </summary>
         /// <param name="feed">The feed to add.</param>
         /// <returns>The id of the new feed.</returns>
-        int AddFeed(GTFSFeed feed);
+        int AddFeed(IGTFSFeed feed);
 
         /// <summary>
         /// Removes the feed with the given id.
@@ -48,81 +54,16 @@ namespace GTFS.DB
         bool RemoveFeed(int id);
 
         /// <summary>
-        /// Returns all the agencies.
+        /// Returns all feeds.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Agency> GetAgencies();
+        IEnumerable<int> GetFeeds();
 
         /// <summary>
-        /// Returns all calendars.
+        /// Returns the feed with the given id.
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
-        IEnumerable<Calendar> GetCalendars();
-
-        /// <summary>
-        /// Returns all calendar dates.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<CalendarDate> GetCalendardDates();
-
-        /// <summary>
-        /// Returns all fare attributes.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<FareAttribute> GetFareAttributes();
-
-        /// <summary>
-        /// Returns all fare rules.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<FareRule> GetFareRules();
-
-        /// <summary>
-        /// Returns all feed-infos.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<FeedInfo> GetFeedInfo();
-
-        /// <summary>
-        /// Returns all frequencies.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Frequency> GetFrequencies();
-
-        /// <summary>
-        /// Returns all routes.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Route> GetRoutes();
-
-        /// <summary>
-        /// Returns all shapes.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Shape> GetShapes();
-
-        /// <summary>
-        /// Returns all stops.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Stop> GetStops();
-
-        /// <summary>
-        /// Returns all stop times.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<StopTime> GetStopTimes();
-
-        /// <summary>
-        /// Returns all transfers.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Transfer> GetTransfers();
-
-        /// <summary>
-        /// Returns all trips.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Trip> GetTrips();
+        IGTFSFeed GetFeed(int id);
     }
 }

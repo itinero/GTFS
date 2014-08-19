@@ -22,6 +22,7 @@
 
 using GTFS.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GTFS
 {
@@ -31,166 +32,126 @@ namespace GTFS
     public class GTFSFeed : IGTFSFeed
     {
         /// <summary>
+        /// Holds the agencies.
+        /// </summary>
+        private List<Agency> _agencies;
+
+        /// <summary>
+        /// Holds the calendars.
+        /// </summary>
+        private List<Calendar> _calendars;
+
+        /// <summary>
+        /// Holds the calendar dates.
+        /// </summary>
+        private List<CalendarDate> _calendarDates;
+
+        /// <summary>
+        /// Holds the fare attributes.
+        /// </summary>
+        private List<FareAttribute> _fareAttributes;
+
+        /// <summary>
+        /// Holds the fare rules.
+        /// </summary>
+        private List<FareRule> _fareRules;
+
+        /// <summary>
+        /// Holds the feed info.
+        /// </summary>
+        private FeedInfo _feedInfo;
+
+        /// <summary>
+        /// Holds the frequencies.
+        /// </summary>
+        private List<Frequency> _frequencies;
+
+        /// <summary>
+        /// Holds the routes.
+        /// </summary>
+        private List<Route> _routes;
+
+        /// <summary>
+        /// Holds the shapes.
+        /// </summary>
+        private List<Shape> _shapes;
+
+        /// <summary>
+        /// Holds the stops.
+        /// </summary>
+        private List<Stop> _stops;
+
+        /// <summary>
+        /// Holds the stop times.
+        /// </summary>
+        private List<StopTime> _stopTimes;
+
+        /// <summary>
+        /// Holds the transfers.
+        /// </summary>
+        private List<Transfer> _transfers;
+
+        /// <summary>
+        /// Holds the trips.
+        /// </summary>
+        private List<Trip> _trips;
+
+        /// <summary>
         /// Creates a new feed.
         /// </summary>
         public GTFSFeed()
         {
-            this.Agencies = new List<Agency>();
-            this.CalendarDates = new List<CalendarDate>();
-            this.Calendars = new List<Calendar>();
-            this.FareAttributes = new List<FareAttribute>();
-            this.FareRules = new List<FareRule>();
-            this.FeedInfo = new List<FeedInfo>();
-            this.Frequencies = new List<Frequency>();
-            this.Routes = new List<Route>();
-            this.Shapes = new List<Shape>();
-            this.Stops = new List<Stop>();
-            this.StopTimes = new List<StopTime>();
-            this.Transfers = new List<Transfer>();
-            this.Trips = new List<Trip>();
+            _agencies = new List<Agency>();
+            _calendarDates = new List<CalendarDate>();
+            _calendars = new List<Calendar>();
+            _fareAttributes = new List<FareAttribute>();
+            _fareRules = new List<FareRule>();
+            _feedInfo = null;
+            _frequencies = new List<Frequency>();
+            _routes = new List<Route>();
+            _shapes = new List<Shape>();
+            _stops = new List<Stop>();
+            _stopTimes = new List<StopTime>();
+            _transfers = new List<Transfer>();
+            _trips = new List<Trip>();
         }
 
         /// <summary>
-        /// Returns the agency with the given id.
+        /// Adds an agency.
+        /// </summary>
+        /// <param name="agency"></param>
+        public void AddAgency(Agency agency)
+        {
+            _agencies.Add(agency);
+        }
+
+        /// <summary>
+        /// Gets the agency for the given id.
         /// </summary>
         /// <param name="agencyId"></param>
         /// <returns></returns>
         public Agency GetAgency(string agencyId)
         {
-            return this.Agencies.Find(x => x.Id.Equals(agencyId));
+            return this.GetAgencies().First(x => x.Id == agencyId);
         }
 
         /// <summary>
-        /// Gets the list of agencies.
+        /// Removes the agency with the given id.
         /// </summary>
-        public List<Agency> Agencies { get; private set; }
-
-        /// <summary>
-        /// Gets the list of stops.
-        /// </summary>
-        public List<Stop> Stops { get; private set; }
-
-        /// <summary>
-        /// Returns the stop with the given id.
-        /// </summary>
-        /// <param name="stopId"></param>
+        /// <param name="agencyId"></param>
         /// <returns></returns>
-        public Stop GetStop(string stopId)
+        public bool RemoveAgency(string agencyId)
         {
-            return this.Stops.Find(x => x.Id.Equals(stopId));
+            return _agencies.RemoveAll(x => x.Id == agencyId) > 0;
         }
 
         /// <summary>
-        /// Gets the list of routes.
+        /// Gets all agencies.
         /// </summary>
-        public List<Route> Routes { get; private set; }
-
-        /// <summary>
-        /// Gets the route with the given id.
-        /// </summary>
-        /// <param name="routeId"></param>
         /// <returns></returns>
-        public Route GetRoute(string routeId)
+        public IEnumerable<Agency> GetAgencies()
         {
-            return this.Routes.Find(x => x.Id.Equals(routeId));
-        }
-
-        /// <summary>
-        /// Gets the list of trips.
-        /// </summary>
-        public List<Trip> Trips { get; private set; }
-
-        /// <summary>
-        /// Gets the trip with the given id.
-        /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        public Trip GetTrip(string tripId)
-        {
-            return this.Trips.Find(x => x.Id.Equals(tripId));
-        }
-
-        /// <summary>
-        /// Gets the list of stop times.
-        /// </summary>
-        public IList<StopTime> StopTimes { get; private set; }
-        /// <summary>
-        /// Gets the list of calendars.
-        /// </summary>
-        public List<Calendar> Calendars { get; private set; }
-
-        /// <summary>
-        /// Returns the calendar for the given service id.
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns></returns>
-        public Calendar GetCalendar(string serviceId)
-        {
-            return this.Calendars.Find(x => x.ServiceId == serviceId);
-        }
-
-        /// <summary>
-        /// Gets the list of calendar dates.
-        /// </summary>
-        public List<CalendarDate> CalendarDates { get; private set; }
-
-        /// <summary>
-        /// Returns the calendar dates for the given service id.
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns></returns>
-        public IEnumerable<CalendarDate> GetCalendarDates(string serviceId)
-        {
-            return this.CalendarDates.FindAll(x => x.ServiceId == serviceId);
-        }
-
-        /// <summary>
-        /// Gets the list of fare attributes.
-        /// </summary>
-        public List<FareAttribute> FareAttributes { get; private set; }
-
-        /// <summary>
-        /// Gets the list of fare rules.
-        /// </summary>
-        public List<FareRule> FareRules { get; private set; }
-
-        /// <summary>
-        /// Gets the list of shapes.
-        /// </summary>
-        public List<Shape> Shapes { get; private set; }
-
-        /// <summary>
-        /// Returns a list of shapes for the given id.
-        /// </summary>
-        /// <param name="shapeId"></param>
-        /// <returns></returns>
-        public List<Shape> GetShapes(string shapeId)
-        {
-            return this.Shapes.FindAll(x => x.Id.Equals(shapeId));
-        }
-
-        /// <summary>
-        /// Gets the list of frequencies.
-        /// </summary>
-        public List<Frequency> Frequencies { get; private set; }
-
-        /// <summary>
-        /// Gets the list of transfers.
-        /// </summary>
-        public List<Transfer> Transfers { get; private set; }
-
-        /// <summary>
-        /// Gets the feed info.
-        /// </summary>
-        public List<FeedInfo> FeedInfo { get; private set; }
-
-        /// <summary>
-        /// Adds a new agency.
-        /// </summary>
-        /// <param name="agency"></param>
-        public void AddAgency(Agency agency)
-        {
-            this.Agencies.Add(agency);
+            return _agencies;
         }
 
         /// <summary>
@@ -199,106 +160,474 @@ namespace GTFS
         /// <param name="calendar"></param>
         public void AddCalendar(Calendar calendar)
         {
-            this.Calendars.Add(calendar);
+            _calendars.Add(calendar);
         }
 
         /// <summary>
-        /// Adds a new calendar date.
+        /// Returns all calendars.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Calendar> GetCalendars()
+        {
+            return _calendars;
+        }
+
+        /// <summary>
+        /// Returns all calendars for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public IEnumerable<Calendar> GetCalendars(string serviceId)
+        {
+            return _calendars.Where(x => x.ServiceId == serviceId);
+        }
+
+        /// <summary>
+        /// Removes all calenders for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public int RemoveCalendars(string serviceId)
+        {
+            return _calendars.RemoveAll(x => x.ServiceId == serviceId);
+        }
+
+        /// <summary>
+        /// Adds a calendar date.
         /// </summary>
         /// <param name="calendar"></param>
         public void AddCalendarDate(CalendarDate calendar)
         {
-            this.CalendarDates.Add(calendar);
+            _calendarDates.Add(calendar);
         }
 
         /// <summary>
-        /// Adds a new fare attribute.
+        /// Returns all calendar dates.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<CalendarDate> GetCalendarDates()
+        {
+            return _calendarDates;
+        }
+
+        /// <summary>
+        /// Returns all calendar dates for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public IEnumerable<CalendarDate> GetCalendarDates(string serviceId)
+        {
+            return _calendarDates.Where(x => x.ServiceId == serviceId);
+        }
+
+        /// <summary>
+        /// Removes all calendar dates for the given service id.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        public int RemoveCalendarDates(string serviceId)
+        {
+            return _calendarDates.RemoveAll(x => x.ServiceId == serviceId);
+        }
+
+        /// <summary>
+        /// Adds a fare attribute.
         /// </summary>
         /// <param name="fareAttribute"></param>
         public void AddFareAttribute(FareAttribute fareAttribute)
         {
-            this.FareAttributes.Add(fareAttribute);
+            _fareAttributes.Add(fareAttribute);
         }
 
         /// <summary>
-        /// Adds a new fare rule.
+        /// Returns all fare attributes.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<FareAttribute> GetFareAttributes()
+        {
+            return _fareAttributes;
+        }
+
+        /// <summary>
+        /// Returns all fare attributes for the given fare id.
+        /// </summary>
+        /// <param name="fareId"></param>
+        /// <returns></returns>
+        public IEnumerable<FareAttribute> GetFareAttributes(string fareId)
+        {
+            return _fareAttributes.Where(x => x.FareId == fareId);
+        }
+
+        /// <summary>
+        /// Removes all fare attributes for the given fare id.
+        /// </summary>
+        /// <param name="fareId"></param>
+        /// <returns></returns>
+        public int RemoveFareAttributes(string fareId)
+        {
+            return _fareAttributes.RemoveAll(x => x.FareId == fareId);
+        }
+
+        /// <summary>
+        /// Adds a fare rule.
         /// </summary>
         /// <param name="fareRule"></param>
         public void AddFareRule(FareRule fareRule)
         {
-            this.FareRules.Add(fareRule);
+            _fareRules.Add(fareRule);
         }
 
         /// <summary>
-        /// Adds a new feed info.
+        /// Gets all fare rules.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<FareRule> GetFareRules()
+        {
+            return _fareRules;
+        }
+
+        /// <summary>
+        /// Gets the fare rules for the given fare id.
+        /// </summary>
+        /// <param name="fareId"></param>
+        /// <returns></returns>
+        public FareRule GetFareRule(string fareId)
+        {
+            return _fareRules.First(x => x.FareId == fareId);
+        }
+
+        /// <summary>
+        /// Removes all fare rules for the given fare id.
+        /// </summary>
+        /// <param name="fareId"></param>
+        /// <returns></returns>
+        public bool RemoveFareRule(string fareId)
+        {
+            return _fareRules.RemoveAll(x => x.FareId == fareId) > 0;
+        }
+
+        /// <summary>
+        /// Sets the feed info.
         /// </summary>
         /// <param name="feedInfo"></param>
-        public void AddFeedInfo(FeedInfo feedInfo)
+        public void SetFeedInfo(FeedInfo feedInfo)
         {
-            this.FeedInfo.Add(feedInfo);
+            _feedInfo = feedInfo;
         }
 
         /// <summary>
-        /// Adds a new frequency.
+        /// Gets the feed info.
+        /// </summary>
+        /// <returns></returns>
+        public FeedInfo GetFeedInfo()
+        {
+            return _feedInfo;
+        }
+
+        /// <summary>
+        /// Adds a frequency.
         /// </summary>
         /// <param name="frequency"></param>
         public void AddFrequency(Frequency frequency)
         {
-            this.Frequencies.Add(frequency);
+            _frequencies.Add(frequency);
         }
 
         /// <summary>
-        /// Adds a new route.
+        /// Returns all frequencies.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Frequency> GetFrequencies()
+        {
+            return _frequencies;
+        }
+
+        /// <summary>
+        /// Returns the frequencies for the given trip id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public IEnumerable<Frequency> GetFrequencies(string tripId)
+        {
+            return _frequencies.Where(x => x.TripId == tripId);
+        }
+
+        /// <summary>
+        /// Removes all frequencies for the given trip id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public int RemoveFrequencies(string tripId)
+        {
+            return _frequencies.RemoveAll(x => x.TripId == tripId);
+        }
+
+        /// <summary>
+        /// Adds a route.
         /// </summary>
         /// <param name="route"></param>
         public void AddRoute(Route route)
         {
-            this.Routes.Add(route);
+            _routes.Add(route);
         }
 
         /// <summary>
-        /// Adds a new shape.
+        /// Returns all routes.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Route> GetRoutes()
+        {
+            return _routes;
+        }
+
+        /// <summary>
+        /// Returns the route.
+        /// </summary>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
+        public Route GetRoute(string routeId)
+        {
+            return _routes.First(x => x.Id == routeId);
+        }
+
+        /// <summary>
+        /// Removes the route.
+        /// </summary>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
+        public bool RemoveRoute(string routeId)
+        {
+            return _routes.RemoveAll(x => x.Id == routeId) > 0;
+        }
+
+        /// <summary>
+        /// Adds a shape.
         /// </summary>
         /// <param name="shape"></param>
         public void AddShape(Shape shape)
         {
-            this.Shapes.Add(shape);
+            _shapes.Add(shape);
         }
 
         /// <summary>
-        /// Adds a new stop.
+        /// Returns all the shapes.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Shape> GetShapes()
+        {
+            return _shapes;
+        }
+
+        /// <summary>
+        /// Returns all the shapes for the given trip id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public IEnumerable<Shape> GetShapes(string tripId)
+        {
+            return _shapes.Where(x => x.Id == tripId);
+        }
+
+        /// <summary>
+        /// Removes all the shapes for the given trip id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public int RemoveShapes(string tripId)
+        {
+            return _shapes.RemoveAll(x => x.Id == tripId);
+        }
+
+        /// <summary>
+        /// Adds a stop.
         /// </summary>
         /// <param name="stop"></param>
         public void AddStop(Stop stop)
         {
-            this.Stops.Add(stop);
+            _stops.Add(stop);
         }
 
         /// <summary>
-        /// Adds a new stop time.
+        /// Returns all the stops.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Stop> GetStops()
+        {
+            return _stops;
+        }
+
+        /// <summary>
+        /// Gets the stop for the given id.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public Stop GetStop(string stopId)
+        {
+            return _stops.First(x => x.Id == stopId);
+        }
+
+        /// <summary>
+        /// Removes the stop with the given id.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public bool RemoveStop(string stopId)
+        {
+            return _stops.RemoveAll(x => x.Id == stopId) > 0;
+        }
+
+        /// <summary>
+        /// Adds a stop time.
         /// </summary>
         /// <param name="stopTime"></param>
         public void AddStopTime(StopTime stopTime)
         {
-            this.StopTimes.Add(stopTime);
+            _stopTimes.Add(stopTime);
         }
 
         /// <summary>
-        /// Adds a new transfer.
+        /// Returns all stop times.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StopTime> GetStopTimes()
+        {
+            return _stopTimes;
+        }
+
+        /// <summary>
+        /// Returns the stop times for the given trip.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public IEnumerable<StopTime> GetStopTimesForTrip(string tripId)
+        {
+            return _stopTimes.Where(x => x.TripId == tripId);
+        }
+
+        /// <summary>
+        /// Removes the stop times for the given trip.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public int RemoveStopTimesForTrip(string tripId)
+        {
+            return _stopTimes.RemoveAll(x => x.TripId == tripId);
+        }
+
+        /// <summary>
+        /// Returns the stop times for the given stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public IEnumerable<StopTime> GetStopTimesForStop(string stopId)
+        {
+            return _stopTimes.Where(x => x.StopId == stopId);
+        }
+
+        /// <summary>
+        /// Removes the stop times for the given stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public int RemoveStopTimesForStop(string stopId)
+        {
+            return _stopTimes.RemoveAll(x => x.StopId == stopId);
+        }
+
+        /// <summary>
+        /// Adds a transfer.
         /// </summary>
         /// <param name="transfer"></param>
         public void AddTransfer(Transfer transfer)
         {
-            this.Transfers.Add(transfer);
+            _transfers.Add(transfer);
         }
 
         /// <summary>
-        /// Adds a new trip.
+        /// Returns all transfers.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Transfer> GetTransfers()
+        {
+            return _transfers;
+        }
+
+        /// <summary>
+        /// Returns all transfers with the given stop as from stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public IEnumerable<Transfer> GetTransfersForFromStop(string stopId)
+        {
+            return _transfers.Where(x => x.FromStop.Id == stopId);
+        }
+
+        /// <summary>
+        /// Removes all transfers with the given stop as from stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public int RemoveTransfersForFromStop(string stopId)
+        {
+            return _transfers.RemoveAll(x => x.FromStop.Id == stopId);
+        }
+
+        /// <summary>
+        /// Returns all transfers with the given stop as to stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public IEnumerable<Transfer> GetTransfersForToStop(string stopId)
+        {
+            return _transfers.Where(x => x.ToStop.Id == stopId);
+        }
+
+        /// <summary>
+        /// Removes all transfers with the given stop as to stop.
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <returns></returns>
+        public int RemoveTransfersForToStop(string stopId)
+        {
+            return _transfers.RemoveAll(x => x.ToStop.Id == stopId);
+        }
+
+        /// <summary>
+        /// Adds a trip.
         /// </summary>
         /// <param name="trip"></param>
         public void AddTrip(Trip trip)
         {
-            this.Trips.Add(trip);
+            _trips.Add(trip);
+        }
+
+        /// <summary>
+        /// Returns all the trips.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Trip> GetTrips()
+        {
+            return _trips;
+        }
+
+        /// <summary>
+        /// Returns the trip with the given id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public Trip GetTrip(string tripId)
+        {
+            return _trips.First(x => x.Id == tripId);
+        }
+
+        /// <summary>
+        /// Removes the trip with the given id.
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public bool RemoveTrip(string tripId)
+        {
+            return _trips.RemoveAll(x => x.Id == tripId) > 0;
         }
     }
 }
