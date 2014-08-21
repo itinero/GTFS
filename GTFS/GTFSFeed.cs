@@ -101,12 +101,12 @@ namespace GTFS
         /// </summary>
         public GTFSFeed()
         {
+            _feedInfo = new FeedInfo();
             _agencies = new List<Agency>();
             _calendarDates = new List<CalendarDate>();
             _calendars = new List<Calendar>();
             _fareAttributes = new List<FareAttribute>();
             _fareRules = new List<FareRule>();
-            _feedInfo = null;
             _frequencies = new List<Frequency>();
             _routes = new List<Route>();
             _shapes = new List<Shape>();
@@ -312,7 +312,12 @@ namespace GTFS
         /// <param name="feedInfo"></param>
         public void SetFeedInfo(FeedInfo feedInfo)
         {
-            _feedInfo = feedInfo;
+            _feedInfo.EndDate = feedInfo.EndDate;
+            _feedInfo.Lang = feedInfo.Lang;
+            _feedInfo.PublisherName = feedInfo.PublisherName;
+            _feedInfo.PublisherUrl = feedInfo.PublisherUrl;
+            _feedInfo.StartDate = feedInfo.StartDate;
+            _feedInfo.Version = _feedInfo.Version;
         }
 
         /// <summary>

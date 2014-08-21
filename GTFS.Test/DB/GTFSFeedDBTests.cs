@@ -105,5 +105,49 @@ namespace GTFS.Test.DB
             var feedId = db.AddFeed(feed);
             GTFSAssert.AreEqual(feed, db.GetFeed(feedId));
         }
+
+        /// <summary>
+        /// Test removing a feed.
+        /// </summary>
+        [Test]
+        public void TestRemoveFeed()
+        {
+            // get test db.
+            var db = this.CreateDB();
+
+            // build test feed.
+            var feed = this.BuildTestFeed();
+
+            // add feed.
+            var feedId = db.AddFeed(feed);
+
+            db.RemoveFeed(feedId);
+
+            // get feed.
+            feed = db.GetFeed(feedId);
+            Assert.IsNull(feed);
+        }
+
+        /// <summary>
+        /// Test get feeds.
+        /// </summary>
+        [Test]
+        public void TestGetFeeds()
+        {
+            // get test db.
+            var db = this.CreateDB();
+
+            // build test feed.
+            var feed = this.BuildTestFeed();
+
+            // add feed.
+            var feedId = db.AddFeed(feed);
+
+            db.RemoveFeed(feedId);
+
+            // get feed.
+            feed = db.GetFeed(feedId);
+            Assert.IsNull(feed);
+        }
     }
 }

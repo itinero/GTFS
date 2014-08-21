@@ -45,6 +45,7 @@
     <Compile Include="SQLiteGTFSFeed.cs" />
     <Compile Include="SQLiteGTFSFeedDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLiteReaderEnumerable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GTFS\GTFS.csproj">
