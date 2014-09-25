@@ -132,7 +132,7 @@ namespace GTFS
         /// <returns></returns>
         public Agency GetAgency(string agencyId)
         {
-            return this.GetAgencies().First(x => x.Id == agencyId);
+            return this.GetAgencies().FirstOrDefault(x => x.Id == agencyId);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace GTFS
         /// <returns></returns>
         public FareRule GetFareRule(string fareId)
         {
-            return _fareRules.First(x => x.FareId == fareId);
+            return _fareRules.FirstOrDefault(x => x.FareId == fareId);
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace GTFS
         /// <returns></returns>
         public Route GetRoute(string routeId)
         {
-            return _routes.First(x => x.Id == routeId);
+            return _routes.FirstOrDefault(x => x.Id == routeId);
         }
 
         /// <summary>
@@ -468,7 +468,7 @@ namespace GTFS
         /// <returns></returns>
         public Stop GetStop(string stopId)
         {
-            return _stops.First(x => x.Id == stopId);
+            return _stops.FirstOrDefault(x => x.Id == stopId);
         }
 
         /// <summary>
@@ -622,7 +622,7 @@ namespace GTFS
         /// <returns></returns>
         public Trip GetTrip(string tripId)
         {
-            return _trips.First(x => x.Id == tripId);
+            return _trips.FirstOrDefault(x => x.Id == tripId);
         }
 
         /// <summary>
