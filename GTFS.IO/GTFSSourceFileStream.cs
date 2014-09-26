@@ -116,5 +116,13 @@ namespace GTFS.IO.CSV
         {
             return this.GetEnumerator();
         }
+
+        /// <summary>
+        /// Diposes of all native resources associated with this filestream.
+        /// </summary>
+        public void Dispose()
+        {
+            _stream.Dispose();
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace GTFS.IO
     /// <summary>
     /// Represents a GTFS-file.
     /// </summary>
-    public interface IGTFSSourceFile : IEnumerable<string[]>
+    public interface IGTFSSourceFile : IEnumerable<string[]>, IDisposable
     {
         /// <summary>
         /// Gets or sets the line preprocessor.

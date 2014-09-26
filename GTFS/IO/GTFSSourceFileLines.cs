@@ -96,5 +96,13 @@ namespace GTFS.IO
         {
             return this.GetEnumerator();
         }
+
+        /// <summary>
+        /// Disposes of all native resources associated with this source file.
+        /// </summary>
+        public void Dispose()
+        {
+            _reader.Dispose();
+        }
     }
 }

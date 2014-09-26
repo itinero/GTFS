@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using GTFS.IO.CSV;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -29,7 +30,7 @@ namespace GTFS.IO
     /// <summary>
     /// Represents a list of GTFS source files all located in a given directory.
     /// </summary>
-    public class GTFSDirectorySource : IEnumerable<IGTFSSourceFile>
+    public class GTFSDirectorySource : IEnumerable<IGTFSSourceFile>, IDisposable
     {
         /// <summary>
         /// Holds the directory.
@@ -40,6 +41,11 @@ namespace GTFS.IO
         /// Holds a custom seperator.
         /// </summary>
         private char? _customSeperator;
+
+        /// <summary>
+        /// Holds the source files.
+        /// </summary>
+        private List<IGTFSSourceFile> _sourceFiles;
 
         /// <summary>
         /// Creates a new GTFS directory source.
@@ -87,24 +93,31 @@ namespace GTFS.IO
         /// Builds a list of source files;
         /// </summary>
         /// <returns></returns>
-        private List<IGTFSSourceFile> BuildSource()
+        private void BuildSource()
         {
+            if(_sourceFiles != null)
+            {
+                foreach(var sourceFile in _sourceFiles)
+                {
+                    sourceFile.Dispose();
+                }
+            }
+
             var files = _directory.GetFiles("*.txt");
-            var sourceFiles = new List<IGTFSSourceFile>(files.Length);
+            _sourceFiles = new List<IGTFSSourceFile>(files.Length);
             foreach(var file in files)
             {
                 if(_customSeperator.HasValue)
                 { // add source file with custom seperator.
-                    sourceFiles.Add(
+                    _sourceFiles.Add(
                         new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length), _customSeperator.Value));
                 }
                 else
                 { // no custom seperator here!
-                    sourceFiles.Add(
+                    _sourceFiles.Add(
                         new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
                 }
             }
-            return sourceFiles;
         }
 
         /// <summary>
@@ -113,7 +126,8 @@ namespace GTFS.IO
         /// <returns></returns>
         public IEnumerator<IGTFSSourceFile> GetEnumerator()
         {
-            return this.BuildSource().GetEnumerator();
+            this.BuildSource();
+            return _sourceFiles.GetEnumerator();
         }
 
         /// <summary>
@@ -122,7 +136,22 @@ namespace GTFS.IO
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.BuildSource().GetEnumerator();
+            this.BuildSource();
+            return _sourceFiles.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Diposes of all native resources associated with this source.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_sourceFiles != null)
+            {
+                foreach (var sourceFile in _sourceFiles)
+                {
+                    sourceFile.Dispose();
+                }
+            }
         }
     }
 }
