@@ -102,7 +102,10 @@ namespace GTFS.IO
         /// </summary>
         public void Dispose()
         {
-            _reader.Dispose();
+            if(_reader != null)
+            {
+                _reader.Dispose();
+            }
         }
     }
 }
