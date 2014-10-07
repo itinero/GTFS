@@ -29,7 +29,6 @@ namespace GTFS.Filters
     /// <summary>
     /// Represents a GTFS feed filter that leaves only data related to the given routes.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class GTFSFeedRoutesFilter : GTFSFeedFilter
     {
         /// <summary>

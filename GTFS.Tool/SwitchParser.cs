@@ -55,7 +55,7 @@ namespace GTFS.Tool
         /// </summary>
         /// <param name="args"></param>
         /// <param name="idx"></param>
-        /// <param name="switch"></param>
+        /// <param name="switchOut"></param>
         /// <returns></returns>
         private static int ParseSwitch(string[] args, int idx, out Switch switchOut)
         {

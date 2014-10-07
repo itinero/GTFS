@@ -29,7 +29,6 @@ namespace GTFS.Filters
     /// <summary>
     /// Represents a GTFS feed filter that leaves only date related to the given stops.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class GTFSFeedStopsFilter : GTFSFeedFilter
     {
         /// <summary>

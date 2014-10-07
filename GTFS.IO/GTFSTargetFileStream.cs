@@ -56,6 +56,7 @@ namespace GTFS.IO
         /// </summary>
         /// <param name="name"></param>
         /// <param name="stream"></param>
+        /// <param name="seperator"></param>
         public GTFSTargetFileStream(Stream stream, string name, char seperator)
         {
             _name = name;

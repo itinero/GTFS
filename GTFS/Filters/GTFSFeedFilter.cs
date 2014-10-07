@@ -25,7 +25,6 @@ namespace GTFS.Filters
     /// <summary>
     /// Abstract representation of a GTFS feed filter.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class GTFSFeedFilter
     {
         /// <summary>

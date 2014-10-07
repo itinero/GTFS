@@ -145,8 +145,8 @@ namespace GTFS
         /// <summary>
         /// Writes the calenders to the calenders file.
         /// </summary>
-        /// <param name="calendarsFile"></param>
-        /// <param name="calendars"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Calendar> entities)
         {
             if (file != null)
@@ -197,8 +197,8 @@ namespace GTFS
         /// <summary>
         /// Writes the fare attributes.
         /// </summary>
-        /// <param name="fareAttributesFile"></param>
-        /// <param name="fareAttributes"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<FareAttribute> entities)
         {
             if (file != null)
@@ -241,8 +241,8 @@ namespace GTFS
         /// <summary>
         /// Writes the fare rules.
         /// </summary>
-        /// <param name="fareRulesFile"></param>
-        /// <param name="fareRule"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<FareRule> entities)
         {
             if (file != null)
@@ -283,8 +283,8 @@ namespace GTFS
         /// <summary>
         /// Writes the feed info.
         /// </summary>
-        /// <param name="feedInfoFile"></param>
-        /// <param name="feedInfo"></param>
+        /// <param name="file"></param>
+        /// <param name="entity"></param>
         protected virtual void Write(IGTFSTargetFile file, FeedInfo entity)
         {
             if (file != null)
@@ -324,8 +324,8 @@ namespace GTFS
         /// <summary>
         /// Writes the frequencies.
         /// </summary>
-        /// <param name="frequenciesFile"></param>
-        /// <param name="frequencies"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Frequency> entities)
         {
             if (file != null)
@@ -366,8 +366,8 @@ namespace GTFS
         /// <summary>
         /// Writes the routes.
         /// </summary>
-        /// <param name="routesFile"></param>
-        /// <param name="route"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Route> entities)
         {
             if (file != null)
@@ -416,8 +416,8 @@ namespace GTFS
         /// <summary>
         /// Writes the shapes.
         /// </summary>
-        /// <param name="shapesFile"></param>
-        /// <param name="shapes"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Shape> entities)
         {
             if (file != null)
@@ -458,8 +458,8 @@ namespace GTFS
         /// <summary>
         /// Writes the stops.
         /// </summary>
-        /// <param name="stopsFile"></param>
-        /// <param name="stops"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Stop> entities)
         {
             if (file != null)
@@ -514,8 +514,8 @@ namespace GTFS
         /// <summary>
         /// Writes the stop times.
         /// </summary>
-        /// <param name="stopTimesFile"></param>
-        /// <param name="stopTimes"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<StopTime> entities)
         {
             if (file != null)
@@ -564,8 +564,8 @@ namespace GTFS
         /// <summary>
         /// Writes the transfers.
         /// </summary>
-        /// <param name="transfersFile"></param>
-        /// <param name="transfers"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Transfer> entities)
         {
             if (file != null)
@@ -604,8 +604,8 @@ namespace GTFS
         /// <summary>
         /// Writes the trips.
         /// </summary>
-        /// <param name="tripsFile"></param>
-        /// <param name="trips"></param>
+        /// <param name="file"></param>
+        /// <param name="entities"></param>
         protected virtual void Write(IGTFSTargetFile file, IEnumerable<Trip> entities)
         {
             if (file != null)
@@ -666,9 +666,9 @@ namespace GTFS
         /// <summary>
         /// Writes the exception type.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="exceptionType"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         private string WriteFieldExceptionType(string name, string fieldName, ExceptionType value)
         {
@@ -700,9 +700,9 @@ namespace GTFS
         /// <summary>
         /// Writes the bool.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="p3"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         private string WriteFieldBool(string name, string fieldName, bool? value)
         {
@@ -736,9 +736,9 @@ namespace GTFS
         /// <summary>
         /// Writes the payment method.
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="paymentMethodType"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         private string WriteFieldPaymentMethod(string name, string fieldName, PaymentMethodType value)
         {
