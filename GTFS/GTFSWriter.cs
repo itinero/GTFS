@@ -403,10 +403,10 @@ namespace GTFS
                     data[2] = this.WriteFieldString("routes", "route_short_name", entity.ShortName);
                     data[3] = this.WriteFieldString("routes", "route_long_name", entity.LongName);
                     data[4] = this.WriteFieldString("routes", "route_desc", entity.Description);
-                    data[4] = this.WriteFieldRouteType("routes", "route_type", entity.Type);
-                    data[4] = this.WriteFieldString("routes", "route_url", entity.Url);
-                    data[4] = this.WriteFieldColor("routes", "route_color", entity.Color);
-                    data[4] = this.WriteFieldColor("routes", "route_text_color", entity.TextColor);
+                    data[5] = this.WriteFieldRouteType("routes", "route_type", entity.Type);
+                    data[6] = this.WriteFieldString("routes", "route_url", entity.Url);
+                    data[7] = this.WriteFieldColor("routes", "route_color", entity.Color);
+                    data[8] = this.WriteFieldColor("routes", "route_text_color", entity.TextColor);
                     file.Write(data);
                 }
                 file.Close();

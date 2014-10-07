@@ -312,12 +312,15 @@ namespace GTFS
         /// <param name="feedInfo"></param>
         public void SetFeedInfo(FeedInfo feedInfo)
         {
-            _feedInfo.EndDate = feedInfo.EndDate;
-            _feedInfo.Lang = feedInfo.Lang;
-            _feedInfo.PublisherName = feedInfo.PublisherName;
-            _feedInfo.PublisherUrl = feedInfo.PublisherUrl;
-            _feedInfo.StartDate = feedInfo.StartDate;
-            _feedInfo.Version = _feedInfo.Version;
+            if (_feedInfo != null)
+            {
+                _feedInfo.EndDate = feedInfo.EndDate;
+                _feedInfo.Lang = feedInfo.Lang;
+                _feedInfo.PublisherName = feedInfo.PublisherName;
+                _feedInfo.PublisherUrl = feedInfo.PublisherUrl;
+                _feedInfo.StartDate = feedInfo.StartDate;
+                _feedInfo.Version = _feedInfo.Version;
+            }
         }
 
         /// <summary>
