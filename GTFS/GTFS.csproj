@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GTFS</RootNamespace>
     <AssemblyName>GTFS</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Output\GTFS.xml</DocumentationFile>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Output\GTFS.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,7 +83,10 @@
     <Compile Include="Exceptions\GTFSRequiredFileMissingException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fields\FieldMapping.cs" />
+    <Compile Include="Filters\GTFSFeedFilter.cs" />
+    <Compile Include="Filters\GTFSFeedStopsFilter.cs" />
     <Compile Include="GTFSFeed.cs" />
+    <Compile Include="GTFSWriter.cs" />
     <Compile Include="IGTFSFeed.cs" />
     <Compile Include="IO\CSV\CSVLineEnumerableReader.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
@@ -92,6 +97,7 @@
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
     <Compile Include="IO\GTFSSourceFileLines.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />
+    <Compile Include="IO\IGTFSTargetFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

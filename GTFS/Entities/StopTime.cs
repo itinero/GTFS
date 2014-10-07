@@ -29,7 +29,7 @@ namespace GTFS.Entities
     /// <summary>
     /// Represents a stop time. Times that a vehicle arrives at and departs from individual stops for each trip.
     /// </summary>
-    [FileName("stop_time")]
+    [FileName("stop_times")]
     public class StopTime : GTFSEntity, IComparable
     {
         /// <summary>

@@ -28,7 +28,7 @@ namespace GTFS.Entities
     /// <summary>
     /// Represents an individual location where vehicles pick up or drop off passengers.
     /// </summary>
-    [FileName("stop")]
+    [FileName("stops")]
     public class Stop : GTFSEntity
     {
         /// <summary>

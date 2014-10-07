@@ -20,82 +20,76 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.IO;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
-namespace GTFS.IO.CSV
+namespace GTFS.Tool.Switches.Processors
 {
     /// <summary>
-    /// Holds a CSV stream reader.
+    /// Represents a processor that reads a feed from disk.
     /// </summary>
-    public class CSVStreamWriter : ICSVWriter
+    public class ProcessorReadFeed : ProcessorFeedSource
     {
         /// <summary>
-        /// Holds the stream reader.
+        /// Holds the path.
         /// </summary>
-        private readonly StreamWriter _stream;
+        private string _path;
 
         /// <summary>
-        /// Holds the serperator char.
+        /// Creates a new feed source.
         /// </summary>
-        private readonly char _seperator = ',';
-
-        /// <summary>
-        /// Creates a new CSV stream.
-        /// </summary>
-        /// <param name="stream"></param>
-        public CSVStreamWriter(Stream stream)
+        /// <param name="path"></param>
+        public ProcessorReadFeed(string path)
         {
-            _stream = new StreamWriter(stream);
+            _path = path;
         }
 
         /// <summary>
-        /// Creates a new CSV stream.
+        /// Collapses the processors if possible.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="seperator"></param>
-        public CSVStreamWriter(Stream stream, char seperator)
+        /// <param name="processors"></param>
+        public override void Collapse(List<ProcessorBase> processors)
         {
-            _stream = new StreamWriter(stream);
-            _seperator = seperator;
+            processors.Add(this);
         }
 
         /// <summary>
-        /// Writes one line into the target csv-stream.
+        /// Returns true if this reader is ready.
         /// </summary>
-        /// <param name="line"></param>
-        public void Write(string[] line)
+        public override bool IsReady
         {
-            if (line == null) { throw new ArgumentNullException("line"); }
-
-            if (line.Length == 0)
-            { // not data, just write an empty line.
-                _stream.WriteLine();
-                return;
-            }
-
-            for (int idx = 0; idx < line.Length - 1; idx++)
-            {
-                _stream.Write(line[idx]);
-                _stream.Write(_seperator);
-            }
-            _stream.WriteLine(line[line.Length - 1]);
+            get { return true; }
         }
 
         /// <summary>
-        /// Flushes this writer.
+        /// Executes this processor.
         /// </summary>
-        public void Flush()
+        public override void Execute()
         {
-            _stream.Flush();
+            throw new InvalidOperationException("Cannot execute processor, check CanExecute.");
         }
 
         /// <summary>
-        /// Disposes of all resources associated with this object.
+        /// Returns true if this processor can be executed.
         /// </summary>
-        public void Dispose()
+        public override bool CanExecute
         {
-            _stream.Dispose();
+            get { return false; ; }
+        }
+
+        /// <summary>
+        /// Returns the feed produced by this reader.
+        /// </summary>
+        /// <returns></returns>
+        public override IGTFSFeed GetFeed()
+        {
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>(false);
+
+            // execute the reader.
+            return reader.Read(new GTFSDirectorySource(new DirectoryInfo(_path)));
         }
     }
 }

@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{39531D68-74CF-4C1C-9271-A2C874495383}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{07D5B1E0-328D-47EA-A086-2F312AF7EF68}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GTFS.IO</RootNamespace>
-    <AssemblyName>GTFS.IO</AssemblyName>
+    <RootNamespace>GTFS.Tool</RootNamespace>
+    <AssemblyName>GTFS.Tool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,18 +21,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.IO.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\Output\GTFS.Tool.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Output\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.IO.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\Output\GTFS.Tool.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -47,13 +46,27 @@
     <Compile Include="..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="GTFSDirectorySource.cs" />
-    <Compile Include="GTFSDirectoryTarget.cs" />
-    <Compile Include="GTFSSourceFileStream.cs" />
-    <Compile Include="GTFSTargetFileStream.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Switches\Processors\ProcessorBase.cs" />
+    <Compile Include="Switches\Processors\ProcessorFeedSource.cs" />
+    <Compile Include="Switches\Processors\ProcessorWriteFeed.cs" />
+    <Compile Include="Switches\Processors\ProcessorReadFeed.cs" />
+    <Compile Include="Switches\Switch.cs" />
+    <Compile Include="Switches\SwitchParserException.cs" />
+    <Compile Include="Switches\SwitchReadFeed.cs" />
+    <Compile Include="Switches\SwitchWriteFeed.cs" />
+    <Compile Include="SwitchParser.cs" />
+    <Compile Include="SwitchParserException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GTFS.IO\GTFS.IO.csproj">
+      <Project>{39531d68-74cf-4c1c-9271-a2c874495383}</Project>
+      <Name>GTFS.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GTFS\GTFS.csproj">
       <Project>{81f40909-0a8a-4f2a-8f59-a54896bfae89}</Project>
       <Name>GTFS</Name>

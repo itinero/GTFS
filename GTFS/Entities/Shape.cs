@@ -27,7 +27,7 @@ namespace GTFS.Entities
     /// <summary>
     /// Represents rules for drawing lines on a map to represent a transit organization's routes.
     /// </summary>
-    [FileName("shape")]
+    [FileName("shapes")]
     public class Shape : GTFSEntity
     {
         /// <summary>
