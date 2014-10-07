@@ -315,7 +315,7 @@ namespace GTFS
                 data[2] = this.WriteFieldString("feed_info", "feed_lang", entity.Lang);
                 data[3] = this.WriteFieldString("feed_info", "feed_start_date", entity.StartDate);
                 data[4] = this.WriteFieldString("feed_info", "feed_end_date", entity.EndDate);
-                data[4] = this.WriteFieldString("feed_info", "feed_version", entity.Version);
+                data[5] = this.WriteFieldString("feed_info", "feed_version", entity.Version);
                 file.Write(data);
                 file.Close();
             }
