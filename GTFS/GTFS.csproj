@@ -84,6 +84,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Fields\FieldMapping.cs" />
     <Compile Include="Filters\GTFSFeedFilter.cs" />
+    <Compile Include="Filters\GTFSFeedRoutesFilter.cs" />
     <Compile Include="Filters\GTFSFeedStopsFilter.cs" />
     <Compile Include="GTFSFeed.cs" />
     <Compile Include="GTFSWriter.cs" />
