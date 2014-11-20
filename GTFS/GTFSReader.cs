@@ -470,7 +470,7 @@ namespace GTFS
         protected virtual Agency ParseAgency(T feed, GTFSSourceFileHeader header, string[] data)
         {
             // check required fields.
-            this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_id");
+
             this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_name");
             this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_url");
             this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_timezone");
@@ -863,7 +863,7 @@ namespace GTFS
         {
             // check required fields.
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_id");
-            this.CheckRequiredField(header, header.Name, this.RouteMap, "agency_id");
+
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_short_name");
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_long_name");
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_desc");
