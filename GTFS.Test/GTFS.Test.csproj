@@ -51,9 +51,11 @@
     <Compile Include="DB\Memory\GTFSFeedDBTests.cs" />
     <Compile Include="DB\SQLite\SQLiteGTFSFeedDBTests.cs" />
     <Compile Include="DirectorySourceTest.cs" />
+    <Compile Include="Filters\GTFSFeedStopsFilterTests.cs" />
     <Compile Include="GTFSAssert.cs" />
     <Compile Include="ParseEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\GTFSFeedValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

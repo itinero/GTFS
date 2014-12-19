@@ -100,6 +100,7 @@
     <Compile Include="IO\IGTFSSourceFile.cs" />
     <Compile Include="IO\IGTFSTargetFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\GTFSFeedValidation.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
