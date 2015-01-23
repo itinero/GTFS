@@ -15,7 +15,8 @@ namespace GTFS.Tool
         /// <summary>
         /// Holds a list of supported switchs.
         /// </summary>
-        private static List<Switch> _switches = new List<Switch>(new Switch[] { new SwitchReadFeed(), new SwitchWriteFeed(), new SwitchFilterBoundingBox(), new SwitchFilterBoundingGeoJSON() });
+        private static List<Switch> _switches = new List<Switch>(new Switch[] { 
+           new SwitchReadFeed(), new SwitchWriteFeed(), new SwitchFilterBoundingBox(), new SwitchFilterRoutes(), new SwitchFilterBoundingGeoJSON() });
 
         /// <summary>
         /// Parses the switch line arguments into a sorted list of switchs.
