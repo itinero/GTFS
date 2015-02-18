@@ -68,6 +68,7 @@
     <Compile Include="Switches\Switch.cs" />
     <Compile Include="Switches\SwitchFilterBoundingGeoJSON.cs" />
     <Compile Include="Switches\SwitchFilterBoundingBox.cs" />
+    <Compile Include="Switches\SwitchFilterRoutes.cs" />
     <Compile Include="Switches\SwitchParserException.cs" />
     <Compile Include="Switches\SwitchReadFeed.cs" />
     <Compile Include="Switches\SwitchWriteFeed.cs" />
