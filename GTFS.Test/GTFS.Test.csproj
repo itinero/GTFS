@@ -55,6 +55,7 @@
     <Compile Include="GTFSAssert.cs" />
     <Compile Include="ParseEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StopsToShape\StopAtShapesFinderTests.cs" />
     <Compile Include="Validation\GTFSFeedValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
