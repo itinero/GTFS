@@ -103,6 +103,7 @@ namespace GTFS.IO
         public void Close()
         {
             _streamWriter.Flush();
+            _streamWriter.Dispose();
         }
     }
 }
