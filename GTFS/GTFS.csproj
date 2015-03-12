@@ -85,7 +85,9 @@
     <Compile Include="Fields\FieldMapping.cs" />
     <Compile Include="Filters\GTFSFeedFilter.cs" />
     <Compile Include="Filters\GTFSFeedRoutesFilter.cs" />
-    <Compile Include="Filters\GTFSFeedStopsFilter.cs" />
+    <Compile Include="Filters\GTFSFeedStopsFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GTFSFeed.cs" />
     <Compile Include="GTFSWriter.cs" />
     <Compile Include="IGTFSFeed.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="IO\IGTFSSourceFile.cs" />
     <Compile Include="IO\IGTFSTargetFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StopsToShape\StopAtShapesFinder.cs" />
+    <Compile Include="StopsToShape\StopAtShape.cs" />
     <Compile Include="Validation\GTFSFeedValidation.cs" />
   </ItemGroup>
   <ItemGroup />

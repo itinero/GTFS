@@ -182,5 +182,32 @@ namespace GTFS
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return Convert.ToInt64((date - epoch).TotalMilliseconds);
         }
+
+        /// <summary>
+        /// Calculates the distance in meter between the two given coordinates.
+        /// </summary>
+        /// <param name="latitude1"></param>
+        /// <param name="longitude1"></param>
+        /// <param name="latitude2"></param>
+        /// <param name="longitude2"></param>
+        /// <returns></returns>
+        public static double DistanceInMeter(double latitude1, double longitude1, double latitude2, double longitude2)
+        {
+            var radius_earth = 6371000;
+
+            var degToRandian = System.Math.PI / 180;
+            var lat1_rad = latitude1 * degToRandian;
+            var lon1_rad = longitude1 * degToRandian;
+            var lat2_rad = latitude2 * degToRandian;
+            var lon2_rad = longitude2 * degToRandian;
+            var dLat = (lat2_rad - lat1_rad);
+            var dLon = (lon2_rad - lon1_rad);
+            var a = System.Math.Pow(System.Math.Sin(dLat / 2), 2) +
+                System.Math.Cos(lat1_rad) * System.Math.Cos(lat2_rad) *
+                System.Math.Pow(System.Math.Sin(dLon / 2), 2);
+            var c = 2 * System.Math.Atan2(System.Math.Sqrt(a), System.Math.Sqrt(1 - a));
+            var distance = radius_earth * c;
+            return distance;
+        }
     }
 }
