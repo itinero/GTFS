@@ -80,12 +80,14 @@ namespace GTFS.Filters
 
             // filter trips.
             var serviceIds = new HashSet<string>();
+            var tripIds = new HashSet<string>();
             var shapeIds = new HashSet<string>();
             foreach (var trip in feed.GetTrips())
             {
                 if (routeIds.Contains(trip.RouteId))
                 { // keep this trip, it is related to at least one stop-time.
                     filteredFeed.AddTrip(trip);
+                    tripIds.Add(trip.Id);
 
                     // keep serviceId, routeId and shapeId.
                     serviceIds.Add(trip.ServiceId);
@@ -97,7 +99,6 @@ namespace GTFS.Filters
             }
 
             // filter stop-times.
-            var tripIds = new HashSet<string>();
             var stopIds = new HashSet<string>();
             foreach (var stopTime in feed.GetStopTimes())
             {
