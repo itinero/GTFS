@@ -19,7 +19,7 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override string[] GetSwitch()
         {
-            return new string[] { "-fr", "--filter-routes" };
+            return new string[] { "--fr", "--filter-routes" };
         }
 
         /// <summary>

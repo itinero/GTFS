@@ -24,7 +24,7 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override string[] GetSwitch()
         {
-            return new string[] { "-bj", "--bounding-geojson" };
+            return new string[] { "--bj", "--bounding-geojson" };
         }
 
         /// <summary>

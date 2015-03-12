@@ -35,7 +35,7 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override string[] GetSwitch()
         {
-            return new string[] { "-rf", "--write-feed" };
+            return new string[] { "--rf", "--write-feed" };
         }
 
         /// <summary>
