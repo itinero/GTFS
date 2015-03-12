@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using System;
+using System.Text;
 
 namespace GTFS
 {
@@ -92,7 +93,7 @@ namespace GTFS
 
                     // write agency details.
                     data[0] = this.WriteFieldString("agency", "agency_id", agency.Id);
-                    data[1] = this.WriteFieldString("agency", "agency_name", agency.Name);
+                    data[1] = this.WriteFieldString("agency", "agency_name", agency.Name, true);
                     data[2] = this.WriteFieldString("agency", "agency_url", agency.URL);
                     data[3] = this.WriteFieldString("agency", "agency_timezone", agency.Timezone);
                     data[4] = this.WriteFieldString("agency", "agency_lang", agency.LanguageCode);
@@ -310,8 +311,8 @@ namespace GTFS
                 }
 
                 // write agency details.
-                data[0] = this.WriteFieldString("feed_info", "feed_publisher_name", entity.PublisherName);
-                data[1] = this.WriteFieldString("feed_info", "feed_publisher_url", entity.PublisherUrl);
+                data[0] = this.WriteFieldString("feed_info", "feed_publisher_name", entity.PublisherName, true);
+                data[1] = this.WriteFieldString("feed_info", "feed_publisher_url", entity.PublisherUrl, true);
                 data[2] = this.WriteFieldString("feed_info", "feed_lang", entity.Lang);
                 data[3] = this.WriteFieldString("feed_info", "feed_start_date", entity.StartDate);
                 data[4] = this.WriteFieldString("feed_info", "feed_end_date", entity.EndDate);
@@ -400,8 +401,8 @@ namespace GTFS
                     // write agency details.
                     data[0] = this.WriteFieldString("routes", "route_id", entity.Id);
                     data[1] = this.WriteFieldString("routes", "agency_id", entity.AgencyId);
-                    data[2] = this.WriteFieldString("routes", "route_short_name", entity.ShortName);
-                    data[3] = this.WriteFieldString("routes", "route_long_name", entity.LongName);
+                    data[2] = this.WriteFieldString("routes", "route_short_name", entity.ShortName, true);
+                    data[3] = this.WriteFieldString("routes", "route_long_name", entity.LongName, true);
                     data[4] = this.WriteFieldString("routes", "route_desc", entity.Description);
                     data[5] = this.WriteFieldRouteType("routes", "route_type", entity.Type);
                     data[6] = this.WriteFieldString("routes", "route_url", entity.Url);
@@ -495,8 +496,8 @@ namespace GTFS
                     // write agency details.
                     data[0] = this.WriteFieldString("stops", "stop_id", entity.Id);
                     data[1] = this.WriteFieldString("stops", "stop_code", entity.Code);
-                    data[2] = this.WriteFieldString("stops", "stop_name", entity.Name);
-                    data[3] = this.WriteFieldString("stops", "stop_desc", entity.Description);
+                    data[2] = this.WriteFieldString("stops", "stop_name", entity.Name, true);
+                    data[3] = this.WriteFieldString("stops", "stop_desc", entity.Description, true);
                     data[4] = this.WriteFieldDouble("stops", "stop_lat", entity.Latitude);
                     data[5] = this.WriteFieldDouble("stops", "stop_lon", entity.Longitude);
                     data[6] = this.WriteFieldString("stops", "zone_id", entity.Zone);
@@ -551,7 +552,7 @@ namespace GTFS
                     data[2] = this.WriteFieldTimeOfDay("stop_times", "departure_time", entity.DepartureTime);
                     data[3] = this.WriteFieldString("stop_times", "stop_id", entity.StopId);
                     data[4] = this.WriteFieldUint("stop_times", "stop_sequence", entity.StopSequence);
-                    data[5] = this.WriteFieldString("stop_times", "stop_headsign", entity.StopHeadsign);
+                    data[5] = this.WriteFieldString("stop_times", "stop_headsign", entity.StopHeadsign, true);
                     data[6] = this.WriteFieldPickupType("stop_times", "pickup_type", entity.PickupType);
                     data[7] = this.WriteFieldDropOffType("stop_times", "drop_off_type", entity.DropOffType);
                     data[8] = this.WriteFieldString("stop_times", "shape_dist_traveled", entity.ShapeDistTravelled);
@@ -640,7 +641,7 @@ namespace GTFS
                     data[1] = this.WriteFieldString("trips", "route_id", entity.RouteId);
                     data[2] = this.WriteFieldString("trips", "service_id", entity.ServiceId);
                     data[3] = this.WriteFieldString("trips", "trip_headsign", entity.Headsign);
-                    data[4] = this.WriteFieldString("trips", "trip_short_name", entity.ShortName);
+                    data[4] = this.WriteFieldString("trips", "trip_short_name", entity.ShortName, true);
                     data[5] = this.WriteFieldDirectionType("trips", "direction_id", entity.Direction);
                     data[6] = this.WriteFieldString("trips", "block_id", entity.BlockId);
                     data[7] = this.WriteFieldString("trips", "shape_id", entity.ShapeId);
@@ -660,6 +661,28 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value)
         {
+            var quote = value != null && value.Contains(',');
+            return this.WriteFieldString(name, fieldName, value, quote);
+        }
+
+        /// <summary>
+        /// Writes a string-field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <param name="quote"></param>
+        /// <returns></returns>
+        protected virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
+        {
+            if(quote)
+            { // quotes.
+                var valueBuilder = new StringBuilder();
+                valueBuilder.Append('"');
+                valueBuilder.Append(value);
+                valueBuilder.Append('"');
+                return valueBuilder.ToString();
+            }
             return value;
         }
 
