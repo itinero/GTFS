@@ -253,12 +253,12 @@ namespace GTFS
             filesToRead.Add(file.Name);
 
             // start with a queue of one file and traverse the dependency tree down.
-            Queue<string> queue = new Queue<string>();
+            var queue = new Queue<string>();
             queue.Enqueue(file.Name);
             while (queue.Count > 0)
             {
                 // dequeue current file.
-                string currentFile = queue.Dequeue();
+                var currentFile = queue.Dequeue();
                 filesToRead.Add(currentFile);
 
                 // enqueue dependencies if any.
@@ -337,6 +337,11 @@ namespace GTFS
             dependencies.Add("routes");
             dependencyTree.Add("trips", dependencies);
 
+            // transfers => (stops)
+            dependencies = new HashSet<string>();
+            dependencies.Add("stops");
+            dependencyTree.Add("transfers", dependencies);
+
             return dependencyTree;
         }
 
@@ -395,6 +400,9 @@ namespace GTFS
                     break;
                 case "trips":
                     this.Read<Trip>(file, feed, this.ParseTrip, feed.AddTrip);
+                    break;
+                case "transfers":
+                    this.Read<Transfer>(file, feed, this.ParseTransfer, feed.AddTransfer);
                     break;
                 case "frequencies":
                     this.Read<Frequency>(file, feed, this.ParseFrequency, feed.AddFrequency);
@@ -1147,7 +1155,45 @@ namespace GTFS
         /// <returns></returns>
         protected virtual Transfer ParseTransfer(T feed, GTFSSourceFileHeader header, string[] data)
         {
-            throw new NotImplementedException();
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, this.TransferMap, "from_stop_id");
+            this.CheckRequiredField(header, header.Name, this.TransferMap, "to_stop_id");
+            this.CheckRequiredField(header, header.Name, this.TransferMap, "transfer_type");
+
+            // parse/set all fields.
+            var transfer = new Transfer();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseTransferField(feed, header, transfer, header.GetColumn(idx), data[idx]);
+            }
+            return transfer;
+        }
+
+        /// <summary>
+        /// Parses a transfer field.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <param name="header"></param>
+        /// <param name="transfer"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseTransferField(T feed, GTFSSourceFileHeader header, Transfer transfer, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "from_stop_id":
+                    transfer.FromStopId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "to_stop_id":
+                    transfer.ToStopId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "transfer_type":
+                    transfer.TransferType = this.ParseFieldTransferType(header.Name, fieldName, value);
+                    break;
+                case "min_transfer_time":
+                    transfer.MinimumTransferTime = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -1391,6 +1437,38 @@ namespace GTFS
                     return PaymentMethodType.OnBoard;
                 case "1":
                     return PaymentMethodType.BeforeBoarding;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a transfer type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual TransferType ParseFieldTransferType(string name, string fieldName, string value)
+        {
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            // - 0 or (empty) - This is a recommended transfer point between two routes.
+            // - 1 - This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes.
+            // - 2 - This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by min_transfer_time.
+            // - 3 - Transfers are not possible between routes at this location.
+
+            switch (value)
+            {
+                case "0":
+                case "":
+                    return TransferType.Recommended;
+                case "1":
+                    return TransferType.TimedTransfer;
+                case "2":
+                    return TransferType.MinimumTime;
+                case "3":
+                    return TransferType.NotPossible;
             }
             throw new GTFSParseException(name, fieldName, value);
         }

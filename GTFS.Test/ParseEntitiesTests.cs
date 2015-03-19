@@ -36,7 +36,7 @@ namespace GTFS.Test
     /// Contains basic parsing tests for each entity.
     /// </summary>
     [TestFixture]
-    public class ParseEntities
+    public class ParseEntitiesTests
     {
         /// <summary>
         /// Builds the source from embedded streams.
@@ -67,6 +67,8 @@ namespace GTFS.Test
                 Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops"));
             source.Add(new GTFSSourceFileStream(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.transfers.txt"), "transfers"));
             return source;
         }
 
@@ -77,7 +79,7 @@ namespace GTFS.Test
         public void ParseAgencies()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -105,7 +107,7 @@ namespace GTFS.Test
         public void ParseRoutes()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -183,7 +185,7 @@ namespace GTFS.Test
         public void ParseShapes()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -221,7 +223,7 @@ namespace GTFS.Test
         public void ParseTrips()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>(false);
+            var reader = new GTFSReader<GTFSFeed>(false);
 
             // build the source
             var source = this.BuildSource();
@@ -263,7 +265,7 @@ namespace GTFS.Test
         public void ParseStops()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -303,7 +305,7 @@ namespace GTFS.Test
         public void ParseStopTimes()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>(false);
+            var reader = new GTFSReader<GTFSFeed>(false);
 
             // build the source
             var source = this.BuildSource();
@@ -349,7 +351,7 @@ namespace GTFS.Test
         public void ParseFrequencies()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>(false);
+            var reader = new GTFSReader<GTFSFeed>(false);
 
             // build the source
             var source = this.BuildSource();
@@ -390,7 +392,7 @@ namespace GTFS.Test
         public void ParseCalendars()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
             reader.DateTimeReader = (dateString) =>
             {
                 var year = int.Parse(dateString.Substring(0, 4));
@@ -445,7 +447,7 @@ namespace GTFS.Test
         public void ParseCalendarDates()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
             reader.DateTimeReader = (dateString) =>
             {
                 var year = int.Parse(dateString.Substring(0, 4));
@@ -479,7 +481,7 @@ namespace GTFS.Test
         public void ParseFareRules()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -534,7 +536,7 @@ namespace GTFS.Test
         public void ParseFareAttributes()
         {
             // create the reader.
-            GTFSReader<GTFSFeed> reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>();
 
             // build the source
             var source = this.BuildSource();
@@ -566,6 +568,50 @@ namespace GTFS.Test
             Assert.AreEqual(PaymentMethodType.OnBoard, fareAttributes[idx].PaymentMethod);
             Assert.AreEqual(0, fareAttributes[idx].Transfers);
             Assert.AreEqual(string.Empty, fareAttributes[idx].TransferDuration);
+        }
+
+        /// <summary>
+        /// Tests parsing transfers.
+        /// </summary>
+        [Test]
+        public void ParseTransfers()
+        {
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>();
+
+            // build the source
+            var source = this.BuildSource();
+
+            // execute the reader.
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("transfers")));
+
+            // test result.
+            Assert.IsNotNull(feed.GetTransfers());
+            var tranfers = feed.GetTransfers().ToList();
+            Assert.AreEqual(3, tranfers.Count);
+
+            //from_stop_id,to_stop_id,transfer_type,min_transfer_time
+
+            //BULLFROG,STAGECOACH,2,300
+            int idx = 0;
+            Assert.AreEqual("BULLFROG", tranfers[idx].FromStopId);
+            Assert.AreEqual("STAGECOACH", tranfers[idx].ToStopId);
+            Assert.AreEqual(TransferType.MinimumTime, tranfers[idx].TransferType);
+            Assert.AreEqual("300", tranfers[idx].MinimumTransferTime);
+
+            //BULLFROG,BEATTY_AIRPORT,3,
+            idx = 1;
+            Assert.AreEqual("BULLFROG", tranfers[idx].FromStopId);
+            Assert.AreEqual("BEATTY_AIRPORT", tranfers[idx].ToStopId);
+            Assert.AreEqual(TransferType.NotPossible, tranfers[idx].TransferType);
+            Assert.AreEqual(string.Empty, tranfers[idx].MinimumTransferTime);
+
+            //EMSI,AMV,1,
+            idx = 2;
+            Assert.AreEqual("EMSI", tranfers[idx].FromStopId);
+            Assert.AreEqual("AMV", tranfers[idx].ToStopId);
+            Assert.AreEqual(TransferType.TimedTransfer, tranfers[idx].TransferType);
+            Assert.AreEqual(string.Empty, tranfers[idx].MinimumTransferTime);
         }
     }
 }

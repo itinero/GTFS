@@ -23,6 +23,7 @@
 using GTFS.Filters;
 using GTFS.Validation;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace GTFS.Test.Filters
 {
@@ -54,6 +55,7 @@ namespace GTFS.Test.Filters
             // execute filter.
             var filtered = filter.Filter(feed);
             Assert.IsTrue(GTFSFeedValidation.Validate(filtered));
+            GTFSAssert.AreEqual(feed, filtered);
         }
 
         /// <summary>
@@ -69,6 +71,12 @@ namespace GTFS.Test.Filters
             // execute the reader.
             var feed = reader.Read(source);
 
+            // create list of object id's that should remain after filtering.
+            var expectedTripIds = new string[] { "AB1", "AB2", "BFC1", "BFC2" };
+            var expectedStopIds = new string[] { "BULLFROG", "BEATTY_AIRPORT", "FUR_CREEK_RES" };
+            var expectedRouteIds = new string[] { "AB", "BFC" };
+            var expectedShapeIds = new string[] { "shape_1", "shape_2", "shape_6", "shape_7" };
+
             // create the filter.
             var filter = new GTFSFeedStopsFilter((x) =>
             {
@@ -78,6 +86,51 @@ namespace GTFS.Test.Filters
             // execute filter.
             var filtered = filter.Filter(feed);
             Assert.IsTrue(GTFSFeedValidation.Validate(filtered));
+
+            // test for trips/stops.
+            foreach (var stop in filtered.GetStops())
+            {
+                Assert.Contains(stop.Id, expectedStopIds);
+            }
+            foreach(var trip in filtered.GetTrips())
+            {
+                Assert.Contains(trip.Id, expectedTripIds);
+            }
+            foreach (var route in filtered.GetRoutes())
+            {
+                Assert.Contains(route.Id, expectedRouteIds);
+            }
+            foreach (var shape in filtered.GetShapes())
+            {
+                Assert.Contains(shape.Id, expectedShapeIds);
+            }
+
+            // create the filter.
+            var stopIds = new HashSet<string>();
+            stopIds.Add("BULLFROG");
+            filter = new GTFSFeedStopsFilter(stopIds);
+
+            // execute filter.
+            filtered = filter.Filter(feed);
+            Assert.IsTrue(GTFSFeedValidation.Validate(filtered));
+
+            // test for trips/stops.
+            foreach (var stop in filtered.GetStops())
+            {
+                Assert.Contains(stop.Id, expectedStopIds);
+            }
+            foreach (var trip in filtered.GetTrips())
+            {
+                Assert.Contains(trip.Id, expectedTripIds);
+            }
+            foreach (var route in filtered.GetRoutes())
+            {
+                Assert.Contains(route.Id, expectedRouteIds);
+            }
+            foreach (var shape in filtered.GetShapes())
+            {
+                Assert.Contains(shape.Id, expectedShapeIds);
+            }
         }
     }
 }

@@ -28,19 +28,19 @@ namespace GTFS.Entities.Enumerations
     public enum TransferType
     {
         /// <summary>
-        /// This is a recommended transfer point between two routes.
+        /// 0: This is a recommended transfer point between two routes.
         /// </summary>
         Recommended,
         /// <summary>
-        /// This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes.
+        /// 1: This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes.
         /// </summary>
         TimedTransfer,
         /// <summary>
-        /// This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by min_transfer_time.
+        /// 2: This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by min_transfer_time.
         /// </summary>
         MinimumTime,
         /// <summary>
-        /// Transfers are not possible between routes at this location.
+        /// 3: Transfers are not possible between routes at this location.
         /// </summary>
         NotPossible
     }

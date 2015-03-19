@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2015 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,11 @@ using System.Collections.Generic;
 namespace GTFS.Filters
 {
     /// <summary>
-    /// Represents a GTFS feed filter that leaves only date related to the given stops.
+    /// Represents a GTFS feed filter that leaves only data related to the some filtered stops.
+    /// 
+    /// - Leaves only trips related to the filtered stops.
+    /// - Leaves trips intact, will add stops again to keep complete trips.
+    /// - Filters out all other data not related to any of the trips or stops.
     /// </summary>
     public class GTFSFeedStopsFilter : GTFSFeedFilter
     {
@@ -205,6 +209,15 @@ namespace GTFS.Filters
                     stopIds.Contains(transfer.ToStopId))
                 {
                     filteredFeed.AddTransfer(transfer);
+                }
+            }
+
+            // filter shapes.
+            foreach(var shape in feed.GetShapes())
+            {
+                if(shapeIds.Contains(shape.Id))
+                {
+                    filteredFeed.AddShape(shape);
                 }
             }
             return filteredFeed;

@@ -73,8 +73,11 @@
     <Compile Include="DirectorySourceTest.cs" />
     <Compile Include="Filters\GTFSFeedStopsFilterTests.cs" />
     <Compile Include="GTFSAssert.cs" />
-    <Compile Include="ParseEntities.cs" />
+    <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="sample-feed\transfers.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Compile Include="StopsToShape\StopAtShapesFinderTests.cs" />
     <Compile Include="Validation\GTFSFeedValidationTests.cs" />
   </ItemGroup>

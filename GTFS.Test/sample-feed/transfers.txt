@@ -1,0 +1,4 @@
+﻿from_stop_id,to_stop_id,transfer_type,min_transfer_time
+BULLFROG,STAGECOACH,2,300
+BULLFROG,BEATTY_AIRPORT,3,
+EMSI,AMV,1,
