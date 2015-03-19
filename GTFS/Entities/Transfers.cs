@@ -36,14 +36,14 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("from_stop_id")]
-        public Stop FromStop { get; set; }
+        public string FromStopId { get; set; }
 
         /// <summary>
         /// Gets or sets a stop or station where a connection between routes ends.
         /// </summary>
         [Required]
         [FieldName("to_stop_id")]
-        public Stop ToStop { get; set; }
+        public string ToStopId { get; set; }
 
         /// <summary>
         /// Gets or sets the type of connection for the specified (from_stop_id, to_stop_id) pair.

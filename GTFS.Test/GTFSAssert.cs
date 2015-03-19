@@ -69,24 +69,26 @@ namespace GTFS.Test
                 (x, y) => x.Id == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
             GTFSAssert.AreEqual<CalendarDate>(actual.GetCalendarDates(), expected.GetCalendarDates(),
                 (x, y) => x.ServiceId == y.ServiceId && x.Date == y.Date && x.ExceptionType == y.ExceptionType, (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<Calendar>(actual.GetCalendars(), expected.GetCalendars(),
-            //    (x, y) => x.ToString() == y.ToString(), (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<FareAttribute>(actual.GetFareAttributes(), expected.GetFareAttributes(),
-            //    (x, y) => x.CurrencyType, (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<FareRule>(actual.GetFareRule(), expected.GetFareRule(),
-            //    (x, y) => x.ServiceId == y.ServiceId && x.Date == y.Date && x.ExceptionType == y.ExceptionType, (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<Frequency>(actual.GetFrequencies(), expected.GetFrequencies(),
-            //    (x, y) => x. == y.ServiceId && x.Date == y.Date && x.ExceptionType == y.ExceptionType, (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<Calendar>(actual.GetCalendars(), expected.GetCalendars(),
+                (x, y) => x.ToString() == y.ToString(), (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<FareAttribute>(actual.GetFareAttributes(), expected.GetFareAttributes(),
+                (x, y) => x.FareId == y.FareId, (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<FareRule>(actual.GetFareRules(), expected.GetFareRules(),
+                (x, y) => x.ContainsId == y.ContainsId && x.DestinationId == y.DestinationId &&
+                    x.FareId == y.FareId && x.OriginId == y.OriginId && x.RouteId == y.RouteId, 
+                    (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<Frequency>(actual.GetFrequencies(), expected.GetFrequencies(),
+                (x, y) => x.TripId == y.TripId && x.StartTime == y.StartTime, (x, y) => GTFSAssert.AreEqual(x, y));
             GTFSAssert.AreEqual<Route>(actual.GetRoutes(), expected.GetRoutes(),
                 (x, y) => x.Id == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
             GTFSAssert.AreEqual<Shape>(actual.GetShapes(), expected.GetShapes(),
                 (x, y) => x.Id == y.Id && x.Sequence == y.Sequence, (x, y) => GTFSAssert.AreEqual(x, y));
             GTFSAssert.AreEqual<Stop>(actual.GetStops(), expected.GetStops(),
                 (x, y) => x.Id == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<StopTime>(actual.GetStopTimes(), expected.GetStopTimes(),
-            //    (x, y) => x. == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
-            //GTFSAssert.AreEqual<Transfer>(actual.GetTransfers(), expected.GetTransfers(),
-            //    (x, y) => x.Id == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<StopTime>(actual.GetStopTimes(), expected.GetStopTimes(),
+                (x, y) => x.TripId == y.TripId && x.StopId == y.StopId && x.StopSequence == y.StopSequence, (x, y) => GTFSAssert.AreEqual(x, y));
+            GTFSAssert.AreEqual<Transfer>(actual.GetTransfers(), expected.GetTransfers(),
+                (x, y) => x.FromStopId == y.FromStopId && x.ToStopId == y.ToStopId && x.TransferType == y.TransferType, (x, y) => GTFSAssert.AreEqual(x, y));
             GTFSAssert.AreEqual<Trip>(actual.GetTrips(), expected.GetTrips(),
                 (x, y) => x.Id == y.Id, (x, y) => GTFSAssert.AreEqual(x, y));
         }
@@ -355,9 +357,9 @@ namespace GTFS.Test
                 Assert.IsNull(expected);
                 return;
             }
-            Assert.AreEqual(actual.FromStop, expected.FromStop);
+            Assert.AreEqual(actual.FromStopId, expected.FromStopId);
             Assert.AreEqual(actual.MinimumTransferTime, expected.MinimumTransferTime);
-            Assert.AreEqual(actual.ToStop, expected.ToStop);
+            Assert.AreEqual(actual.ToStopId, expected.ToStopId);
             Assert.AreEqual(actual.TransferType, expected.TransferType);
         }
 

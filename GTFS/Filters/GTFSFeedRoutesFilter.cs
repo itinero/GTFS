@@ -182,8 +182,8 @@ namespace GTFS.Filters
 
             foreach (var transfer in feed.GetTransfers())
             {
-                if (stopIds.Contains(transfer.FromStop.Id) &&
-                    stopIds.Contains(transfer.ToStop.Id))
+                if (stopIds.Contains(transfer.FromStopId) &&
+                    stopIds.Contains(transfer.ToStopId))
                 {
                     filteredFeed.AddTransfer(transfer);
                 }

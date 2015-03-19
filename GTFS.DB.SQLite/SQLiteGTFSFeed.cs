@@ -303,10 +303,11 @@ namespace GTFS.DB.SQLite
                 return new FareAttribute()
                 {
                     FareId = x.GetString(0),
-                    CurrencyType = x.IsDBNull(1) ? null : x.GetString(1),
-                    PaymentMethod = (PaymentMethodType)x.GetInt64(2),
-                    Transfers = x.IsDBNull(3) ? null : (uint?)x.GetInt64(3),
-                    TransferDuration = x.IsDBNull(4) ? null : x.GetString(4)
+                    Price = x.GetString(1),
+                    CurrencyType = x.IsDBNull(1) ? null : x.GetString(2),
+                    PaymentMethod = (PaymentMethodType)x.GetInt64(3),
+                    Transfers = x.IsDBNull(4) ? null : (uint?)x.GetInt64(4),
+                    TransferDuration = x.IsDBNull(5) ? null : x.GetString(5)
                 };
             });
         }
@@ -816,7 +817,19 @@ namespace GTFS.DB.SQLite
 
         public IEnumerable<Transfer> GetTransfers()
         {
-            throw new NotImplementedException();
+            string sql = "SELECT feed_id, from_stop_id, to_stop_id, transfer_type, min_transfer_time FROM transfer";
+            var parameters = new List<SQLiteParameter>();
+
+            return new SQLiteEnumerable<Transfer>(_connection, sql, new SQLiteParameter[0], (x) =>
+            {
+                return new Transfer()
+                {
+                    FromStopId = x.GetString(1),
+                    ToStopId = x.GetString(2),
+                    TransferType = (TransferType)x.GetInt64(3),
+                    MinimumTransferTime = x.GetString(4)
+                };
+            });
         }
 
         public IEnumerable<Transfer> GetTransfersForFromStop(string stopId)

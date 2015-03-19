@@ -592,8 +592,8 @@ namespace GTFS
                     }
 
                     // write agency details.
-                    data[0] = this.WriteFieldString("transfers", "from_stop_id", entity.FromStop.Id);
-                    data[1] = this.WriteFieldString("transfers", "to_stop_id", entity.ToStop.Id);
+                    data[0] = this.WriteFieldString("transfers", "from_stop_id", entity.FromStopId);
+                    data[1] = this.WriteFieldString("transfers", "to_stop_id", entity.ToStopId);
                     data[2] = this.WriteFieldTransferType("transfers", "transfer_type", entity.TransferType);
                     data[3] = this.WriteFieldString("transfers", "min_transfer_time", entity.MinimumTransferTime);
                     file.Write(data);

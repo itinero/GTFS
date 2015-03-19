@@ -567,7 +567,7 @@ namespace GTFS
         /// <returns></returns>
         public IEnumerable<Transfer> GetTransfersForFromStop(string stopId)
         {
-            return _transfers.Where(x => x.FromStop.Id == stopId);
+            return _transfers.Where(x => x.FromStopId == stopId);
         }
 
         /// <summary>
@@ -577,7 +577,7 @@ namespace GTFS
         /// <returns></returns>
         public int RemoveTransfersForFromStop(string stopId)
         {
-            return _transfers.RemoveAll(x => x.FromStop.Id == stopId);
+            return _transfers.RemoveAll(x => x.FromStopId == stopId);
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace GTFS
         /// <returns></returns>
         public IEnumerable<Transfer> GetTransfersForToStop(string stopId)
         {
-            return _transfers.Where(x => x.ToStop.Id == stopId);
+            return _transfers.Where(x => x.ToStopId == stopId);
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace GTFS
         /// <returns></returns>
         public int RemoveTransfersForToStop(string stopId)
         {
-            return _transfers.RemoveAll(x => x.ToStop.Id == stopId);
+            return _transfers.RemoveAll(x => x.ToStopId == stopId);
         }
 
         /// <summary>
