@@ -60,6 +60,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\SQLiteAgencyCollection.cs" />
+    <Compile Include="Collections\SQLiteCalendarCollection.cs" />
+    <Compile Include="Collections\SQLiteCalendarDateCollection.cs" />
+    <Compile Include="Collections\SQLiteFareAttributesCollection.cs" />
+    <Compile Include="Collections\SQLiteFareRulesCollection.cs" />
+    <Compile Include="Collections\SQLiteFrequencyCollection.cs" />
+    <Compile Include="Collections\SQLiteRouteCollection.cs" />
+    <Compile Include="Collections\SQLiteShapesCollection.cs" />
+    <Compile Include="Collections\SQLiteStopCollection.cs" />
+    <Compile Include="Collections\SQLiteStopTimeCollection.cs" />
+    <Compile Include="Collections\SQLiteTransferCollection.cs" />
+    <Compile Include="Collections\SQLiteTripCollection.cs" />
     <Compile Include="SQLiteGTFSFeed.cs" />
     <Compile Include="SQLiteGTFSFeedDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,6 +94,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -54,20 +54,20 @@ namespace GTFS.StopsToShape
             var minTolerance = 1;
             if (string.IsNullOrWhiteSpace(tripId)) { throw new ArgumentNullException("tripId"); }
 
-            var trip = feed.GetTrip(tripId);
+            var trip = feed.Trips.Get(tripId);
             if (trip == null) { throw new Exception(string.Format("Trip with id {0} not found.", tripId)); }
 
             var stopsAtShape = new List<StopAtShape>();
             var shapeId = trip.ShapeId;
             if(!string.IsNullOrWhiteSpace(shapeId))
             { // there is an id.
-                var shapes = feed.GetShapes(shapeId).ToList();
+                var shapes = feed.Shapes.Get(shapeId).ToList();
                 shapes.Sort((x, y) =>
                 {
                     return x.Sequence.CompareTo(y.Sequence);
                 });
 
-                var stops = feed.GetStopTimesForTrip(tripId).ToList();
+                var stops = feed.StopTimes.GetForTrip(tripId).ToList();
                 stops.Sort((x, y) =>
                 {
                     return x.StopSequence.CompareTo(y.StopSequence);
@@ -77,7 +77,7 @@ namespace GTFS.StopsToShape
                 int lastFoundShape = -1;
                 while (stopIdx < stops.Count)
                 { // find a shape entry for the current stop.
-                    var stop = feed.GetStop(stops[stopIdx].StopId);
+                    var stop = feed.Stops.Get(stops[stopIdx].StopId);
                     var shapeFoundIdx = -1;
                     var shapeDistanceTolerance = minTolerance; // when shape point < minTolerance;
                     while (shapeDistanceTolerance < maxTolerance)

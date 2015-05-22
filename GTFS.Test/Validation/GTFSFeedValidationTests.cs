@@ -64,7 +64,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            feed.RemoveAgency("DTA");
+            feed.Agencies.Remove("DTA");
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
@@ -84,7 +84,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            feed.RemoveStop("BULLFROG");
+            feed.Stops.Remove("BULLFROG");
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
@@ -104,7 +104,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            feed.RemoveRoute("AB");
+            feed.Routes.Remove("AB");
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
@@ -124,7 +124,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            feed.RemoveTrip("AB1");
+            feed.Trips.Remove("AB1");
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
@@ -144,7 +144,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            (feed.GetStopTimes() as List<StopTime>).RemoveAt(0);
+            (feed.StopTimes.Get() as List<StopTime>).RemoveAt(0);
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));

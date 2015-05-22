@@ -71,6 +71,14 @@
     <Compile Include="Attributes\FileNameAttribute.cs" />
     <Compile Include="DB\IGTFSFeedDB.cs" />
     <Compile Include="DB\Memory\GTFSFeedDB.cs" />
+    <Compile Include="Entities\Collections\IEntityCollection.cs" />
+    <Compile Include="Entities\Collections\IStopTimeCollection.cs" />
+    <Compile Include="Entities\Collections\ITransferCollection.cs" />
+    <Compile Include="Entities\Collections\IUniqueEntityCollection.cs" />
+    <Compile Include="Entities\Collections\EntityListCollection.cs" />
+    <Compile Include="Entities\Collections\StopTimeListCollection.cs" />
+    <Compile Include="Entities\Collections\TransferListCollection.cs" />
+    <Compile Include="Entities\Collections\UniqueEntityListCollection.cs" />
     <Compile Include="Entities\Enumerations\ExceptionType.cs" />
     <Compile Include="Attributes\FieldNameAttribute.cs" />
     <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />

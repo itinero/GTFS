@@ -44,19 +44,19 @@ namespace GTFS
         public void Write(T feed, IEnumerable<IGTFSTargetFile> target)
         {
             // write files on-by-one.
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), feed.GetAgencies());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), feed.GetCalendarDates());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), feed.GetCalendars());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_attributes"), feed.GetFareAttributes());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_rules"), feed.GetFareRules());
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), feed.Agencies);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), feed.CalendarDates);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), feed.Calendars);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_attributes"), feed.FareAttributes);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_rules"), feed.FareRules);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "feed_info"), feed.GetFeedInfo());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "frequencies"), feed.GetFrequencies());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "routes"), feed.GetRoutes());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), feed.GetShapes());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), feed.GetStops());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), feed.GetStopTimes());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), feed.GetTransfers());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), feed.GetTrips());
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "frequencies"), feed.Frequencies);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "routes"), feed.Routes);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), feed.Shapes);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), feed.Stops);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), feed.StopTimes);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), feed.Transfers);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), feed.Trips);
         }
 
         /// <summary>

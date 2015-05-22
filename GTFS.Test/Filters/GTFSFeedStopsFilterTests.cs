@@ -88,19 +88,19 @@ namespace GTFS.Test.Filters
             Assert.IsTrue(GTFSFeedValidation.Validate(filtered));
 
             // test for trips/stops.
-            foreach (var stop in filtered.GetStops())
+            foreach (var stop in filtered.Stops)
             {
                 Assert.Contains(stop.Id, expectedStopIds);
             }
-            foreach(var trip in filtered.GetTrips())
+            foreach(var trip in filtered.Trips)
             {
                 Assert.Contains(trip.Id, expectedTripIds);
             }
-            foreach (var route in filtered.GetRoutes())
+            foreach (var route in filtered.Routes)
             {
                 Assert.Contains(route.Id, expectedRouteIds);
             }
-            foreach (var shape in filtered.GetShapes())
+            foreach (var shape in filtered.Shapes)
             {
                 Assert.Contains(shape.Id, expectedShapeIds);
             }
@@ -115,19 +115,19 @@ namespace GTFS.Test.Filters
             Assert.IsTrue(GTFSFeedValidation.Validate(filtered));
 
             // test for trips/stops.
-            foreach (var stop in filtered.GetStops())
+            foreach (var stop in filtered.Stops)
             {
                 Assert.Contains(stop.Id, expectedStopIds);
             }
-            foreach (var trip in filtered.GetTrips())
+            foreach (var trip in filtered.Trips)
             {
                 Assert.Contains(trip.Id, expectedTripIds);
             }
-            foreach (var route in filtered.GetRoutes())
+            foreach (var route in filtered.Routes)
             {
                 Assert.Contains(route.Id, expectedRouteIds);
             }
-            foreach (var shape in filtered.GetShapes())
+            foreach (var shape in filtered.Shapes)
             {
                 Assert.Contains(shape.Id, expectedShapeIds);
             }

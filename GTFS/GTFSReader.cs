@@ -369,43 +369,43 @@ namespace GTFS
             switch(file.Name.ToLower())
             {
                 case "agency":
-                    this.Read<Agency>(file, feed, this.ParseAgency, feed.AddAgency);
+                    this.Read<Agency>(file, feed, this.ParseAgency, feed.Agencies.Add);
                     break;
                 case "calendar":
-                    this.Read<Calendar>(file, feed, this.ParseCalender, feed.AddCalendar);
+                    this.Read<Calendar>(file, feed, this.ParseCalender, feed.Calendars.Add);
                     break;
                 case "calendar_dates":
-                    this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.AddCalendarDate);
+                    this.Read<CalendarDate>(file, feed, this.ParseCalendarDate, feed.CalendarDates.Add);
                     break;
                 case "fare_attributes":
-                    this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.AddFareAttribute);
+                    this.Read<FareAttribute>(file, feed, this.ParseFareAttribute, feed.FareAttributes.Add);
                     break;
                 case "fare_rules":
-                    this.Read<FareRule>(file, feed, this.ParseFareRule, feed.AddFareRule);
+                    this.Read<FareRule>(file, feed, this.ParseFareRule, feed.FareRules.Add);
                     break;
                 case "feed_info":
                     this.Read<FeedInfo>(file, feed, this.ParseFeedInfo, feed.SetFeedInfo);
                     break;
                 case "routes":
-                    this.Read<Route>(file, feed, this.ParseRoute, feed.AddRoute);
+                    this.Read<Route>(file, feed, this.ParseRoute, feed.Routes.Add);
                     break;
                 case "shapes":
-                    this.Read<Shape>(file, feed, this.ParseShape, feed.AddShape);
+                    this.Read<Shape>(file, feed, this.ParseShape, feed.Shapes.Add);
                     break;
                 case "stops":
-                    this.Read<Stop>(file, feed, this.ParseStop, feed.AddStop);
+                    this.Read<Stop>(file, feed, this.ParseStop, feed.Stops.Add);
                     break;
                 case "stop_times":
-                    this.Read<StopTime>(file, feed, this.ParseStopTime, feed.AddStopTime);
+                    this.Read<StopTime>(file, feed, this.ParseStopTime, feed.StopTimes.Add);
                     break;
                 case "trips":
-                    this.Read<Trip>(file, feed, this.ParseTrip, feed.AddTrip);
+                    this.Read<Trip>(file, feed, this.ParseTrip, feed.Trips.Add);
                     break;
                 case "transfers":
-                    this.Read<Transfer>(file, feed, this.ParseTransfer, feed.AddTransfer);
+                    this.Read<Transfer>(file, feed, this.ParseTransfer, feed.Transfers.Add);
                     break;
                 case "frequencies":
-                    this.Read<Frequency>(file, feed, this.ParseFrequency, feed.AddFrequency);
+                    this.Read<Frequency>(file, feed, this.ParseFrequency, feed.Frequencies.Add);
                     break;
             }
         }

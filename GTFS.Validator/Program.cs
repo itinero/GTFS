@@ -52,18 +52,18 @@ namespace GTFS.Validator
                         var feed = parser.Read(directorySource);
 
                         // report the result.
-                        Console.WriteLine("Parsed {0} Agencies", feed.GetAgencies().Count());
-                        Console.WriteLine("Parsed {0} CalendarDates", feed.GetCalendarDates().Count());
-                        Console.WriteLine("Parsed {0} Calendars", feed.GetCalendars().Count());
-                        Console.WriteLine("Parsed {0} FareAttributes", feed.GetFareAttributes().Count());
-                        Console.WriteLine("Parsed {0} FareRules", feed.GetFareRules().Count());
-                        Console.WriteLine("Parsed {0} Frequencies", feed.GetFrequencies().Count());
-                        Console.WriteLine("Parsed {0} Routes", feed.GetRoutes().Count());
-                        Console.WriteLine("Parsed {0} Shapes", feed.GetShapes().Count());
-                        Console.WriteLine("Parsed {0} Stops", feed.GetStops().Count());
-                        Console.WriteLine("Parsed {0} StopTimes", feed.GetStopTimes().Count());
-                        Console.WriteLine("Parsed {0} Transfers", feed.GetTransfers().Count());
-                        Console.WriteLine("Parsed {0} Trips", feed.GetTrips().Count());
+                        Console.WriteLine("Parsed {0} Agencies", feed.Agencies.Count);
+                        Console.WriteLine("Parsed {0} CalendarDates", feed.CalendarDates.ToList().Count);
+                        Console.WriteLine("Parsed {0} Calendars", feed.Calendars.ToList().Count);
+                        Console.WriteLine("Parsed {0} FareAttributes", feed.FareAttributes.ToList().Count);
+                        Console.WriteLine("Parsed {0} FareRules", feed.FareRules.Count);
+                        Console.WriteLine("Parsed {0} Frequencies", feed.Frequencies.ToList().Count);
+                        Console.WriteLine("Parsed {0} Routes", feed.Routes.Count);
+                        Console.WriteLine("Parsed {0} Shapes", feed.Shapes.ToList().Count);
+                        Console.WriteLine("Parsed {0} Stops", feed.Stops.Count);
+                        Console.WriteLine("Parsed {0} StopTimes", feed.StopTimes.ToList().Count);
+                        Console.WriteLine("Parsed {0} Transfers", feed.Transfers.ToList().Count);
+                        Console.WriteLine("Parsed {0} Trips", feed.Trips.Count);
 
                         Console.WriteLine(string.Empty);
                         Console.WriteLine("GTFS Feed in directory {0} was parsed successfully!",

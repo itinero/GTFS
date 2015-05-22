@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2015 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using GTFS.Entities;
+using GTFS.Entities.Collections;
 using System.Collections.Generic;
 
 namespace GTFS
@@ -31,136 +32,6 @@ namespace GTFS
     /// <remarks>To be used as a proxy to load data into memory/a database/...</remarks>
     public interface IGTFSFeed
     {
-        /// <summary>
-        /// Adds an agency.
-        /// </summary>
-        /// <param name="agency"></param>
-        void AddAgency(Agency agency);
-
-        /// <summary>
-        /// Gets the agency with the given id.
-        /// </summary>
-        /// <param name="agencyId"></param>
-        /// <returns></returns>
-        Agency GetAgency(string agencyId);
-
-        /// <summary>
-        /// Removes the agency with the given id.
-        /// </summary>
-        /// <param name="agencyId"></param>
-        /// <returns></returns>
-        bool RemoveAgency(string agencyId);
-
-        /// <summary>
-        /// Returns all agencies.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Agency> GetAgencies();
-
-        /// <summary>
-        /// Adds a new calendar.
-        /// </summary>
-        /// <param name="calendar"></param>
-        void AddCalendar(Calendar calendar);
-
-        /// <summary>
-        /// Returns all calendars.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Calendar> GetCalendars();
-
-        /// <summary>
-        /// Gets the calendars for the given service id.
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns></returns>
-        IEnumerable<Calendar> GetCalendars(string serviceId);
-
-        /// <summary>
-        /// Removes all calendars for the given service id.
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns>The number of calendars removed.</returns>
-        int RemoveCalendars(string serviceId);
-
-        /// <summary>
-        /// Adds a new calendar date.
-        /// </summary>
-        /// <param name="calendar"></param>
-        void AddCalendarDate(CalendarDate calendar);
-
-        /// <summary>
-        /// Returns all calendar dates.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<CalendarDate> GetCalendarDates();
-
-        /// <summary>
-        /// Returns all calendar dates for the given service id.
-        /// </summary>
-        /// <returns></returns>
-        /// <param name="serviceId"></param>
-        IEnumerable<CalendarDate> GetCalendarDates(string serviceId);
-
-        /// <summary>
-        /// Removes all calendar dates for the given service id.
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns>The number of calendar dates removed.</returns>
-        int RemoveCalendarDates(string serviceId);
-
-        /// <summary>
-        /// Adds a new fare attribute.
-        /// </summary>
-        /// <param name="fareAttribute"></param>
-        void AddFareAttribute(FareAttribute fareAttribute);
-
-        /// <summary>
-        /// Gets all fare attributes.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<FareAttribute> GetFareAttributes();
-
-        /// <summary>
-        /// Gets all fare attributes for the given fare id.
-        /// </summary>
-        /// <param name="fareId"></param>
-        /// <returns></returns>
-        IEnumerable<FareAttribute> GetFareAttributes(string fareId);
-
-        /// <summary>
-        /// Removes all fare attributes for the given fare id.
-        /// </summary>
-        /// <param name="fareId"></param>
-        /// <returns></returns>
-        int RemoveFareAttributes(string fareId);
-
-        /// <summary>
-        /// Adds a new fare rule.
-        /// </summary>
-        /// <param name="fareRule"></param>
-        void AddFareRule(FareRule fareRule);
-
-        /// <summary>
-        /// Gets all fare rules.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<FareRule> GetFareRules();
-
-        /// <summary>
-        /// Gets the fare rule for the given id.
-        /// </summary>
-        ///<param name="fareId"></param>
-        /// <returns></returns>
-        FareRule GetFareRule(string fareId);
-
-        /// <summary>
-        /// Removes the fare rule for the given id.
-        /// </summary>
-        ///<param name="fareId"></param>
-        /// <returns>true if removed.</returns>
-        bool RemoveFareRule(string fareId);
-
         /// <summary>
         /// Adds new feed info.
         /// </summary>
@@ -174,202 +45,99 @@ namespace GTFS
         FeedInfo GetFeedInfo();
 
         /// <summary>
-        /// Adds a new frequency.
+        /// Gets the collection of agencies.
         /// </summary>
-        /// <param name="frequency"></param>
-        void AddFrequency(Frequency frequency);
+        IUniqueEntityCollection<Agency> Agencies
+        {
+            get;
+        }
 
         /// <summary>
-        /// Returns all frequencies.
+        /// Gets the collection of calendars.
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<Frequency> GetFrequencies();
+        IEntityCollection<Calendar> Calendars
+        {
+            get;
+        }
 
         /// <summary>
-        /// Returns all frequencies for the given trip.
+        /// Gets the collection of calendar dates.
         /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        IEnumerable<Frequency> GetFrequencies(string tripId);
+        IEntityCollection<CalendarDate> CalendarDates
+        {
+            get;
+        }
 
         /// <summary>
-        /// Removes all frequencies for the given trip.
+        /// Gets the collection of fare attributes.
         /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        int RemoveFrequencies(string tripId);
+        IEntityCollection<FareAttribute> FareAttributes
+        {
+            get;
+        }
 
         /// <summary>
-        /// Adds a new route.
+        /// Gets the collection of fare rules.
         /// </summary>
-        /// <param name="route"></param>
-        void AddRoute(Route route);
+        IUniqueEntityCollection<FareRule> FareRules
+        {
+            get;
+        }
 
         /// <summary>
-        /// Returns all routes.
+        /// Gets the collection of frequencies.
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<Route> GetRoutes();
+        IEntityCollection<Frequency> Frequencies
+        {
+            get;
+        }
 
         /// <summary>
-        /// Returns the route for the given id.
+        /// Gets the collection of the routes.
         /// </summary>
-        /// <param name="routeId"></param>
-        /// <returns></returns>
-        Route GetRoute(string routeId);
+        IUniqueEntityCollection<Route> Routes
+        {
+            get;
+        }
 
         /// <summary>
-        /// Removes the route for the given id.
+        /// Gets the collection of shapes.
         /// </summary>
-        /// <param name="routeId"></param>
-        /// <returns></returns>
-        bool RemoveRoute(string routeId);
+        IEntityCollection<Shape> Shapes
+        {
+            get;
+        }
+        
+        /// <summary>
+        /// Gets the collection of stops.
+        /// </summary>
+        IUniqueEntityCollection<Stop> Stops
+        {
+            get;
+        }
 
         /// <summary>
-        /// Adds a new shape.
+        /// Gets the collection of stop times.
         /// </summary>
-        /// <param name="shape"></param>
-        void AddShape(Shape shape);
+        IStopTimeCollection StopTimes
+        {
+            get;
+        }
 
         /// <summary>
-        /// Gets all shapes.
+        /// Gets the collection of tranfers.
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<Shape> GetShapes();
+        ITransferCollection Transfers
+        {
+            get;
+        }
 
         /// <summary>
-        /// Gets all shapes for the given trip id.
+        /// Gets the collection of trips.
         /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        IEnumerable<Shape> GetShapes(string tripId);
-
-        /// <summary>
-        /// Removes all shapes for the given trip id.
-        /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        int RemoveShapes(string tripId);
-
-        /// <summary>
-        /// Adds a new stop.
-        /// </summary>
-        /// <param name="stop"></param>
-        void AddStop(Stop stop);
-
-        /// <summary>
-        /// Gets all stops.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Stop> GetStops();
-
-        /// <summary>
-        /// Gets the stop with the given id.
-        /// </summary>
-        /// <returns></returns>
-        Stop GetStop(string stopId);
-
-        /// <summary>
-        /// Removes the stop with the given id.
-        /// </summary>
-        /// <returns></returns>
-        bool RemoveStop(string stopId);
-
-        /// <summary>
-        /// Adds a new stop time.
-        /// </summary>
-        /// <param name="stopTime"></param>
-        void AddStopTime(StopTime stopTime);
-
-        /// <summary>
-        /// Gets all stop times.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<StopTime> GetStopTimes();
-
-        /// <summary>
-        /// Gets all stop times for the given trip.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<StopTime> GetStopTimesForTrip(string tripId);
-
-        /// <summary>
-        /// Removes all stop times for the given trip.
-        /// </summary>
-        /// <returns></returns>
-        int RemoveStopTimesForTrip(string tripId);
-
-        /// <summary>
-        /// Gets all stop times for the given stop.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<StopTime> GetStopTimesForStop(string stopId);
-
-        /// <summary>
-        /// Removes all stop times for the given stop.
-        /// </summary>
-        /// <returns></returns>
-        int RemoveStopTimesForStop(string stopId);
-
-        /// <summary>
-        /// Adds a new transfer.
-        /// </summary>
-        /// <param name="transfer"></param>
-        void AddTransfer(Transfer transfer);
-
-        /// <summary>
-        /// Gets all transfers.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Transfer> GetTransfers();
-
-        /// <summary>
-        /// Gets all transfers for the given from stop.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Transfer> GetTransfersForFromStop(string stopId);
-
-        /// <summary>
-        /// Removes all transfers for the given from stop.
-        /// </summary>
-        /// <returns></returns>
-        int RemoveTransfersForFromStop(string stopId);
-
-        /// <summary>
-        /// Gets all transfers for the given to stop.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Transfer> GetTransfersForToStop(string stopId);
-
-        /// <summary>
-        /// Removes all transfers for the given to stop.
-        /// </summary>
-        /// <returns></returns>
-        int RemoveTransfersForToStop(string stopId);
-
-        /// <summary>
-        /// Adds a new trip.
-        /// </summary>
-        /// <param name="trip"></param>
-        void AddTrip(Trip trip);
-
-        /// <summary>
-        /// Gets all trips.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Trip> GetTrips();
-
-        /// <summary>
-        /// Returns the trip with the given id.
-        /// </summary>
-        /// <param name="tripId"></param>
-        /// <returns></returns>
-        Trip GetTrip(string tripId);
-
-        /// <summary>
-        /// Removes the given trip.
-        /// </summary>
-        /// <param name="tripId"></param>
-        bool RemoveTrip(string tripId);
+        IUniqueEntityCollection<Trip> Trips
+        {
+            get;
+        }
     }
 }

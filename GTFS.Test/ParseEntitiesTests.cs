@@ -88,8 +88,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("agency")));
 
             // test result.
-            Assert.IsNotNull(feed.GetAgencies());
-            var agencies = new List<Agency>(feed.GetAgencies());
+            Assert.IsNotNull(feed.Agencies);
+            var agencies = new List<Agency>(feed.Agencies);
             Assert.AreEqual(1, agencies.Count);
             Assert.AreEqual(null, agencies[0].FareURL);
             Assert.AreEqual("DTA", agencies[0].Id);
@@ -116,8 +116,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("routes")));
 
             // test result.
-            Assert.IsNotNull(feed.GetRoutes());
-            var routes = feed.GetRoutes().ToList();
+            Assert.IsNotNull(feed.Routes);
+            var routes = feed.Routes.ToList();
             Assert.AreEqual(5, routes.Count);
             
             //route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
@@ -194,8 +194,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("shapes")));
 
             // test result.
-            Assert.IsNotNull(feed.GetShapes());
-            var shapes = feed.GetShapes().ToList();
+            Assert.IsNotNull(feed.Shapes);
+            var shapes = feed.Shapes.ToList();
             Assert.AreEqual(44, shapes.Count);
 
             // @ 1: shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
@@ -232,8 +232,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("trips")));
 
             // test result.
-            Assert.IsNotNull(feed.GetTrips());
-            var trips = feed.GetTrips().ToList();
+            Assert.IsNotNull(feed.Trips);
+            var trips = feed.Trips.ToList();
             Assert.AreEqual(11, trips.Count);
 
             // @ 1: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
@@ -274,8 +274,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("stops")));
 
             // test result.
-            Assert.IsNotNull(feed.GetStops());
-            var stops = feed.GetStops().ToList();
+            Assert.IsNotNull(feed.Stops);
+            var stops = feed.Stops.ToList();
             Assert.AreEqual(9, stops.Count);
 
             // @ 1: stop_id,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url
@@ -314,8 +314,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("stop_times")));
 
             // test result.
-            Assert.IsNotNull(feed.GetStopTimes());
-            var stopTimes = feed.GetStopTimes().ToList();
+            Assert.IsNotNull(feed.StopTimes);
+            var stopTimes = feed.StopTimes.ToList();
             Assert.AreEqual(28, stopTimes.Count);
 
             // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
@@ -360,8 +360,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("frequencies")));
 
             // test result.
-            Assert.IsNotNull(feed.GetFrequencies());
-            var frequencies = feed.GetFrequencies().ToList();
+            Assert.IsNotNull(feed.Frequencies);
+            var frequencies = feed.Frequencies.ToList();
             Assert.AreEqual(11, frequencies.Count);
 
             // @ 1: trip_id,start_time,end_time,headway_secs
@@ -408,8 +408,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("calendar")));
 
             // test result.
-            Assert.IsNotNull(feed.GetCalendars());
-            var calendars = feed.GetCalendars().ToList();
+            Assert.IsNotNull(feed.Calendars);
+            var calendars = feed.Calendars.ToList();
             Assert.AreEqual(2, calendars.Count);
 
             // @ 1: service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
@@ -463,8 +463,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("calendar_dates")));
 
             // test result.
-            Assert.IsNotNull(feed.GetCalendarDates());
-            var calendarDates = new List<CalendarDate>(feed.GetCalendarDates());
+            Assert.IsNotNull(feed.CalendarDates);
+            var calendarDates = new List<CalendarDate>(feed.CalendarDates);
 
             // @ 1: service_id,date,exception_type
             // @ 2: FULLW,20070604,2
@@ -490,8 +490,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("fare_rules")));
 
             // test result.
-            Assert.IsNotNull(feed.GetFareRules());
-            var fareRules = feed.GetFareRules().ToList();
+            Assert.IsNotNull(feed.FareRules);
+            var fareRules = feed.FareRules.ToList();
             Assert.AreEqual(4, fareRules.Count);
 
             // fare_id,route_id,origin_id,destination_id,contains_id
@@ -545,8 +545,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("fare_attributes")));
 
             // test result.
-            Assert.IsNotNull(feed.GetFareAttributes());
-            var fareAttributes = feed.GetFareAttributes().ToList();
+            Assert.IsNotNull(feed.FareAttributes);
+            var fareAttributes = feed.FareAttributes.ToList();
             Assert.AreEqual(2, fareAttributes.Count);
 
             //fare_id,price,currency_type,payment_method,transfers,transfer_duration
@@ -586,8 +586,8 @@ namespace GTFS.Test
             var feed = reader.Read(source, source.First(x => x.Name.Equals("transfers")));
 
             // test result.
-            Assert.IsNotNull(feed.GetTransfers());
-            var tranfers = feed.GetTransfers().ToList();
+            Assert.IsNotNull(feed.Transfers);
+            var tranfers = feed.Transfers.ToList();
             Assert.AreEqual(3, tranfers.Count);
 
             //from_stop_id,to_stop_id,transfer_type,min_transfer_time

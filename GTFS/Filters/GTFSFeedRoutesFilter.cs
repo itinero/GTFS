@@ -66,11 +66,11 @@ namespace GTFS.Filters
             // filter routes.
             var routeIds = new HashSet<string>();
             var agencyIds = new HashSet<string>();
-            foreach (var route in feed.GetRoutes())
+            foreach (var route in feed.Routes)
             {
                 if (_routesFilter.Invoke(route))
                 { // keep this route.
-                    filteredFeed.AddRoute(route);
+                    filteredFeed.Routes.Add(route);
                     routeIds.Add(route.Id);
 
                     // keep agency ids.
@@ -82,11 +82,11 @@ namespace GTFS.Filters
             var serviceIds = new HashSet<string>();
             var tripIds = new HashSet<string>();
             var shapeIds = new HashSet<string>();
-            foreach (var trip in feed.GetTrips())
+            foreach (var trip in feed.Trips)
             {
                 if (routeIds.Contains(trip.RouteId))
                 { // keep this trip, it is related to at least one stop-time.
-                    filteredFeed.AddTrip(trip);
+                    filteredFeed.Trips.Add(trip);
                     tripIds.Add(trip.Id);
 
                     // keep serviceId, routeId and shapeId.
@@ -100,11 +100,11 @@ namespace GTFS.Filters
 
             // filter stop-times.
             var stopIds = new HashSet<string>();
-            foreach (var stopTime in feed.GetStopTimes())
+            foreach (var stopTime in feed.StopTimes)
             {
                 if (tripIds.Contains(stopTime.TripId))
                 { // stop is included, keep this stopTime.
-                    filteredFeed.AddStopTime(stopTime);
+                    filteredFeed.StopTimes.Add(stopTime);
 
                     // save the trip id's to keep.
                     stopIds.Add(stopTime.StopId);
@@ -113,49 +113,49 @@ namespace GTFS.Filters
 
 
             // filter stops.
-            foreach (var stop in feed.GetStops())
+            foreach (var stop in feed.Stops)
             {
                 if (stopIds.Contains(stop.Id))
                 { // stop has to be included.
                     stopIds.Add(stop.Id);
-                    filteredFeed.AddStop(stop);
+                    filteredFeed.Stops.Add(stop);
                 }
             }
 
             // filter agencies.
-            foreach (var agency in feed.GetAgencies())
+            foreach (var agency in feed.Agencies)
             {
                 if (agencyIds.Contains(agency.Id))
                 { // keep this agency.
-                    filteredFeed.AddAgency(agency);
+                    filteredFeed.Agencies.Add(agency);
                 }
             }
 
             // filter calendars.
-            foreach (var calendar in feed.GetCalendars())
+            foreach (var calendar in feed.Calendars)
             {
                 if (serviceIds.Contains(calendar.ServiceId))
                 { // keep this calendar.                    
-                    filteredFeed.AddCalendar(calendar);
+                    filteredFeed.Calendars.Add(calendar);
                 }
             }
 
             // filter calendar-dates.
-            foreach (var calendarDate in feed.GetCalendarDates())
+            foreach (var calendarDate in feed.CalendarDates)
             {
                 if (serviceIds.Contains(calendarDate.ServiceId))
                 { // keep this calendarDate.                    
-                    filteredFeed.AddCalendarDate(calendarDate);
+                    filteredFeed.CalendarDates.Add(calendarDate);
                 }
             }
 
             // filter fare rules.
             var fareIds = new HashSet<string>();
-            foreach (var fareRule in feed.GetFareRules())
+            foreach (var fareRule in feed.FareRules)
             {
                 if (routeIds.Contains(fareRule.RouteId))
                 { // keep this fare rule.
-                    filteredFeed.AddFareRule(fareRule);
+                    filteredFeed.FareRules.Add(fareRule);
 
                     // keep fare ids.
                     fareIds.Add(fareRule.FareId);
@@ -163,29 +163,29 @@ namespace GTFS.Filters
             }
 
             // filter fare attributes.
-            foreach (var fareAttribute in feed.GetFareAttributes())
+            foreach (var fareAttribute in feed.FareAttributes)
             {
                 if (fareIds.Contains(fareAttribute.FareId))
                 { // keep this fare attribute.
-                    filteredFeed.AddFareAttribute(fareAttribute);
+                    filteredFeed.FareAttributes.Add(fareAttribute);
                 }
             }
 
             // filter frequencies.
-            foreach (var frequency in feed.GetFrequencies())
+            foreach (var frequency in feed.Frequencies)
             {
                 if (tripIds.Contains(frequency.TripId))
                 { // keep this frequency.
-                    filteredFeed.AddFrequency(frequency);
+                    filteredFeed.Frequencies.Add(frequency);
                 }
             }
 
-            foreach (var transfer in feed.GetTransfers())
+            foreach (var transfer in feed.Transfers)
             {
                 if (stopIds.Contains(transfer.FromStopId) &&
                     stopIds.Contains(transfer.ToStopId))
                 {
-                    filteredFeed.AddTransfer(transfer);
+                    filteredFeed.Transfers.Add(transfer);
                 }
             }
             return filteredFeed;

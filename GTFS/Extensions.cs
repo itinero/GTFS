@@ -111,53 +111,53 @@ namespace GTFS
             {
                 feed.SetFeedInfo(feedInfo);
             }
-            foreach(var entity in thisFeed.GetAgencies())
+            foreach(var entity in thisFeed.Agencies)
             {
-                feed.AddAgency(entity);
+                feed.Agencies.Add(entity);
             }
-            foreach (var entity in thisFeed.GetCalendarDates())
+            foreach (var entity in thisFeed.CalendarDates)
             {
-                feed.AddCalendarDate(entity);
+                feed.CalendarDates.Add(entity);
             }
-            foreach (var entity in thisFeed.GetCalendars())
+            foreach (var entity in thisFeed.Calendars)
             {
-                feed.AddCalendar(entity);
+                feed.Calendars.Add(entity);
             }
-            foreach (var entity in thisFeed.GetFareAttributes())
+            foreach (var entity in thisFeed.FareAttributes)
             {
-                feed.AddFareAttribute(entity);
+                feed.FareAttributes.Add(entity);
             }
-            foreach (var entity in thisFeed.GetFareRules())
+            foreach (var entity in thisFeed.FareRules)
             {
-                feed.AddFareRule(entity);
+                feed.FareRules.Add(entity);
             }
-            foreach (var entity in thisFeed.GetFrequencies())
+            foreach (var entity in thisFeed.Frequencies)
             {
-                feed.AddFrequency(entity);
+                feed.Frequencies.Add(entity);
             }
-            foreach (var entity in thisFeed.GetRoutes())
+            foreach (var entity in thisFeed.Routes)
             {
-                feed.AddRoute(entity);
+                feed.Routes.Add(entity);
             }
-            foreach (var entity in thisFeed.GetShapes())
+            foreach (var entity in thisFeed.Shapes)
             {
-                feed.AddShape(entity);
+                feed.Shapes.Add(entity);
             }
-            foreach (var entity in thisFeed.GetStops())
+            foreach (var entity in thisFeed.Stops)
             {
-                feed.AddStop(entity);
+                feed.Stops.Add(entity);
             }
-            foreach (var entity in thisFeed.GetStopTimes())
+            foreach (var entity in thisFeed.StopTimes)
             {
-                feed.AddStopTime(entity);
+                feed.StopTimes.Add(entity);
             }
-            foreach (var entity in thisFeed.GetTransfers())
+            foreach (var entity in thisFeed.Transfers)
             {
-                feed.AddTransfer(entity);
+                feed.Transfers.Add(entity);
             }
-            foreach (var entity in thisFeed.GetTrips())
+            foreach (var entity in thisFeed.Trips)
             {
-                feed.AddTrip(entity);
+                feed.Trips.Add(entity);
             }
         }
 

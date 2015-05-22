@@ -52,7 +52,7 @@ namespace GTFS.Validation
         {
             // check agencies.
             var agencyIds = new HashSet<string>();
-            foreach (var agency in feed.GetAgencies())
+            foreach (var agency in feed.Agencies)
             {
                 if (agencyIds.Contains(agency.Id))
                 { // oeps, duplicate id.
@@ -64,7 +64,7 @@ namespace GTFS.Validation
 
             // check stops.
             var stopIds = new HashSet<string>();
-            foreach(var stop in feed.GetStops())
+            foreach(var stop in feed.Stops)
             {
                 if(stopIds.Contains(stop.Id))
                 { // oeps, duplicate id.
@@ -76,7 +76,7 @@ namespace GTFS.Validation
 
             // check routes.
             var routeIds = new HashSet<string>();
-            foreach(var route in feed.GetRoutes())
+            foreach(var route in feed.Routes)
             {
                 if (routeIds.Contains(route.Id))
                 { // oeps, duplicate id.
@@ -93,7 +93,7 @@ namespace GTFS.Validation
 
             // check trips for routes.
             var tripIds = new HashSet<string>();
-            foreach(var trip in feed.GetTrips())
+            foreach(var trip in feed.Trips)
             {
                 if (tripIds.Contains(trip.Id))
                 { // oeps, duplicate id.
@@ -111,7 +111,7 @@ namespace GTFS.Validation
             // check stop times.
             var stopTimesIndex = new Dictionary<string, List<StopTime>>();
             var stopTimes = new HashSet<Tuple<string, uint>>();
-            foreach(var stopTime in feed.GetStopTimes())
+            foreach(var stopTime in feed.StopTimes)
             {
                 var stopTimeId = new Tuple<string, uint>(stopTime.TripId, stopTime.StopSequence);
                 if(stopTimes.Contains(stopTimeId))

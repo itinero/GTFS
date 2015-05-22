@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2015 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Reflection;
+using System.Collections.Generic;
 
-[assembly: AssemblyVersion("0.0.4.9999")] // semantic versioning Major.Minor.Patch.Build (9999 will be updated by CI server)
-[assembly: AssemblyInformationalVersion("Local Build Version")] // do not change this; build server replace this automatically.
+namespace GTFS.Entities.Collections
+{
+    /// <summary>
+    /// Abstract representation of a collection of GTFS-entities that can be uniquely identified by an ID and of a single type.
+    /// </summary>
+    public interface IEntityCollection<T> : IEnumerable<T>
+        where T : GTFSEntity
+    {
+        /// <summary>
+        /// Adds an entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        void Add(T entity);
+
+        /// <summary>
+        /// Returns all entities.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<T> Get();
+
+        /// <summary>
+        /// Returns all entities for the given id.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        IEnumerable<T> Get(string entityId);
+
+        /// <summary>
+        /// Removes all entities identified by the given id.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        bool Remove(string entityId);
+    }
+}
