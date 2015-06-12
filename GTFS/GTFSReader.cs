@@ -447,13 +447,14 @@ namespace GTFS
             // read fields and keep them sorted.
             if (typeof(IComparable).IsAssignableFrom(typeof(TEntity)))
             {
-                var entities = new SortedDictionary<TEntity, TEntity>();
+                var entities = new List<TEntity>();
                 while (enumerator.MoveNext())
                 {
                     var entity = parser.Invoke(feed, header, enumerator.Current);
-                    entities.Add(entity, null);
+                    entities.Add(entity);
                 }
-                foreach (var entity in entities.Keys)
+                entities.Sort();
+                foreach (var entity in entities)
                 {
                     addDelegate.Invoke(entity);
                 }

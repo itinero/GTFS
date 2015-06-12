@@ -661,7 +661,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value)
         {
-            var quote = value != null && value.Contains(',');
+            var quote = value != null && value.Contains(",");
             return this.WriteFieldString(name, fieldName, value, quote);
         }
 
@@ -852,7 +852,7 @@ namespace GTFS
         {
             if(value.HasValue)
             {
-                return value.Value.ToString(System.Globalization.CultureInfo.InstalledUICulture);
+                return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }
             return string.Empty;
         }

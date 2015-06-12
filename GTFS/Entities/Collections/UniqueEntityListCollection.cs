@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace GTFS.Entities.Collections
@@ -68,10 +69,14 @@ namespace GTFS.Entities.Collections
         /// <returns></returns>
         public T Get(string entityId)
         {
-            return _entities.Find((x) =>
+            foreach(var entity in _entities)
+            {
+                if(_hasId(entity, entityId))
                 {
-                    return _hasId(x, entityId);
-                });
+                    return entity;
+                }
+            }
+            return default(T);
         }
 
         /// <summary>
