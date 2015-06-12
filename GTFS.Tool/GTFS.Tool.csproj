@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GTFS.IO.Desktop\GTFS.IO.Desktop.csproj">
+      <Project>{869456e4-50ef-4777-9e77-9a6ac96b406a}</Project>
+      <Name>GTFS.IO.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GTFS.IO\GTFS.IO.csproj">
       <Project>{39531d68-74cf-4c1c-9271-a2c874495383}</Project>
       <Name>GTFS.IO</Name>

@@ -26,23 +26,6 @@ namespace GTFS.IO
         /// Creates a new target file stream.
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="path"></param>
-        public GTFSTargetFileStream(string path, string name)
-        {
-            _name = name;
-
-            var file = new FileInfo(Path.Combine(path, name + ".txt"));
-            if(file.Exists)
-            {
-                file.Delete();
-            }
-            _streamWriter = new CSVStreamWriter(file.OpenWrite());
-        }
-
-        /// <summary>
-        /// Creates a new target file stream.
-        /// </summary>
-        /// <param name="name"></param>
         /// <param name="stream"></param>
         public GTFSTargetFileStream(Stream stream, string name)
         {

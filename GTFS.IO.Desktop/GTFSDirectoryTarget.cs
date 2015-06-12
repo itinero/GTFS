@@ -58,20 +58,36 @@ namespace GTFS.IO
             if (_targets.Count == 0)
             {
                 // write files on-by-one.
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "agency"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "calendar_dates"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "calendar"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "fare_attributes"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "fare_rules"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "feed_info"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "frequencies"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "routes"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "shapes"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "stops"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "stop_times"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "tranfers"));
-                _targets.Add(new GTFSTargetFileStream(_directory.FullName, "trips"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "agency"),"agency"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "calendar_dates"), "calendar_dates"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "calendar"), "calendar"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "fare_attributes"), "fare_attributes"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "fare_rules"), "fare_rules"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "feed_info"), "feed_info"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "frequencies"), "frequencies"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "routes"), "routes"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "shapes"), "shapes"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "stops"), "stops"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "stop_times"), "stop_times"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "tranfers"), "tranfers"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "trips"), "trips"));
             }
+        }
+
+        /// <summary>
+        /// Opens a file for writing.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private Stream OpenWrite(string path, string name)
+        {
+            var file = new FileInfo(Path.Combine(path, name + ".txt"));
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+            return file.OpenWrite();
         }
 
         /// <summary>
