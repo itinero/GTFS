@@ -16,7 +16,10 @@ The implementation is deliberately kept very flexible and customizable because m
 	<tags>routing, gtfs</tags>
     </metadata>
     <files>
-      <file src="Output\GTFS.dll" target="lib\GTFS.dll" />
-	    <file src="Output\GTFS.IO.dll" target="lib\GTFS.IO.dll" />
+      <file src="Output\GTFS.dll" target="lib\portable-net40+sl4+win8+wp7\GTFS.dll" />
+      <file src="Output\GTFS.IO.dll" target="lib\portable-net40+sl4+win8+wp7\GTFS.IO.dll" />
+      <file src="Output\GTFS.dll" target="lib\net40\GTFS.dll" />
+      <file src="Output\GTFS.IO.dll" target="lib\net40\GTFS.IO.dll" />
+	    <file src="Output\GTFS.IO.Desktop.dll" target="lib\net40\GTFS.IO.Desktop.dll" />
     </files>
 </package>
