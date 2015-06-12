@@ -84,6 +84,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Switches\Processors\ProcessorBase.cs" />
     <Compile Include="Switches\Processors\ProcessorFeedSource.cs" />
+    <Compile Include="Switches\Processors\ProcessorFeedValidation.cs" />
     <Compile Include="Switches\Processors\ProcessorWriteFeed.cs" />
     <Compile Include="Switches\Processors\ProcessorReadFeed.cs" />
     <Compile Include="Switches\Processors\ProcessorFeedFilter.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Switches\SwitchFilterRoutes.cs" />
     <Compile Include="Switches\SwitchParserException.cs" />
     <Compile Include="Switches\SwitchReadFeed.cs" />
+    <Compile Include="Switches\SwitchValidateFeed.cs" />
     <Compile Include="Switches\SwitchWriteFeed.cs" />
     <Compile Include="SwitchParser.cs" />
     <Compile Include="SwitchParserException.cs" />

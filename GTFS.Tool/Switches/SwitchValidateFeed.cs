@@ -25,9 +25,9 @@ using GTFS.Tool.Switches.Processors;
 namespace GTFS.Tool.Switches
 {
     /// <summary>
-    /// Represents a switch that points to the writing a feed functionality.
+    /// Represents a switch that points to the validating a feed functionality.
     /// </summary>
-    public class SwitchWriteFeed : Switch
+    public class SwitchValidateFeed : Switch
     {
         /// <summary>
         /// Returns the switch id's.
@@ -35,13 +35,8 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override string[] GetSwitch()
         {
-            return new string[] { "--rf", "--write-feed" };
+            return new string[] { "--val", "--validate" };
         }
-
-        /// <summary>
-        /// The path to write from.
-        /// </summary>
-        public string Path { get; set; }
 
         /// <summary>
         /// Parse the command arguments for the write-feed command.
@@ -52,18 +47,8 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override int Parse(string[] args, int idx, out Switch switchOut)
         {
-            // check next argument.
-            if (args.Length < idx)
-            {
-                throw new SwitchParserException("None", "Invalid path name for write-feed command!");
-            }
-
-            // everything ok, take the next argument as the path.
-            switchOut = new SwitchWriteFeed()
-            {
-                Path = args[idx]
-            };
-            return 1;
+            switchOut = new SwitchValidateFeed();
+            return 0;
         }
 
         /// <summary>
@@ -72,7 +57,7 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override ProcessorBase CreateProcessor()
         {
-            return new ProcessorWriteFeed(this.Path);
+            return new ProcessorFeedValidation();
         }
 
         /// <summary>
@@ -81,7 +66,7 @@ namespace GTFS.Tool.Switches
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("--write-feed {0}", this.Path);
+            return string.Format("--validate");
         }
     }
 }
