@@ -140,31 +140,25 @@ namespace GTFS.Validation
                     return false;
                 }
             }
-            // check all sequences.
-            var sequences = new HashSet<uint>();
-            foreach(var stopTimesPair in stopTimesIndex)
-            {
-                uint min = uint.MaxValue;
-                uint max = uint.MinValue;
-                foreach(var stopTime in stopTimesPair.Value)
-                {
-                    if (stopTime.StopSequence < min)
-                    {
-                        min = stopTime.StopSequence;
-                    }
-                    if(stopTime.StopSequence > max)
-                    {
-                        max = stopTime.StopSequence;
-                    }
-                    sequences.Add(stopTime.StopSequence);
-                }
 
-                if(min != 0 && max != sequences.Count)
-                { // oeps, unknown id.
-                    messages = string.Format("Missing sequence found in stop_times for trip id {0}.", stopTimesPair.Key);
-                    return false;
+            // check all sequences.
+            foreach (var stopTimesPair in stopTimesIndex)
+            {
+                uint current = 0, previous;
+                foreach (var stopTime in stopTimesPair.Value)
+                {
+                    previous = current;
+                    current = stopTime.StopSequence;
+                    if (previous != 0)
+                    {
+                        if (previous >= current)
+                        {
+                            messages = string.Format("Stop sequences values shall increase and be unique in stop_times file for trip id {0}.", 
+                                stopTimesPair.Key);
+                            return false;
+                        }
+                    }
                 }
-                sequences.Clear();
             }
             messages = string.Empty;
             return true;

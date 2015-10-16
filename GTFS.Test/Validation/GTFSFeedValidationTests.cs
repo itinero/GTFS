@@ -144,7 +144,7 @@ namespace GTFS.Test.Validation
             var feed = reader.Read(source);
 
             // remove.
-            (feed.StopTimes.Get() as List<StopTime>).RemoveAt(0);
+            (feed.StopTimes.Get() as List<StopTime>)[2].StopSequence = 1024;
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
