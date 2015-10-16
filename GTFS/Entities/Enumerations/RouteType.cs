@@ -60,4 +60,47 @@ namespace GTFS.Entities.Enumerations
         /// </summary>
         Funicular
     }
+
+    /// <summary>
+    /// Contains extension methods for the route type.
+    /// </summary>
+    public static class RouteTypeExtensions
+    {
+        /// <summary>
+        /// Converts a route type to it's extended equivalent.
+        /// </summary>
+        /// <returns></returns>
+        public static RouteTypeExtended ToExtended(this RouteType routeType)
+        {
+            //0 - Tram, Light Rail, Streetcar - 900
+            //1 - Subway, Metro - 400
+            //2 - Rail - 100
+            //3 - Bus - 700
+            //4 - Ferry - 1000
+            //5 - Cable Car - ?
+            //6 - Gondola, Suspended cable car - 1300
+            //7 - Funicular - 1400
+
+            switch(routeType)
+            {
+                case RouteType.Bus:
+                    return RouteTypeExtended.BusService;
+                case RouteType.CableCar:
+                    return RouteTypeExtended.CableCarService;
+                case RouteType.Rail:
+                    return RouteTypeExtended.RailwayService;
+                case RouteType.Tram:
+                    return RouteTypeExtended.TramService;
+                case RouteType.SubwayMetro:
+                    return RouteTypeExtended.UrbanRailwayService;
+                case RouteType.Ferry:
+                    return RouteTypeExtended.WaterTransportService;
+                case RouteType.Gondola:
+                    return RouteTypeExtended.TelecabinService;
+                case RouteType.Funicular:
+                    return RouteTypeExtended.FunicularService;
+            }
+            throw new System.Exception("Cannot convert route type.");
+        }
+    }
 }

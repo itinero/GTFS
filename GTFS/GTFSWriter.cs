@@ -804,41 +804,10 @@ namespace GTFS
         /// <summary>
         /// Writes the route type.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldRouteType(string name, string fieldName, RouteType value)
-        {           
-            //0 - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.
-            //1 - Subway, Metro. Any underground rail system within a metropolitan area.
-            //2 - Rail. Used for intercity or long-distance travel.
-            //3 - Bus. Used for short- and long-distance bus routes.
-            //4 - Ferry. Used for short- and long-distance boat service.
-            //5 - Cable car. Used for street-level cable cars where the cable runs beneath the car.
-            //6 - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.
-            //7 - Funicular. Any rail system designed for steep inclines.
-
-            switch(value)
-            {
-                case RouteType.Tram:
-                    return "0";
-                case RouteType.SubwayMetro:
-                    return "1";
-                case RouteType.Rail:
-                    return "2";
-                case RouteType.Bus:
-                    return "3";
-                case RouteType.Ferry:
-                    return "4";
-                case RouteType.CableCar:
-                    return "5";
-                case RouteType.Gondola:
-                    return "6";
-                case RouteType.Funicular:
-                    return "7";
-            }
-            return string.Empty;
+        private string WriteFieldRouteType(string name, string fieldName, RouteTypeExtended value)
+        {
+            return ((int)value).ToString();
         }
 
         /// <summary>

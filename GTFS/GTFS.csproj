@@ -23,7 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,12 +33,16 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\GTFS.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Attributes\FieldNameAttribute.cs" />
     <Compile Include="Attributes\FileNameAttribute.cs" />
     <Compile Include="Attributes\RequiredAttribute.cs" />
@@ -61,6 +66,7 @@
     <Compile Include="Entities\Enumerations\PaymentMethodType.cs" />
     <Compile Include="Entities\Enumerations\PickupType.cs" />
     <Compile Include="Entities\Enumerations\RouteType.cs" />
+    <Compile Include="Entities\Enumerations\RouteTypeExtended.cs" />
     <Compile Include="Entities\Enumerations\TransferType.cs" />
     <Compile Include="Entities\Enumerations\WheelchairBoardingType.cs" />
     <Compile Include="Entities\FareAttribute.cs" />

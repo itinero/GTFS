@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Collections\SQLiteAgencyCollection.cs" />
     <Compile Include="Collections\SQLiteCalendarCollection.cs" />
     <Compile Include="Collections\SQLiteCalendarDateCollection.cs" />
