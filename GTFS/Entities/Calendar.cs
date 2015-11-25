@@ -39,53 +39,86 @@ namespace GTFS.Entities
         public string ServiceId { get; set; }
 
         /// <summary>
+        /// Contains a byte that represents the week-mask.
+        /// </summary>
+        public byte Mask { get; set; }
+
+        /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Mondays.
         /// </summary>
         [Required]
         [FieldName("monday")]
-        public bool Monday { get; set; }
+        public bool Monday
+        {
+            get { return this[DayOfWeek.Monday]; }
+            set { this[DayOfWeek.Monday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Tuesdays.
         /// </summary>
         [Required]
         [FieldName("tuesday")]
-        public bool Tuesday { get; set; }
+        public bool Tuesday
+        {
+            get { return this[DayOfWeek.Tuesday]; }
+            set { this[DayOfWeek.Tuesday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Wednesdays.
         /// </summary>
         [Required]
         [FieldName("wednesday")]
-        public bool Wednesday { get; set; }
+        public bool Wednesday
+        {
+            get { return this[DayOfWeek.Wednesday]; }
+            set { this[DayOfWeek.Wednesday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Thursdays.
         /// </summary>
         [Required]
         [FieldName("thursday")]
-        public bool Thursday { get; set; }
+        public bool Thursday
+        {
+            get { return this[DayOfWeek.Thursday]; }
+            set { this[DayOfWeek.Thursday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Fridays.
         /// </summary>
         [Required]
         [FieldName("friday")]
-        public bool Friday { get; set; }
+        public bool Friday
+        {
+            get { return this[DayOfWeek.Friday]; }
+            set { this[DayOfWeek.Friday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Saturdays.
         /// </summary>
         [Required]
         [FieldName("saturday")]
-        public bool Saturday { get; set; }
+        public bool Saturday
+        {
+            get { return this[DayOfWeek.Saturday]; }
+            set { this[DayOfWeek.Saturday] = value; }
+        }
 
         /// <summary>
         /// Contains a binary value that indicates whether the service is valid for all Sundays.
         /// </summary>
         [Required]
         [FieldName("sunday")]
-        public bool Sunday { get; set; }
+        public bool Sunday
+        {
+            get { return this[DayOfWeek.Sunday]; }
+            set { this[DayOfWeek.Sunday] = value; }
+        }
 
         /// <summary>
         /// Gets or sets the start date for the service.
@@ -102,34 +135,88 @@ namespace GTFS.Entities
         public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Returns true if this calendar covers the given date.
+        /// Gets or sets the day of week.
         /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        public bool CoversDate(DateTime date)
+        public bool this[DayOfWeek dayOfWeek]
         {
-            date = date.Date;
-            if (this.StartDate <= date && this.EndDate >= date)
-            { // ok in range.
-                switch(date.DayOfWeek)
+            get
+            {
+                switch (dayOfWeek)
                 {
                     case DayOfWeek.Monday:
-                        return this.Monday;
+                        return (this.Mask & 1) > 0;
                     case DayOfWeek.Tuesday:
-                        return this.Tuesday;
+                        return (this.Mask & 2) > 0;
                     case DayOfWeek.Wednesday:
-                        return this.Wednesday;
+                        return (this.Mask & 4) > 0;
                     case DayOfWeek.Thursday:
-                        return this.Thursday;
+                        return (this.Mask & 8) > 0;
                     case DayOfWeek.Friday:
-                        return this.Friday;
+                        return (this.Mask & 16) > 0;
                     case DayOfWeek.Saturday:
-                        return this.Saturday;
+                        return (this.Mask & 32) > 0;
                     case DayOfWeek.Sunday:
-                        return this.Sunday;
+                        return (this.Mask & 64) > 0;
+                }
+                throw new ArgumentOutOfRangeException("Not a valid day of the week.");
+            }
+            set
+            {
+                if (value)
+                {
+                    switch (dayOfWeek)
+                    {
+                        case DayOfWeek.Monday:
+                            this.Mask = (byte)(this.Mask | 1);
+                            break;
+                        case DayOfWeek.Tuesday:
+                            this.Mask = (byte)(this.Mask | 2);
+                            break;
+                        case DayOfWeek.Wednesday:
+                            this.Mask = (byte)(this.Mask | 4);
+                            break;
+                        case DayOfWeek.Thursday:
+                            this.Mask = (byte)(this.Mask | 8);
+                            break;
+                        case DayOfWeek.Friday:
+                            this.Mask = (byte)(this.Mask | 16);
+                            break;
+                        case DayOfWeek.Saturday:
+                            this.Mask = (byte)(this.Mask | 32);
+                            break;
+                        case DayOfWeek.Sunday:
+                            this.Mask = (byte)(this.Mask | 64);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (dayOfWeek)
+                    {
+                        case DayOfWeek.Monday:
+                            this.Mask = (byte)(this.Mask & (127 - 1));
+                            break;
+                        case DayOfWeek.Tuesday:
+                            this.Mask = (byte)(this.Mask & (127 - 2));
+                            break;
+                        case DayOfWeek.Wednesday:
+                            this.Mask = (byte)(this.Mask & (127 - 4));
+                            break;
+                        case DayOfWeek.Thursday:
+                            this.Mask = (byte)(this.Mask & (127 - 8));
+                            break;
+                        case DayOfWeek.Friday:
+                            this.Mask = (byte)(this.Mask & (127 - 16));
+                            break;
+                        case DayOfWeek.Saturday:
+                            this.Mask = (byte)(this.Mask & (127 - 32));
+                            break;
+                        case DayOfWeek.Sunday:
+                            this.Mask = (byte)(this.Mask & (127 - 64));
+                            break;
+                    }
                 }
             }
-            return false;
         }
 
         /// <summary>

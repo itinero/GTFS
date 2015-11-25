@@ -51,6 +51,7 @@
     <Compile Include="Entities\Agency.cs" />
     <Compile Include="Entities\Calendar.cs" />
     <Compile Include="Entities\CalendarDate.cs" />
+    <Compile Include="Entities\CalendarExtensions.cs" />
     <Compile Include="Entities\Collections\EntityListCollection.cs" />
     <Compile Include="Entities\Collections\IEntityCollection.cs" />
     <Compile Include="Entities\Collections\IStopTimeCollection.cs" />
