@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2015 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Reflection;
-
-[assembly: AssemblyVersion("1.4.4.9999")] // semantic versioning Major.Minor.Patch.Build (9999 will be updated by CI server)
-[assembly: AssemblyInformationalVersion("Local Build Version")] // do not change this; build server replace this automatically.
+namespace GTFS.Entities.Enumerations
+{
+    /// <summary>
+    /// Describes the timepoint type.
+    /// </summary>
+    public enum TimePointType
+    {
+        /// <summary>
+        /// No timepoint value set, times considered exact.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Times are considered approximate.
+        /// </summary>
+        Approximate,
+        /// <summary>
+        /// Times are considered exact.
+        /// </summary>
+        Exact
+    }
+}

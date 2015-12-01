@@ -44,14 +44,14 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("arrival_time")]
-        public TimeOfDay ArrivalTime { get; set; }
+        public TimeOfDay? ArrivalTime { get; set; }
 
         /// <summary>
         /// Gets or sets the departure time from a specific stop for a specific trip on a route. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service date. For times occurring after midnight on the service date, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. If you don't have separate times for arrival and departure at a stop, enter the same value for arrival_time and departure_time.
         /// </summary>
         [Required]
         [FieldName("departure_time")]
-        public TimeOfDay DepartureTime { get; set; }
+        public TimeOfDay? DepartureTime { get; set; }
 
         /// <summary>
         /// Gets or sets a stop. Multiple routes may use the same stop. If location_type is used in stops.txt, all stops referenced in stop_times.txt must have location_type of 0.
@@ -90,6 +90,12 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("shape_dist_traveled")]
         public string ShapeDistTravelled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timepoint type.
+        /// </summary>
+        [FieldName("timepoint")]
+        public TimePointType TimepointType { get; set; }
 
         /// <summary>
         /// Returns a description of this trip.

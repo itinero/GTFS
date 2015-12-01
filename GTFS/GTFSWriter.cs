@@ -522,7 +522,7 @@ namespace GTFS
             if (file != null)
             {
                 bool initialized = false;
-                var data = new string[9];
+                var data = new string[10];
                 foreach (var entity in entities)
                 {
                     if (!initialized)
@@ -542,6 +542,7 @@ namespace GTFS
                         data[6] = "pickup_type";
                         data[7] = "drop_off_type";
                         data[8] = "shape_dist_traveled";
+                        data[9] = "timepoint";
                         file.Write(data);
                         initialized = true;
                     }
@@ -556,6 +557,7 @@ namespace GTFS
                     data[6] = this.WriteFieldPickupType("stop_times", "pickup_type", entity.PickupType);
                     data[7] = this.WriteFieldDropOffType("stop_times", "drop_off_type", entity.DropOffType);
                     data[8] = this.WriteFieldString("stop_times", "shape_dist_traveled", entity.ShapeDistTravelled);
+                    data[9] = this.WriteFieldTimepointType("stop_times", "timepoint", entity.TimepointType);
                     file.Write(data);
                 }
                 file.Close();
@@ -864,6 +866,22 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Writes the timepoint value.
+        /// </summary>
+        /// <returns></returns>
+        private string WriteFieldTimepointType(string name, string fieldName, TimePointType value)
+        {
+            switch (value)
+            {
+                case TimePointType.Approximate:
+                    return "0";
+                case TimePointType.Exact:
+                    return "1";
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Writes the pickup type.
         /// </summary>
         /// <param name="name"></param>
@@ -892,16 +910,17 @@ namespace GTFS
         /// <summary>
         /// Writes a timeofday.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay value)
+        private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
         {
+            if(!value.HasValue)
+            {
+                return string.Empty;
+            }
             return string.Format("{0}:{1}:{2}",
-                value.Hours.ToString("00"),
-                value.Minutes.ToString("00"),
-                value.Seconds.ToString("00"));
+                value.Value.Hours.ToString("00"),
+                value.Value.Minutes.ToString("00"),
+                value.Value.Seconds.ToString("00"));
         }
 
         /// <summary>

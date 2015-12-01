@@ -56,10 +56,14 @@ namespace GTFS.Entities
         /// <summary>
         /// Creates a new time of day from total seconds.
         /// </summary>
-        /// <param name="totalSeconds"></param>
         /// <returns></returns>
-        public static TimeOfDay FromTotalSeconds(int totalSeconds)
+        public static TimeOfDay? FromTotalSeconds(int totalSeconds)
         {
+            if(totalSeconds < 0)
+            {
+                return null;
+            }
+
             var hours = (int)System.Math.Floor(totalSeconds / 3600.0);
             var minutes = (int)System.Math.Floor((totalSeconds - hours * 3600.0) / 60.0);
             var seconds = (int)(totalSeconds - hours * 3600.0 - minutes * 60.0);

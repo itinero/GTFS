@@ -147,14 +147,15 @@ namespace GTFS
         /// <summary>
         /// Reads a timeofday.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
         /// <returns></returns>
-        private TimeOfDay ReadTimeOfDay(string name, string fieldName, string value)
+        private TimeOfDay? ReadTimeOfDay(string name, string fieldName, string value)
         {
             try
             {
+                if(string.IsNullOrWhiteSpace(value))
+                {
+                    return null;
+                }
                 return this.TimeOfDayReader.Invoke(value);
             }
             catch (Exception ex)
@@ -1119,7 +1120,7 @@ namespace GTFS
                     stopTime.ArrivalTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "departure_time":
-                    stopTime.DepartureTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
+                    stopTime.DepartureTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "stop_id":
                     stopTime.StopId = this.ParseFieldString(header.Name, fieldName, value);
@@ -1138,6 +1139,9 @@ namespace GTFS
                     break;
                 case "shape_dist_traveled":
                     stopTime.ShapeDistTravelled = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "timepoint":
+                    stopTime.TimepointType = this.ParseFieldTimepointType(header.Name, fieldName, value);
                     break;
             }
         }
@@ -1517,6 +1521,33 @@ namespace GTFS
                     return DropOffType.PhoneForPickup;
                 case "3":
                     return DropOffType.DriverForPickup;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses the timepoing field.
+        /// </summary>
+        /// <returns></returns>
+        private TimePointType ParseFieldTimepointType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return TimePointType.None;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //0 - Times are considered approximate.
+            //1 - Times are considered exact.
+
+            switch (value)
+            {
+                case "0":
+                    return TimePointType.Approximate;
+                case "1":
+                    return TimePointType.Exact;
             }
             throw new GTFSParseException(name, fieldName, value);
         }
