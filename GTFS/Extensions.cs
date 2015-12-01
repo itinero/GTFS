@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using GTFS.Exceptions;
 using System;
 
 namespace GTFS
@@ -208,6 +209,63 @@ namespace GTFS
             var c = 2 * System.Math.Atan2(System.Math.Sqrt(a), System.Math.Sqrt(1 - a));
             var distance = radius_earth * c;
             return distance;
+        }
+
+        /// <summary>
+        /// Converts an integer rgb color value to a hex color string.
+        /// </summary>
+        /// <returns></returns>
+        public static string ToHexColorString(this int? value)
+        {
+            if (value.HasValue)
+            {
+                var r = (short)(((uint)value.Value >> 16) % 256);
+                var g = (short)(((uint)value.Value >> 8) % 256);
+                var b = (short)((uint)value.Value % 256);
+
+                return string.Format("{0}{1}{2}",
+                                     r.ToString("X2"),
+                                     g.ToString("X2"),
+                                     b.ToString("X2"));
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Converts a hex color string to an argb value.
+        /// </summary>
+        /// <returns></returns>
+        public static int? ToArgbInt(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // detect empty strings.
+                return null;
+            }
+
+            if (value.Length == 6)
+            { // assume # is missing.
+                return Int32.Parse("FF" + value, System.Globalization.NumberStyles.HexNumber,
+                                    System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else if (value.Length == 7)
+            { // assume #rrggbb
+                return Int32.Parse("FF" + value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
+                                    System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else if (value.Length == 9)
+            {
+                return Int32.Parse(value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else if (value.Length == 10)
+            {
+                return Int32.Parse(value.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("value", string.Format("The given string can is not a hex-color: {0}.", value));
+            }
         }
     }
 }

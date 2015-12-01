@@ -787,18 +787,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldColor(string name, string fieldName, int? value)
         {
-            if(value.HasValue)
-            {
-                var r = (short)(((uint)value.Value >> 16) % 256);
-                var g = (short)(((uint)value.Value >> 8) % 256);
-                var b = (short)((uint)value.Value % 256);
-
-                return string.Format("{0}{1}{2}",
-                                     r.ToString("X2"),
-                                     g.ToString("X2"),
-                                     b.ToString("X2"));
-            }
-            return string.Empty;
+            return value.ToHexColorString();
         }
 
         /// <summary>

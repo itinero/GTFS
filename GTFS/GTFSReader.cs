@@ -1301,46 +1301,15 @@ namespace GTFS
         /// <summary>
         /// Parses a color field into an argb value.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
         /// <returns></returns>
         protected virtual int? ParseFieldColor(string name, string fieldName, string value)
         {
             // clean first.
             value = this.CleanFieldValue(value);
 
-            if (string.IsNullOrWhiteSpace(value))
-            { // detect empty strings.
-                return null;
-            }
-
             try
             {
-                if(value.Length == 6)
-                { // assume # is missing.
-                    return Int32.Parse("FF" + value, System.Globalization.NumberStyles.HexNumber,
-                                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-                else if (value.Length == 7)
-                { // assume #rrggbb
-                    return Int32.Parse("FF" + value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-                else if (value.Length == 9)
-                {
-                    return Int32.Parse(value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-                else if (value.Length == 10)
-                {
-                    return Int32.Parse(value.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber,
-                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("value", string.Format("The given string can is not a hex-color: {0}.", value));
-                }
+                return value.ToArgbInt();
             }
             catch (Exception ex)
             {// hmm, some unknow exception, field not in correct format, give inner exception as a clue.
