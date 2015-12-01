@@ -62,7 +62,7 @@ namespace GTFS.DB.SQLite.Collections
         /// <param name="stopTime"></param>
         public void Add(StopTime stopTime)
         {
-            string sql = "INSERT INTO stop_time VALUES (:feed_id, :trip_id, :arrival_time, :departure_time, :stop_id, :stop_sequence, :stop_headsign, :pickup_type, :drop_off_type, :shape_dist_traveled);";
+            string sql = "INSERT INTO stop_time VALUES (:feed_id, :trip_id, :arrival_time, :departure_time, :stop_id, :stop_sequence, :stop_headsign, :pickup_type, :drop_off_type, :shape_dist_traveled, :timepoint);";
             using (var command = _connection.CreateCommand())
             {
                 command.CommandText = sql;
@@ -76,17 +76,19 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.Double));
+                command.Parameters.Add(new SQLiteParameter(@"timepoint", DbType.Int64));
 
                 command.Parameters[0].Value = _id;
                 command.Parameters[1].Value = stopTime.TripId;
-                command.Parameters[2].Value = stopTime.ArrivalTime.TotalSeconds;
-                command.Parameters[3].Value = stopTime.DepartureTime.TotalSeconds;
+                command.Parameters[2].Value = stopTime.ArrivalTime.HasValue ? stopTime.ArrivalTime.Value.TotalSeconds : -1;
+                command.Parameters[3].Value = stopTime.DepartureTime.HasValue ? stopTime.DepartureTime.Value.TotalSeconds : -1;
                 command.Parameters[4].Value = stopTime.StopId;
                 command.Parameters[5].Value = stopTime.StopSequence;
                 command.Parameters[6].Value = stopTime.StopHeadsign;
                 command.Parameters[7].Value = stopTime.PickupType.HasValue ? (int?)stopTime.PickupType.Value : null;
                 command.Parameters[8].Value = stopTime.DropOffType.HasValue ? (int?)stopTime.DropOffType.Value : null;
                 command.Parameters[9].Value = stopTime.ShapeDistTravelled;
+                command.Parameters[10].Value = (int)stopTime.TimepointType;
 
                 command.ExecuteNonQuery();
             }
@@ -98,7 +100,7 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public IEnumerable<StopTime> Get()
         {
-            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled FROM stop_time WHERE FEED_ID = :id";
+            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled, timepoint FROM stop_time WHERE FEED_ID = :id";
             var parameters = new List<SQLiteParameter>();
             parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
             parameters[0].Value = _id;
@@ -115,7 +117,8 @@ namespace GTFS.DB.SQLite.Collections
                     StopHeadsign = x.IsDBNull(5) ? null : x.GetString(5),
                     PickupType = x.IsDBNull(6) ? null : (PickupType?)x.GetInt64(6),
                     DropOffType = x.IsDBNull(7) ? null : (DropOffType?)x.GetInt64(7),
-                    ShapeDistTravelled = x.IsDBNull(8) ? (double?)null : x.GetDouble(8)
+                    ShapeDistTravelled = x.IsDBNull(8) ? (double?)null : x.GetDouble(8),
+                    TimepointType = (TimePointType)x.GetInt64(9)
                 };
             });
         }
