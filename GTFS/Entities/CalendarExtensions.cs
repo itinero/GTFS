@@ -88,7 +88,7 @@ namespace GTFS.Entities
         }
 
         /// <summary>
-        /// Adds the given calendar day and returns one or more new calendar entities representing the same data.
+        /// Adds the given calendar day and returns one or more new calendar entities representing the new data.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<Calendar> Add(this Calendar calendar, DateTime day)
@@ -99,7 +99,20 @@ namespace GTFS.Entities
             }
 
             // naively add another calendar entity representing one day.
-            // TODO: there is huge room for improvement here!
+            if ((calendar.EndDate - calendar.StartDate).Days <= 7 &&
+                calendar.StartDate <= day &&
+                calendar.EndDate >= day)
+            {
+                var newCalendar = new Calendar()
+                {
+                    EndDate = calendar.EndDate,
+                    StartDate = calendar.StartDate,
+                    Mask = calendar.Mask,
+                    ServiceId = calendar.ServiceId
+                };
+                newCalendar.Set(day, true);
+                return new Calendar[] { newCalendar };
+            }
             return new Calendar[] { calendar, day.CreateCalendar(calendar.ServiceId) };
         }
 
@@ -185,6 +198,25 @@ namespace GTFS.Entities
                 rest2.CopyWeekPatternFrom(calendar);
                 return new Calendar[] { rest1, subtracted, rest2 };
             }
+        }
+
+        /// <summary>
+        /// Sets the mask for the given day. 
+        /// </summary>
+        public static void Set(this Calendar calendar, DateTime day, bool value)
+        {
+            if((calendar.EndDate - calendar.StartDate).Days > 7)
+            {
+                throw new InvalidOperationException("Cannot set mask for a specific day if the calendar object spans multiple weeks.");
+            }
+
+            if(calendar.StartDate > day ||
+               calendar.EndDate < day)
+            {
+                throw new InvalidOperationException("Cannot set mask for a specific day if the day is not within the calendar's range.");
+            }
+
+            calendar[day.DayOfWeek] = value;
         }
 
         /// <summary>
