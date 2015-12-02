@@ -343,8 +343,10 @@ namespace GTFS.Entities
                 otherMonday = other.StartDate.FirstDayOfWeek();
             }
 
-            if(calendarMonday.AddDays(7) != otherMonday &&
-               calendarMonday != otherMonday)
+            var otherStartMonday = other.StartDate.FirstDayOfWeek();
+            var calendarEndSunday = calendar.EndDate.LastDayOfWeek();
+            if (calendarEndSunday.AddDays(1) != otherStartMonday &&
+                calendarMonday != otherMonday)
             { // cannot merge, differ more than a week.
                 merge = null;
                 return false;
