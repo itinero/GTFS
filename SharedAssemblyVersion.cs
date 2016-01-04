@@ -22,5 +22,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyVersion("1.3.5.9999")] // semantic versioning Major.Minor.Patch.Build (9999 will be updated by CI server)
-[assembly: AssemblyInformationalVersion("Local Build Version")] // do not change this; build server replace this automatically.
+[assembly: AssemblyInformationalVersion("1.3.6-rc1.9999")] // semantic versioning Major.Minor.Patch.Build (9999 will be updated by CI server)
+[assembly: AssemblyVersion("1.3.6.9999")] // do not change this; build server update this automatically (.9999 will be updated by CI server with -{buildnumber})
