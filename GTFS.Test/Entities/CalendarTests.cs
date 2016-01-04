@@ -298,6 +298,30 @@ namespace GTFS.Test.Entities
             Assert.AreEqual(127, merge.Mask);
             Assert.AreEqual(new System.DateTime(2015, 11, 26), merge.StartDate);
             Assert.AreEqual(new System.DateTime(2015, 12, 13), merge.EndDate);
+
+            // two calendars first two weeks with a few don't-cares other the week right after.
+            calendar1 = new Calendar()
+            {
+                ServiceId = "0",
+                Mask = 127,
+                StartDate = new System.DateTime(2016, 01, 01),
+                EndDate = new System.DateTime(2016, 01, 10)
+            };
+            calendar1.TrimDates();
+            calendar2 = new Calendar()
+            {
+                ServiceId = "0",
+                Mask = 127,
+                StartDate = new System.DateTime(2016, 01, 11),
+                EndDate = new System.DateTime(2016, 01, 17)
+            };
+            calendar2.TrimDates();
+
+            Assert.IsTrue(calendar1.TryMerge(calendar2, out merge));
+            Assert.AreEqual("0", merge.ServiceId);
+            Assert.AreEqual(127, merge.Mask);
+            Assert.AreEqual(new System.DateTime(2016, 01, 01), merge.StartDate);
+            Assert.AreEqual(new System.DateTime(2016, 01, 17), merge.EndDate);
         }
     }
 }
