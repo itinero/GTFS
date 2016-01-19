@@ -34,7 +34,7 @@ namespace GTFS.Exceptions
         /// </summary>
         /// <param name="name"></param>
         public GTFSRequiredFileMissingException(string name)
-            : base(string.Format("Could find required file {0}.", name))
+            : base(string.Format("Could not find required file {0}.", name))
         {
             this.Name = name;
         }
