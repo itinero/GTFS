@@ -30,7 +30,7 @@ namespace GTFS.Exceptions
     public class GTFSRequiredFileMissingException : Exception
     {
         /// <summary>
-        /// Creates a parsing exception.
+        /// Creates a missing file exception.
         /// </summary>
         /// <param name="name"></param>
         public GTFSRequiredFileMissingException(string name)
