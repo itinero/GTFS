@@ -95,6 +95,7 @@
     <Compile Include="GTFSReader.cs" />
     <Compile Include="GTFSWriter.cs" />
     <Compile Include="IGTFSFeed.cs" />
+    <Compile Include="IGTFSFeedExtensions.cs" />
     <Compile Include="IO\CSV\CSVLineEnumerableReader.cs" />
     <Compile Include="IO\CSV\CSVStreamReader.cs" />
     <Compile Include="IO\CSV\CSVStreamWriter.cs" />
