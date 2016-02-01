@@ -23,6 +23,7 @@
 using GTFS.Entities;
 using GTFS.Entities.Enumerations;
 using GTFS.IO;
+using GTFS.IO.CSV;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,30 @@ namespace GTFS.Test
         /// <returns></returns>
         private IEnumerable<IGTFSSourceFile> BuildSource()
         {
-            return new GTFSDirectorySource(new DirectoryInfo("sample-feed"));
+            var source = new List<IGTFSSourceFile>();
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar_dates.txt"), "calendar_dates"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_attributes.txt"), "fare_attributes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.fare_rules.txt"), "fare_rules"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.frequencies.txt"), "frequencies"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.routes.txt"), "routes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.shapes.txt"), "shapes"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stop_times.txt"), "stop_times"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.stops.txt"), "stops"));
+            source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.trips.txt"), "trips"));
+            return source;
         }
 
         /// <summary>
