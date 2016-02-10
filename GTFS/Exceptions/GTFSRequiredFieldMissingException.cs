@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
 namespace GTFS.Exceptions
 {
     /// <summary>
     /// Exception thrown when a required field is missing from a GTFS-feed.
     /// </summary>
-    public class GTFSRequiredFieldMissingException : Exception
+    public class GTFSRequiredFieldMissingException : GTFSExceptionBase
     {
         /// <summary>
         /// Creates a new field missing exception.

@@ -27,7 +27,7 @@ namespace GTFS.Exceptions
     /// <summary>
     /// Exception thrown when a value could not be parsed.
     /// </summary>
-    public class GTFSParseException : Exception
+    public class GTFSParseException : GTFSExceptionBase
     {
         /// <summary>
         /// Creates a parsing exception.

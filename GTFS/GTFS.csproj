@@ -82,6 +82,7 @@
     <Compile Include="Entities\TimeOfDay.cs" />
     <Compile Include="Entities\Transfers.cs" />
     <Compile Include="Entities\Trip.cs" />
+    <Compile Include="Exceptions\GTFSExceptionBase.cs" />
     <Compile Include="Exceptions\GTFSIntegrityException.cs" />
     <Compile Include="Exceptions\GTFSParseException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />

@@ -20,40 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace GTFS.Exceptions
+using System;
+using System.Linq;
+using GTFS.Exceptions;
+using NUnit.Framework;
+
+namespace GTFS.Test.Exceptions
 {
     /// <summary>
-    /// Exception thrown when a referred id has not been found.
+    /// Contains tests for <see cref="GTFSExceptionBase"/>.
     /// </summary>
-    public class GTFSIntegrityException : GTFSExceptionBase
+    [TestFixture]
+    // ReSharper disable once InconsistentNaming
+    public class GTFSExceptionsTests
     {
         /// <summary>
-        /// Creates a parsing exception.
+        /// Tests all exceptions derive from our base.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
-        public GTFSIntegrityException(string name, string fieldName, string value)
-            : base(string.Format("Could not find referenced entity for value {0} in field {1} in file {2}.", value, fieldName, name))
+        [Test]
+        public void AllCustomExceptionsInheritFromOurBase()
         {
-            this.Name = name;
-            this.FieldName = fieldName;
-            this.Value = value;
+            // get all our exceptions.
+            var baseException = typeof(GTFSExceptionBase);
+            var systemException = typeof(Exception);
+            var customExceptions = baseException.Assembly
+                .GetTypes()
+                .Where(x => x != baseException && systemException.IsAssignableFrom(x))
+                .ToArray();
+
+            // test result.
+            Assert.IsTrue(customExceptions.All(x => baseException.IsAssignableFrom(x)));
         }
-
-        /// <summary>
-        /// Returns the name of the file.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Returns the field name of the file.
-        /// </summary>
-        public string FieldName { get; private set; }
-
-        /// <summary>
-        /// Returns the value that could not be parsed.
-        /// </summary>
-        public string Value { get; private set; }
     }
 }

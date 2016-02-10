@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
 namespace GTFS.Exceptions
 {
     /// <summary>
     /// Exception thrown when a required file was not found.
     /// </summary>
-    public class GTFSRequiredFileMissingException : Exception
+    public class GTFSRequiredFileMissingException : GTFSExceptionBase
     {
         /// <summary>
         /// Creates a missing file exception.
