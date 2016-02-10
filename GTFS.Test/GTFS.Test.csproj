@@ -75,6 +75,7 @@
     <Compile Include="Entities\CalendarTests.cs" />
     <Compile Include="Filters\GTFSFeedStopsFilterTests.cs" />
     <Compile Include="GTFSAssert.cs" />
+    <Compile Include="ParseRoutesTests.cs" />
     <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="sample-feed\transfers.txt">
@@ -137,6 +138,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\routes.no_desc.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
