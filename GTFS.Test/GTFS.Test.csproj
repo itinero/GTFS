@@ -73,8 +73,10 @@
     <Compile Include="DB\SQLite\SQLiteGTFSFeedDBTests.cs" />
     <Compile Include="DirectorySourceTest.cs" />
     <Compile Include="Entities\CalendarTests.cs" />
+    <Compile Include="FeedInfoEqualityComparer.cs" />
     <Compile Include="Filters\GTFSFeedStopsFilterTests.cs" />
     <Compile Include="GTFSAssert.cs" />
+    <Compile Include="GTFSFeedTests.cs" />
     <Compile Include="ParseRoutesTests.cs" />
     <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
