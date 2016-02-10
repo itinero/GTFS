@@ -24,6 +24,7 @@ using GTFS.Entities;
 using GTFS.Validation;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GTFS.Test.Validation
 {
@@ -68,6 +69,50 @@ namespace GTFS.Test.Validation
 
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
+        }
+
+        /// <summary>
+        /// Tests validation when agency is unknown.
+        /// </summary>
+        [Test]
+        public void TestUnknownAgency()
+        {
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>();
+            var source = GTFSAssert.BuildSource();
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // change to an unknown agency.
+            const string UnknownAgency = "unknown agency";
+            Assert.IsTrue(feed.Agencies.All(x => x.Id != UnknownAgency));
+            Assert.IsTrue(feed.Routes.Any());
+            feed.Routes.First().AgencyId = UnknownAgency;
+            
+            // validate.
+            Assert.IsFalse(GTFSFeedValidation.Validate(feed));
+        }
+
+        /// <summary>
+        /// Tests validation when agency is null.
+        /// </summary>
+        [Test]
+        public void TestNullAgency()
+        {
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>();
+            var source = GTFSAssert.BuildSource();
+
+            // execute the reader.
+            var feed = reader.Read(source);
+
+            // remove agency link.
+            Assert.IsTrue(feed.Routes.Any());
+            feed.Routes.First().AgencyId = null;
+
+            // validate.
+            Assert.IsTrue(GTFSFeedValidation.Validate(feed));
         }
 
         /// <summary>
