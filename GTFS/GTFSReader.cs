@@ -176,6 +176,8 @@ namespace GTFS
         /// <returns></returns>
         public T Read(T feed, IEnumerable<IGTFSSourceFile> source)
         {
+            source = source.ToArray(); // optimization in order not to enumerate multiple times
+
             // check if all required files are present.
             if (_strict)
             {
