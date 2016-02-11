@@ -8,6 +8,7 @@ GTFS Feed Parser
 The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have their specific little perks.
 
 ### A short example
+```
 // create the reader.
 var reader = new GTFSReader<GTFSFeed>();
 
