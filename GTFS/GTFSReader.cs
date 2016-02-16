@@ -181,23 +181,39 @@ namespace GTFS
             // check if all required files are present.
             if (_strict)
             {
-                foreach (var file in this.GetRequiredFiles())
+                var sourceFileNames = source.Select(x => x.Name).ToArray();
+
+                var missingRequiredFiles = GetRequiredFiles()
+                    .Where(x => !sourceFileNames.Contains(x))
+                    .ToArray();
+
+                if (missingRequiredFiles.Any())
                 {
-                    if (!source.Any(x => x.Name.Equals(file)))
-                    { // oeps, file was found found!
-                        throw new GTFSRequiredFileMissingException(file);
-                    }
+                    // oeps, file was not found!
+                    // TODO: check if we should not return all missing files in the exception?
+                    throw new GTFSRequiredFileMissingException(missingRequiredFiles.First());
+                }
+
+                var missingRequiredFileSets = GetRequiredFileSets()
+                    .Where(requiredFileSet => !requiredFileSet.Any(x => sourceFileNames.Contains(x)))
+                    .ToArray();
+
+                if (missingRequiredFileSets.Any())
+                {
+                    // oeps, no file from file set was found!
+                    // TODO: check if we should not return all missing file sets in the exception?
+                    throw new GTFSRequiredFileSetMissingException(missingRequiredFileSets.First());
                 }
             }
 
             // read files one-by-one and in the correct order based on the dependency tree.
             var readFiles = this.ReadCustomFilesBefore();
             var dependencyTree = this.GetDependencyTree();
-            while(readFiles.Count < source.Count())
+            while (readFiles.Count < source.Count())
             {
                 // select a new file based on the dependency tree.
                 IGTFSSourceFile selectedFile = null;
-                foreach(var file in source)
+                foreach (var file in source)
                 {
                     if (!readFiles.Contains(file.Name))
                     { // file has not been read yet!
@@ -228,7 +244,7 @@ namespace GTFS
                 this.Read(selectedFile, feed);
                 readFiles.Add(selectedFile.Name);
             }
-            return feed;            
+            return feed;
         }
 
         /// <summary>
@@ -291,19 +307,25 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Returns a list of all required files.
+        /// Returns a collection of all required files.
         /// </summary>
         /// <returns></returns>
-        public virtual HashSet<string> GetRequiredFiles()
+        public virtual IEnumerable<string> GetRequiredFiles()
         {
-            var files = new HashSet<string>();
-            files.Add("agency");
-            files.Add("stops");
-            files.Add("routes");
-            files.Add("trips");
-            files.Add("stop_times");
-            files.Add("calendar");
-            return files;
+            return new[] { "agency", "stops", "routes", "trips", "stop_times" };
+        }
+
+        /// <summary>
+        /// Returns a collection of required file sets. Each file set contains a 
+        /// number of files of which at least one should be in the source files set.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<string[]> GetRequiredFileSets()
+        {
+            return new[]
+		    {
+			    new[] {"calendar", "calendar_dates"}
+		    };
         }
 
         /// <summary>
@@ -899,7 +921,7 @@ namespace GTFS
         protected virtual void ParseRouteField(T feed, GTFSSourceFileHeader header, Route route, string fieldName, string value)
         {
             switch (fieldName)
-            {            
+            {
                 case "route_id":
                     route.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
@@ -1574,7 +1596,7 @@ namespace GTFS
 
             // clean first.
             value = this.CleanFieldValue(value);
-            
+
             //0 or blank - Stop. A location where passengers board or disembark from a transit vehicle.
             //1 - Station. A physical structure or area that contains one or more stop.
 

@@ -28,11 +28,16 @@ namespace GTFS.Exceptions
     public class GTFSRequiredFileMissingException : GTFSExceptionBase
     {
         /// <summary>
+        /// Message format used for formatting the exception.
+        /// </summary>
+        public static readonly string MessageFormat = "Could not find required file {0}.";
+
+        /// <summary>
         /// Creates a missing file exception.
         /// </summary>
         /// <param name="name"></param>
         public GTFSRequiredFileMissingException(string name)
-            : base(string.Format("Could not find required file {0}.", name))
+            : base(string.Format(MessageFormat, name))
         {
             this.Name = name;
         }

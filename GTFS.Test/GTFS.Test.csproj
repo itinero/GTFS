@@ -79,6 +79,7 @@
     <Compile Include="GTFSAssert.cs" />
     <Compile Include="GTFSFeedTests.cs" />
     <Compile Include="FileNotDisposedTest.cs" />
+    <Compile Include="ParseFeedTests.cs" />
     <Compile Include="ParseRoutesTests.cs" />
     <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
