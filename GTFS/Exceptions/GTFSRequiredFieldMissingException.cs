@@ -28,12 +28,17 @@ namespace GTFS.Exceptions
     public class GTFSRequiredFieldMissingException : GTFSExceptionBase
     {
         /// <summary>
+        /// Message format used for formatting the exception.
+        /// </summary>
+        public static readonly string MessageFormat = "Required field {0} not found in {1}.";
+
+        /// <summary>
         /// Creates a new field missing exception.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
         public GTFSRequiredFieldMissingException(string name, string fieldName)
-            : base(string.Format("Required field {0} not found in {1}.", fieldName, name))
+            : base(string.Format(MessageFormat, fieldName, name))
         {
             this.Name = name;
             this.FieldName = fieldName;

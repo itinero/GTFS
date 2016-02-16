@@ -508,6 +508,12 @@ namespace GTFS
             this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_url");
             this.CheckRequiredField(header, header.Name, this.AgencyMap, "agency_timezone");
 
+            // if we already have another agency, then the agency_id is required
+            if (feed.Agencies.Any())
+            {
+                CheckRequiredField(header, header.Name, AgencyMap, "agency_id");
+            }
+
             // parse/set all fields.
             Agency agency = new Agency();
             for(int idx = 0; idx < data.Length; idx++)

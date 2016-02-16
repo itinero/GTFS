@@ -80,6 +80,7 @@
     <Compile Include="GTFSFeedTests.cs" />
     <Compile Include="FileNotDisposedTest.cs" />
     <Compile Include="ParseFeedTests.cs" />
+    <Compile Include="ParseAgenciesTests.cs" />
     <Compile Include="ParseRoutesTests.cs" />
     <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -182,6 +183,26 @@
     <None Include="folder-feed\calendar.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agency_with_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agency_no_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agencies_no_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agencies_with_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
