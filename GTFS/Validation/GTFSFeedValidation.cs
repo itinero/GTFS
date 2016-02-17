@@ -84,7 +84,7 @@ namespace GTFS.Validation
                     return false;
                 }
                 routeIds.Add(route.Id);
-                if (!agencyIds.Contains(route.AgencyId))
+                if (route.AgencyId != null && !agencyIds.Contains(route.AgencyId))
                 {// oeps, unknown id.
                     messages = string.Format("Unknown agency found in route {0}: {1}", route.Id, route.AgencyId);
                     return false;

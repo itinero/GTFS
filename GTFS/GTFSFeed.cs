@@ -79,7 +79,8 @@ namespace GTFS
                 _feedInfo.PublisherName = feedInfo.PublisherName;
                 _feedInfo.PublisherUrl = feedInfo.PublisherUrl;
                 _feedInfo.StartDate = feedInfo.StartDate;
-                _feedInfo.Version = _feedInfo.Version;
+                _feedInfo.Version = feedInfo.Version;
+                _feedInfo.Tag = feedInfo.Tag;
             }
         }
 

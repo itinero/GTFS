@@ -20,21 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
 namespace GTFS.Exceptions
 {
     /// <summary>
     /// Exception thrown when a required file was not found.
     /// </summary>
-    public class GTFSRequiredFileMissingException : Exception
+    public class GTFSRequiredFileMissingException : GTFSExceptionBase
     {
+        /// <summary>
+        /// Message format used for formatting the exception.
+        /// </summary>
+        public static readonly string MessageFormat = "Could not find required file {0}.";
+
         /// <summary>
         /// Creates a missing file exception.
         /// </summary>
         /// <param name="name"></param>
         public GTFSRequiredFileMissingException(string name)
-            : base(string.Format("Could not find required file {0}.", name))
+            : base(string.Format(MessageFormat, name))
         {
             this.Name = name;
         }

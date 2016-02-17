@@ -73,8 +73,15 @@
     <Compile Include="DB\SQLite\SQLiteGTFSFeedDBTests.cs" />
     <Compile Include="DirectorySourceTest.cs" />
     <Compile Include="Entities\CalendarTests.cs" />
+    <Compile Include="Exceptions\GTFSExceptionsTests.cs" />
+    <Compile Include="FeedInfoEqualityComparer.cs" />
     <Compile Include="Filters\GTFSFeedStopsFilterTests.cs" />
     <Compile Include="GTFSAssert.cs" />
+    <Compile Include="GTFSFeedTests.cs" />
+    <Compile Include="FileNotDisposedTest.cs" />
+    <Compile Include="ParseFeedTests.cs" />
+    <Compile Include="ParseAgenciesTests.cs" />
+    <Compile Include="ParseRoutesTests.cs" />
     <Compile Include="ParseEntitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="sample-feed\transfers.txt">
@@ -123,6 +130,10 @@
       <Project>{41b2bada-85ab-4967-8511-16eede2301aa}</Project>
       <Name>GTFS.DB.SQLite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GTFS.IO.Desktop\GTFS.IO.Desktop.csproj">
+      <Project>{869456E4-50EF-4777-9E77-9A6AC96B406A}</Project>
+      <Name>GTFS.IO.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GTFS.IO\GTFS.IO.csproj">
       <Project>{39531d68-74cf-4c1c-9271-a2c874495383}</Project>
       <Name>GTFS.IO</Name>
@@ -137,6 +148,61 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\routes.no_desc.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\agency.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\routes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\stops.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\stop_times.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\trips.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="folder-feed\calendar.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agency_with_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agency_no_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agencies_no_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="other-feed\agencies_with_id.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

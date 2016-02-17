@@ -95,9 +95,9 @@ namespace GTFS.IO
         /// <returns></returns>
         private void BuildSource()
         {
-            if(_sourceFiles != null)
+            if (_sourceFiles != null)
             {
-                foreach(var sourceFile in _sourceFiles)
+                foreach (var sourceFile in _sourceFiles)
                 {
                     sourceFile.Dispose();
                 }
@@ -105,18 +105,14 @@ namespace GTFS.IO
 
             var files = _directory.GetFiles("*.txt");
             _sourceFiles = new List<IGTFSSourceFile>(files.Length);
-            foreach(var file in files)
+
+            foreach (var file in files)
             {
-                if(_customSeperator.HasValue)
-                { // add source file with custom seperator.
-                    _sourceFiles.Add(
-                        new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length), _customSeperator.Value));
-                }
-                else
-                { // no custom seperator here!
-                    _sourceFiles.Add(
-                        new GTFSSourceFileLines(File.ReadLines(file.FullName), file.Name.Substring(0, file.Name.Length - file.Extension.Length)));
-                }
+                var nameWithoutExtension = Path.GetFileNameWithoutExtension(file.Name);
+
+                _sourceFiles.Add(_customSeperator.HasValue
+                        ? new GTFSSourceFileStream(File.OpenRead(file.FullName), nameWithoutExtension, _customSeperator.Value)
+                        : new GTFSSourceFileStream(File.OpenRead(file.FullName), nameWithoutExtension));
             }
         }
 

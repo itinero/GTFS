@@ -23,8 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\Output\GTFS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,10 +81,12 @@
     <Compile Include="Entities\TimeOfDay.cs" />
     <Compile Include="Entities\Transfers.cs" />
     <Compile Include="Entities\Trip.cs" />
+    <Compile Include="Exceptions\GTFSExceptionBase.cs" />
     <Compile Include="Exceptions\GTFSIntegrityException.cs" />
     <Compile Include="Exceptions\GTFSParseException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFieldMissingException.cs" />
     <Compile Include="Exceptions\GTFSRequiredFileMissingException.cs" />
+    <Compile Include="Exceptions\GTFSRequiredFileSetMissingException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fields\FieldMapping.cs" />
     <Compile Include="Filters\GTFSFeedFilter.cs" />
