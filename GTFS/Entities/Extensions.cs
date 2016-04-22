@@ -20,7 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Reflection;
-
-[assembly: AssemblyInformationalVersion("1.6.0-rc1")]
-[assembly: AssemblyVersion("1.6.0")]
+namespace GTFS.Entities
+{
+    /// <summary>
+    /// Contains extension methods for the entities.
+    /// </summary>
+    public static class Extensions
+    {
+        /// <summary>
+        /// Gets the hashcode for the given string but uses an empty string when null.
+        /// </summary>
+        internal static int GetHashCodeEmptyWhenNull(this string val)
+        {
+            if (val == null)
+            {
+                return string.Empty.GetHashCode();
+            }
+            return val.GetHashCode();
+        }
+    }
+}

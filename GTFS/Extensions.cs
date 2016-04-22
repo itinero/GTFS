@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2016 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using GTFS.Exceptions;
+using GTFS.Entities.Collections;
 using System;
+using System.Linq;
 
 namespace GTFS
 {
@@ -33,10 +34,6 @@ namespace GTFS
         /// <summary>
         /// Parses an integer number from a string at the given index and with the given length.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="idx"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
         public static int FastParse(this string value, int idx, int count)
         {
             int result = 0;
@@ -70,8 +67,6 @@ namespace GTFS
         /// <summary>
         /// Parses a number from a char value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static int FastParse(this char value)
         {
             switch(value)
@@ -103,8 +98,6 @@ namespace GTFS
         /// <summary>
         /// Copies this feed to the given feed.
         /// </summary>
-        /// <param name="thisFeed"></param>
-        /// <param name="feed"></param>
         public static void CopyTo(this IGTFSFeed thisFeed, IGTFSFeed feed)
         {
             var feedInfo = thisFeed.GetFeedInfo();
@@ -161,12 +154,70 @@ namespace GTFS
                 feed.Trips.Add(entity);
             }
         }
+        
+        /// <summary>
+        /// Merges the content of the given feed with this feed by adding or replacing entities.
+        /// </summary>
+        public static void Merge(this IGTFSFeed thisFeed, IGTFSFeed feed)
+        {
+            var feedInfo = feed.GetFeedInfo();
+            if (feedInfo != null)
+            {
+                thisFeed.SetFeedInfo(feedInfo);
+            }
+            foreach (var entity in feed.Agencies)
+            {
+                thisFeed.Agencies.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.CalendarDates)
+            {
+                thisFeed.CalendarDates.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.Calendars)
+            {
+                thisFeed.Calendars.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.FareAttributes)
+            {
+                thisFeed.FareAttributes.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.FareRules)
+            {
+                thisFeed.FareRules.AddOrReplace(entity, x => x.FareId);
+            }
+            foreach (var entity in feed.Frequencies)
+            {
+                thisFeed.Frequencies.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.Routes)
+            {
+                thisFeed.Routes.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.Shapes)
+            {
+                thisFeed.Shapes.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.Stops)
+            {
+                thisFeed.Stops.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.StopTimes)
+            {
+                thisFeed.StopTimes.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.Transfers)
+            {
+                thisFeed.Transfers.AddOrReplace(entity);
+            }
+            foreach (var entity in feed.Trips)
+            {
+                thisFeed.Trips.AddOrReplace(entity, x => x.Id);
+            }
+        }
 
         /// <summary>
         /// Converts a number of milliseconds from 1/1/1970 into a standard DateTime.
         /// </summary>
-        /// <param name="milliseconds"></param>
-        /// <returns></returns>
         public static DateTime FromUnixTime(this long milliseconds)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -187,11 +238,6 @@ namespace GTFS
         /// <summary>
         /// Calculates the distance in meter between the two given coordinates.
         /// </summary>
-        /// <param name="latitude1"></param>
-        /// <param name="longitude1"></param>
-        /// <param name="latitude2"></param>
-        /// <param name="longitude2"></param>
-        /// <returns></returns>
         public static double DistanceInMeter(double latitude1, double longitude1, double latitude2, double longitude2)
         {
             var radius_earth = 6371000;
@@ -229,6 +275,54 @@ namespace GTFS
                                      b.ToString("X2"));
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Adds or replaces an entity in the given collection.
+        /// </summary>
+        public static void AddOrReplace<T>(this IEntityCollection<T> collection, T entity)
+            where T : Entities.GTFSEntity
+        {
+            if (!collection.Contains(entity))
+            {
+                collection.Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// Adds or replaces an entity in the given collection.
+        /// </summary>
+        public static void AddOrReplace(this IStopTimeCollection collection, Entities.StopTime entity)
+        {
+            if (!collection.Contains(entity))
+            {
+                collection.Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// Adds or replaces an entity in the given collection.
+        /// </summary>
+        public static void AddOrReplace(this ITransferCollection collection, Entities.Transfer entity)
+        {
+            if (!collection.Contains(entity))
+            {
+                collection.Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// Adds or replaces an entity in the given collection.
+        /// </summary>
+        public static void AddOrReplace<T>(this IUniqueEntityCollection<T> collection, T entity, Func<T, string> getId)
+            where T : Entities.GTFSEntity
+        {
+            var ent = collection.Get(getId(entity));
+            if (ent != null)
+            {
+                collection.Remove(getId(entity));
+            }
+            collection.Add(entity);
         }
 
         /// <summary>

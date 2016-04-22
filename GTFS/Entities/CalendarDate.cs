@@ -61,5 +61,37 @@ namespace GTFS.Entities
         {
             return string.Format("[{0}] {1} {2}", this.ServiceId, this.Date, this.ExceptionType.ToString());
         }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 29;
+                hash = hash * 31 + this.Date.GetHashCode();
+                hash = hash * 31 + this.ExceptionType.GetHashCode();
+                hash = hash * 31 + (this.ServiceId ?? string.Empty).GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as CalendarDate);
+            if (other != null)
+            {
+                return this.Date == other.Date &&
+                    this.ExceptionType == other.ExceptionType &&
+                    (this.ServiceId ?? string.Empty) ==
+                    (other.ServiceId ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

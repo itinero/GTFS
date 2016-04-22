@@ -71,5 +71,43 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("transfer_duration")]
         public string TransferDuration { get; set; }
+
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 23;
+                hash = hash * 29 + (this.CurrencyType ?? string.Empty).GetHashCode();
+                hash = hash * 29 + (this.FareId ?? string.Empty).GetHashCode();
+                hash = hash * 29 + this.PaymentMethod.GetHashCode();
+                hash = hash * 29 + (this.Price ?? string.Empty).GetHashCode();
+                hash = hash * 29 + (this.TransferDuration ?? string.Empty).GetHashCode();
+                hash = hash * 29 + this.Transfers.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as FareAttribute);
+            if (other != null)
+            {
+                return (this.CurrencyType ?? string.Empty) == (other.CurrencyType ?? string.Empty) &&
+                    (this.FareId ?? string.Empty) == (other.CurrencyType ?? string.Empty) &&
+                    this.PaymentMethod == other.PaymentMethod &&
+                    (this.Price ?? string.Empty) == (other.Price ?? string.Empty) &&
+                    (this.TransferDuration ?? string.Empty) == (other.TransferDuration ?? string.Empty) &&
+                    this.Transfers == other.Transfers;
+            }
+            return false;
+        }
     }
 }

@@ -63,5 +63,40 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("exact_times")]
         public bool? ExactTimes { get; set; }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 37;
+                hash = hash * 41 + (this.EndTime ?? string.Empty).GetHashCode();
+                hash = hash * 41 + this.ExactTimes.GetHashCode();
+                hash = hash * 41 + (this.HeadwaySecs ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.StartTime ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.TripId ?? string.Empty).GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Frequency);
+            if (other != null)
+            {
+                return (this.EndTime ?? string.Empty) == (other.EndTime ?? string.Empty) &&
+                    this.ExactTimes == other.ExactTimes &&
+                    (this.HeadwaySecs ?? string.Empty) == (other.HeadwaySecs ?? string.Empty) &&
+                    (this.StartTime ?? string.Empty) == (other.StartTime ?? string.Empty) &&
+                    (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

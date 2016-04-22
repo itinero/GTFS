@@ -56,8 +56,6 @@ namespace GTFS.Entities
         /// <summary>
         /// Creates a new time of day from total seconds.
         /// </summary>
-        /// <param name="totalSeconds"></param>
-        /// <returns></returns>
         public static TimeOfDay FromTotalSeconds(int totalSeconds)
         {
             var hours = (int)System.Math.Floor(totalSeconds / 3600.0);
@@ -70,6 +68,36 @@ namespace GTFS.Entities
                 Minutes = minutes,
                 Seconds = seconds
             };
+        }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 61;
+                hash = hash * 67 + this.Hours.GetHashCode();
+                hash = hash * 67 + this.Minutes.GetHashCode();
+                hash = hash * 67 + this.Seconds.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            if (obj is TimeOfDay)
+            {
+                var other = (TimeOfDay)obj;
+                return this.Hours == other.Hours &&
+                    this.Minutes == other.Minutes &&
+                    this.Seconds == other.Seconds;
+            }
+            return false;
         }
     }
 }

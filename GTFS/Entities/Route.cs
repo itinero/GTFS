@@ -90,5 +90,48 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("route_text_color")]
         public int? TextColor { get; set; }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 41;
+                hash = hash * 43 + (this.AgencyId ?? string.Empty).GetHashCode();
+                hash = hash * 43 + this.Color.GetHashCode();
+                hash = hash * 43 + (this.Description ?? string.Empty).GetHashCode();
+                hash = hash * 43 + (this.Id ?? string.Empty).GetHashCode();
+                hash = hash * 43 + (this.LongName ?? string.Empty).GetHashCode();
+                hash = hash * 43 + (this.ShortName ?? string.Empty).GetHashCode();
+                hash = hash * 43 + this.TextColor.GetHashCode();
+                hash = hash * 43 + this.Type.GetHashCode();
+                hash = hash * 43 + this.Url.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Route);
+            if (other != null)
+            {
+                return (this.AgencyId ?? string.Empty) == (other.AgencyId ?? string.Empty) &&
+                    this.Color == other.Color &&
+                    (this.Description ?? string.Empty) == (other.Description ?? string.Empty) &&
+                    (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
+                    (this.LongName ?? string.Empty) == (other.LongName ?? string.Empty) &&
+                    (this.ShortName ?? string.Empty) == (other.ShortName ?? string.Empty) &&
+                    this.TextColor == other.TextColor &&
+                    this.Type == other.Type &&
+                    this.Url == other.Url;
+            }
+            return false;
+        }
     }
 }

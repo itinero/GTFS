@@ -57,5 +57,38 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("min_transfer_time")]
         public string MinimumTransferTime { get; set; }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 71;
+                hash = hash * 73 + this.FromStopId.GetHashCodeEmptyWhenNull();
+                hash = hash * 73 + this.MinimumTransferTime.GetHashCodeEmptyWhenNull();
+                hash = hash * 73 + this.ToStopId.GetHashCodeEmptyWhenNull();
+                hash = hash * 73 + this.TransferType.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Transfer);
+            if (other != null)
+            {
+                return (this.FromStopId ?? string.Empty) == (other.FromStopId ?? string.Empty) &&
+                    (this.ToStopId ?? string.Empty) == (other.ToStopId ?? string.Empty) &&
+                    this.TransferType == other.TransferType &&
+                    (this.MinimumTransferTime ?? string.Empty) == (other.MinimumTransferTime ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

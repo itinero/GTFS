@@ -69,6 +69,7 @@
     <Compile Include="Entities\Enumerations\RouteTypeExtended.cs" />
     <Compile Include="Entities\Enumerations\TransferType.cs" />
     <Compile Include="Entities\Enumerations\WheelchairBoardingType.cs" />
+    <Compile Include="Entities\Extensions.cs" />
     <Compile Include="Entities\FareAttribute.cs" />
     <Compile Include="Entities\FareRule.cs" />
     <Compile Include="Entities\FeedInfo.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Entities\Stop.cs" />
     <Compile Include="Entities\StopTime.cs" />
     <Compile Include="Entities\TimeOfDay.cs" />
-    <Compile Include="Entities\Transfers.cs" />
+    <Compile Include="Entities\Transfer.cs" />
     <Compile Include="Entities\Trip.cs" />
     <Compile Include="Exceptions\GTFSExceptionBase.cs" />
     <Compile Include="Exceptions\GTFSIntegrityException.cs" />

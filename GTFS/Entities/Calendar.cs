@@ -222,7 +222,6 @@ namespace GTFS.Entities
         /// <summary>
         /// Returns a description of this trip.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("[{0}] mon-sun {1}:{2}:{3}:{4}:{5}:{6}:{7}",
@@ -234,6 +233,40 @@ namespace GTFS.Entities
                 this.Friday ? "1" : "0",
                 this.Saturday ? "1" : "0",
                 this.Sunday ? "1" : "0");
+        }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + this.EndDate.GetHashCode();
+                hash = hash * 23 + this.Mask.GetHashCode();
+                hash = hash * 23 + (this.ServiceId ?? string.Empty).GetHashCode();
+                hash = hash * 23 + this.StartDate.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Calendar);
+            if (other != null)
+            {
+                return this.EndDate == other.EndDate &&
+                    this.StartDate == other.StartDate &&
+                    this.Mask == other.Mask &&
+                    (this.ServiceId ?? string.Empty) ==
+                    (other.ServiceId ?? string.Empty);
+            }
+            return false;
         }
     }
 }

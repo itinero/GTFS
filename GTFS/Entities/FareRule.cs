@@ -60,5 +60,40 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("contains_id")]
         public string ContainsId { get; set; }
+        
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 31;
+                hash = hash * 37 + (this.ContainsId ?? string.Empty).GetHashCode();
+                hash = hash * 37 + (this.DestinationId ?? string.Empty).GetHashCode();
+                hash = hash * 37 + (this.FareId ?? string.Empty).GetHashCode();
+                hash = hash * 37 + (this.OriginId ?? string.Empty).GetHashCode();
+                hash = hash * 37 + (this.RouteId ?? string.Empty).GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as FareRule);
+            if (other != null)
+            {
+                return (this.ContainsId ?? string.Empty) == (other.ContainsId ?? string.Empty) &&
+                    (this.DestinationId ?? string.Empty) == (other.DestinationId ?? string.Empty) &&
+                    (this.FareId ?? string.Empty) == (other.ContainsId ?? string.Empty) && 
+                    (this.OriginId ?? string.Empty) == (other.OriginId ?? string.Empty) &&
+                    (this.RouteId ?? string.Empty) == (other.RouteId ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

@@ -113,7 +113,49 @@ namespace GTFS.Entities
                 return this.StopSequence.CompareTo(other.StopSequence);
             }
             return this.TripId.CompareTo(other.TripId);
+        }
+        
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 53;
+                hash = hash * 59 + this.ArrivalTime.GetHashCode();
+                hash = hash * 59 + this.DepartureTime.GetHashCode();
+                hash = hash * 59 + this.DropOffType.GetHashCode();
+                hash = hash * 59 + this.PickupType.GetHashCode();
+                hash = hash * 59 + this.ShapeDistTravelled.GetHashCode();
+                hash = hash * 59 + this.StopHeadsign.GetHashCode();
+                hash = hash * 59 + this.StopId.GetHashCodeEmptyWhenNull();
+                hash = hash * 59 + this.StopSequence.GetHashCode();
+                hash = hash * 59 + this.TripId.GetHashCodeEmptyWhenNull();
+                return hash;
+            }
+        }
 
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as StopTime);
+            if (other != null)
+            {
+                return this.ArrivalTime.Equals(other.ArrivalTime) &&
+                    this.DepartureTime.Equals(other.DepartureTime) &&
+                    this.DropOffType== other.DropOffType &&
+                    this.PickupType == other.PickupType &&
+                    (this.ShapeDistTravelled ?? string.Empty) == (other.ShapeDistTravelled ?? string.Empty) &&
+                    (this.StopHeadsign ?? string.Empty) == (other.StopHeadsign ?? string.Empty) &&
+                    (this.StopId ?? string.Empty) == (other.StopId ?? string.Empty) &&
+                    this.StopSequence == other.StopSequence &&
+                    (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty);
+            }
+            return false;
         }
     }
 }

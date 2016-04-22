@@ -63,5 +63,40 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("shape_dist_traveled")]
         public double? DistanceTravelled { get; set; }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 43;
+                hash = hash * 47 + this.DistanceTravelled.GetHashCode();
+                hash = hash * 47 + (this.Id ?? string.Empty).GetHashCode();
+                hash = hash * 47 + this.Latitude.GetHashCode();
+                hash = hash * 47 + this.Longitude.GetHashCode();
+                hash = hash * 47 + this.Sequence.GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Shape);
+            if (other != null)
+            {
+                return this.DistanceTravelled == other.DistanceTravelled && 
+                    (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
+                    this.Latitude == other.Latitude &&
+                    this.Longitude == other.Longitude &&
+                    this.Sequence == other.Sequence;
+            }
+            return false;
+        }
     }
 }

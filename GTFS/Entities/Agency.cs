@@ -84,5 +84,44 @@ namespace GTFS.Entities
         {
             return string.Format("[{0}] {1}", this.Id, this.Name);
         }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 83;
+                hash = hash * 89 + this.FareURL.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Id.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.LanguageCode.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Name.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Phone.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Timezone.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.URL.GetHashCodeEmptyWhenNull();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Agency);
+            if (other != null)
+            {
+                return (this.FareURL ?? string.Empty) == (other.FareURL ?? string.Empty) &&
+                    (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
+                    (this.LanguageCode ?? string.Empty) == (other.LanguageCode ?? string.Empty) &&
+                    (this.Name ?? string.Empty) == (other.Name ?? string.Empty) &&
+                    (this.Phone ?? string.Empty) == (other.Phone ?? string.Empty) &&
+                    (this.Timezone ?? string.Empty) == (other.Timezone ?? string.Empty) &&
+                    (this.URL ?? string.Empty) == (other.URL ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

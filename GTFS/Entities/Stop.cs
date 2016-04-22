@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2014 Ben Abelshausen
+// Copyright (c) 2016 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -114,6 +114,55 @@ namespace GTFS.Entities
         public override string ToString()
         {
             return string.Format("[{0}] {1} - {2}", this.Id, this.Name, this.Description);
+        }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 41;
+                hash = hash * 43 + this.Code.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Description.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Id.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Latitude.GetHashCode();
+                hash = hash * 43 + this.LocationType.GetHashCode();
+                hash = hash * 43 + this.Longitude.GetHashCode();
+                hash = hash * 43 + this.Name.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.ParentStation.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Timezone.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Url.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.WheelchairBoarding.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.Zone.GetHashCodeEmptyWhenNull();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Stop);
+            if (other != null)
+            {
+                return (this.Code ?? string.Empty) == (other.Code ?? string.Empty) &&
+                    (this.Description ?? string.Empty) == (other.Description ?? string.Empty) &&
+                    (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
+                    this.Latitude == other.Latitude &&
+                    this.LocationType == other.LocationType &&
+                    this.Longitude == other.Longitude &&
+                    (this.Name ?? string.Empty) == (other.Name ?? string.Empty) &&
+                    (this.ParentStation ?? string.Empty) == (other.ParentStation ?? string.Empty) &&
+                    (this.Timezone ?? string.Empty) == (other.Timezone ?? string.Empty) &&
+                    (this.Url ?? string.Empty) == (other.Url ?? string.Empty) &&
+                    (this.WheelchairBoarding ?? string.Empty) == (other.WheelchairBoarding ?? string.Empty) &&
+                    (this.Zone ?? string.Empty) == (other.Zone ?? string.Empty);
+            }
+            return false;
         }
     }
 }

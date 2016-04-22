@@ -97,5 +97,48 @@ namespace GTFS.Entities
         {
             return string.Format("[{0}] {1}", this.ShortName, this.Headsign);
         }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 83;
+                hash = hash * 89 + this.AccessibilityType.GetHashCode();
+                hash = hash * 89 + this.BlockId.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Direction.GetHashCode();
+                hash = hash * 89 + this.Headsign.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.Id.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.RouteId.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.ServiceId.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.ShapeId.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.ShortName.GetHashCodeEmptyWhenNull();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as Trip);
+            if (other != null)
+            {
+                return this.AccessibilityType == other.AccessibilityType &&
+                    (this.BlockId ?? string.Empty) == (other.BlockId ?? string.Empty) &&
+                    this.Direction == other.Direction &&
+                    (this.Headsign ?? string.Empty) == (other.Headsign ?? string.Empty) &&
+                    (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
+                    (this.RouteId ?? string.Empty) == (other.RouteId ?? string.Empty) &&
+                    (this.ServiceId ?? string.Empty) == (other.ServiceId ?? string.Empty) &&
+                    (this.ShapeId ?? string.Empty) == (other.ShapeId ?? string.Empty) &&
+                    (this.ShortName ?? string.Empty) == (other.ShortName ?? string.Empty);
+            }
+            return false;
+        }
     }
 }

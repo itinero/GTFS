@@ -68,5 +68,42 @@ namespace GTFS.Entities
         /// </summary>
         [FieldName("feed_version")]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Serves as a hash function.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 37;
+                hash = hash * 41 + (this.EndDate ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.Lang ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.PublisherName ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.PublisherUrl ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.StartDate ?? string.Empty).GetHashCode();
+                hash = hash * 41 + (this.Version ?? string.Empty).GetHashCode();
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the given object contains the same data.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as FeedInfo);
+            if (other != null)
+            {
+                return (this.EndDate ?? string.Empty) == (other.EndDate ?? string.Empty) &&
+                    (this.Lang ?? string.Empty) == (other.Lang ?? string.Empty) &&
+                    (this.PublisherName ?? string.Empty) == (other.PublisherName ?? string.Empty) &&
+                    (this.PublisherUrl ?? string.Empty) == (other.PublisherUrl ?? string.Empty) &&
+                    (this.StartDate ?? string.Empty) == (other.StartDate ?? string.Empty) &&
+                    (this.Version ?? string.Empty) == (other.Version ?? string.Empty);
+            }
+            return false;
+        }
     }
 }
