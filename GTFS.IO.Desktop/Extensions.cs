@@ -20,7 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Reflection;
+using System.IO;
 
-[assembly: AssemblyInformationalVersion("1.7.1")]
-[assembly: AssemblyVersion("1.7.1")]
+namespace GTFS.IO
+{
+    /// <summary>
+    /// Extensions methods for convenient reading/writing feeds.
+    /// </summary>
+    public static class Extensions
+    {
+        /// <summary>
+        /// Reads a fead from the given directory.
+        /// </summary>
+        public static GTFSFeed Read(this GTFSReader<GTFSFeed> reader, DirectoryInfo directory)
+        {
+            var feed = new GTFSFeed();
+            using (var source = new GTFSDirectorySource(directory))
+            {
+                return reader.Read(feed, source);
+            }
+        }
+        /// <summary>
+        /// Reads a fead from the given directory.
+        /// </summary>
+        public static GTFSFeed Read(this GTFSReader<GTFSFeed> reader, string path)
+        {
+            var directory = new DirectoryInfo(path);
+            return reader.Read(directory);
+        }        
+
+        /// <summary>
+        /// Reads a fead from the given directory.
+        /// </summary>
+        public static GTFSFeed Read(this DirectoryInfo directory)
+        {
+            return (new GTFSReader<GTFSFeed>()).Read(directory);
+        }
+    }
+}

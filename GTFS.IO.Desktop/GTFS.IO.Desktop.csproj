@@ -67,6 +67,7 @@
     <Compile Include="..\SharedAssemblyVersion.cs">
       <Link>Properties\SharedAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="GTFSDirectorySource.cs" />
     <Compile Include="GTFSDirectoryTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
