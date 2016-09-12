@@ -130,7 +130,10 @@ namespace GTFS.DB.SQLite
                 command.CommandText = sql;
                 using (var reader = command.ExecuteReader())
                 {
-                    ids.Add((int)reader.GetInt64(0));
+                    while (reader.Read())
+                    {
+                        ids.Add((int)reader.GetInt64(0));
+                    }                    
                 }
             }
             return ids;
