@@ -79,7 +79,7 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters[2].Value = entity.Price;
                 command.Parameters[3].Value = entity.CurrencyType;
                 command.Parameters[4].Value = (int)entity.PaymentMethod;
-                command.Parameters[5].Value = (int)entity.Transfers;
+                command.Parameters[5].Value = entity.Transfers == null ? -1 : (int)entity.Transfers;
                 command.Parameters[6].Value = entity.TransferDuration;
 
                 command.ExecuteNonQuery();
