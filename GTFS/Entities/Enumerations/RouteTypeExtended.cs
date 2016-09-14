@@ -153,6 +153,7 @@ namespace GTFS.Entities.Enumerations
         HireCycle = 1604,
         MiscellaneousService = 1700,
         CableCar = 1701,
-        HorsedrawnCarriage = 1702
+        HorsedrawnCarriage = 1702,
+        MinibusTaxi = 1800
     }
 }
