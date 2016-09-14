@@ -59,6 +59,7 @@
     <Compile Include="Entities\Collections\StopTimeListCollection.cs" />
     <Compile Include="Entities\Collections\TransferListCollection.cs" />
     <Compile Include="Entities\Collections\UniqueEntityListCollection.cs" />
+    <Compile Include="Entities\Enumerations\BikesAllowed.cs" />
     <Compile Include="Entities\Enumerations\DirectionType.cs" />
     <Compile Include="Entities\Enumerations\DropOffType.cs" />
     <Compile Include="Entities\Enumerations\ExceptionType.cs" />
