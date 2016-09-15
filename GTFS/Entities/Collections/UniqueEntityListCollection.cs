@@ -142,5 +142,10 @@ namespace GTFS.Entities.Collections
         {
             return _entities.GetEnumerator();
         }
+
+        public bool Update(string entityId, T newEntity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

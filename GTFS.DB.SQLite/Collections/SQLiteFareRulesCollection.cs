@@ -164,5 +164,10 @@ namespace GTFS.DB.SQLite.Collections
         {
             return this.Get().GetEnumerator();
         }
+
+        public bool Update(string entityId, FareRule newEntity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -58,6 +58,13 @@ namespace GTFS.Entities.Collections
         bool Remove(string entityId);
 
         /// <summary>
+        /// Update the entity with the given id.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        bool Update(string entityId, T newEntity);
+
+        /// <summary>
         /// Returns all entities.
         /// </summary>
         /// <returns></returns>

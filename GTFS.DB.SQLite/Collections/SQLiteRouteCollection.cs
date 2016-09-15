@@ -176,5 +176,39 @@ namespace GTFS.DB.SQLite.Collections
         {
             return this.Get().GetEnumerator();
         }
+
+        public bool Update(string entityId, Route entity)
+        {
+            string sql = "UPDATE route SET FEED_ID=:feed_id, id=:id, agency_id=:agency_id, route_short_name=:route_short_name, route_long_name=:route_long_name, route_desc=:route_desc, route_type=:route_type, route_url=:route_url, route_color=:route_color, route_text_color=:route_text_color WHERE id=:entityId;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_short_name", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_long_name", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_desc", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_type", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"route_url", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_color", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"route_text_color", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"entityId", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entity.Id;
+                command.Parameters[2].Value = entity.AgencyId;
+                command.Parameters[3].Value = entity.ShortName;
+                command.Parameters[4].Value = entity.LongName;
+                command.Parameters[5].Value = entity.Description;
+                command.Parameters[6].Value = (int)entity.Type;
+                command.Parameters[7].Value = entity.Url;
+                command.Parameters[8].Value = entity.Color;
+                command.Parameters[9].Value = entity.TextColor;
+                command.Parameters[10].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }

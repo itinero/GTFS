@@ -142,6 +142,51 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Edits the entity with the given id.
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public bool Update(string entityId, Stop entity)
+        {
+            string sql = "UPDATE stop SET FEED_ID=:feed_id, id=:id, stop_code=:stop_code, stop_name=:stop_name, stop_desc=:stop_desc, stop_lat=:stop_lat, stop_lon=:stop_lon, zone_id=:zone_id, stop_url=:stop_url, location_type=:location_type, parent_station=:parent_station, stop_timezone=:stop_timezone, wheelchair_boarding=:wheelchair_boarding WHERE id=:entityId;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_code", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_name", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_desc", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_lat", DbType.Double));
+                command.Parameters.Add(new SQLiteParameter(@"stop_lon", DbType.Double));
+                command.Parameters.Add(new SQLiteParameter(@"zone_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_url", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"location_type", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"parent_station", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_timezone", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"wheelchair_boarding", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"entityId", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entity.Id;
+                command.Parameters[2].Value = entity.Code;
+                command.Parameters[3].Value = entity.Name;
+                command.Parameters[4].Value = entity.Description;
+                command.Parameters[5].Value = entity.Latitude;
+                command.Parameters[6].Value = entity.Longitude;
+                command.Parameters[7].Value = entity.Zone;
+                command.Parameters[8].Value = entity.Url;
+                command.Parameters[9].Value = entity.LocationType.HasValue ? (int?)entity.LocationType.Value : null;
+                command.Parameters[10].Value = entity.ParentStation;
+                command.Parameters[11].Value = entity.Timezone;
+                command.Parameters[12].Value = entity.WheelchairBoarding;
+                command.Parameters[13].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }            
+        }
+
+        /// <summary>
         /// Returns all entities.
         /// </summary>
         /// <returns></returns>
@@ -196,6 +241,6 @@ namespace GTFS.DB.SQLite.Collections
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.Get().GetEnumerator();
-        }
+        }        
     }
 }

@@ -170,5 +170,35 @@ namespace GTFS.DB.SQLite.Collections
         {
             return this.Get().GetEnumerator();
         }
+
+        public bool Update(string entityId, Agency entity)
+        {
+            string sql = "UPDATE agency SET FEED_ID=:feed_id, id=:id, agency_name=:agency_name, agency_url=:agency_url, agency_timezone=:agency_timezone, agency_lang=:agency_lang, agency_phone=:agency_phone, agency_fare_url=:agency_fare_url WHERE id=:entityId;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_name", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_url", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_timezone", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_lang", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_phone", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"agency_fare_url", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"entityId", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entity.Id;
+                command.Parameters[2].Value = entity.Name;
+                command.Parameters[3].Value = entity.URL;
+                command.Parameters[4].Value = entity.Timezone;
+                command.Parameters[5].Value = entity.LanguageCode;
+                command.Parameters[6].Value = entity.Phone;
+                command.Parameters[7].Value = entity.FareURL;
+                command.Parameters[8].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }

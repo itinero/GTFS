@@ -170,5 +170,39 @@ namespace GTFS.DB.SQLite.Collections
         {
             return this.Get().GetEnumerator();
         }
+
+        public bool Update(string entityId, Trip entity)
+        {
+            string sql = "UPDATE trip SET FEED_ID=:feed_id, id=:id, route_id=:route_id, service_id=:service_id, trip_headsign=:trip_headsign, trip_short_name=:trip_short_name, direction_id=:direction_id, block_id=:block_id, shape_id=:shape_id, wheelchair_accessible=:wheelchair_accessible WHERE id=:entityId;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"route_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"trip_headsign", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"trip_short_name", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"direction_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"block_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"shape_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"wheelchair_accessible", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"entityId", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entity.Id;
+                command.Parameters[2].Value = entity.RouteId;
+                command.Parameters[3].Value = entity.ServiceId;
+                command.Parameters[4].Value = entity.Headsign;
+                command.Parameters[5].Value = entity.ShortName;
+                command.Parameters[6].Value = entity.Direction.HasValue ? (int?)entity.Direction.Value : null;
+                command.Parameters[7].Value = entity.BlockId;
+                command.Parameters[8].Value = entity.ShapeId;
+                command.Parameters[9].Value = entity.AccessibilityType.HasValue ? (int?)entity.AccessibilityType.Value : null;
+                command.Parameters[10].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }
