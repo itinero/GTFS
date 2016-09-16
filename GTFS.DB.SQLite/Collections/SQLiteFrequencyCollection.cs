@@ -83,6 +83,37 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<Frequency> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO frequency VALUES (:feed_id, :trip_id, :start_time, :end_time, :headway_secs, :exact_times);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"start_time", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"end_time", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"headway_secs", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"exact_times", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.TripId;
+                        command.Parameters[2].Value = entity.StartTime;
+                        command.Parameters[3].Value = entity.EndTime;
+                        command.Parameters[4].Value = entity.HeadwaySecs;
+                        command.Parameters[5].Value = entity.ExactTimes;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>

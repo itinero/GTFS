@@ -86,6 +86,39 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<FareAttribute> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO fare_attribute VALUES (:feed_id, :fare_id, :price, :currency_type, :payment_method, :transfers, :transfer_duration);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"fare_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"price", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"currency_type", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"payment_method", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"transfers", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"transfer_duration", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.FareId;
+                        command.Parameters[2].Value = entity.Price;
+                        command.Parameters[3].Value = entity.CurrencyType;
+                        command.Parameters[4].Value = (int)entity.PaymentMethod;
+                        command.Parameters[5].Value = entity.Transfers == null ? -1 : (int)entity.Transfers;
+                        command.Parameters[6].Value = entity.TransferDuration;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>

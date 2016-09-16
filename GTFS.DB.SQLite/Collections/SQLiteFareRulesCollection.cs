@@ -169,5 +169,35 @@ namespace GTFS.DB.SQLite.Collections
         {
             throw new NotImplementedException();
         }
+
+        public void AddRange(IUniqueEntityCollection<FareRule> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO fare_rule VALUES (:feed_id, :fare_id, :route_id, :origin_id, :destination_id, :contains_id);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"fare_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"origin_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"destination_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"contains_id", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.FareId;
+                        command.Parameters[2].Value = entity.RouteId;
+                        command.Parameters[3].Value = entity.OriginId;
+                        command.Parameters[4].Value = entity.DestinationId;
+                        command.Parameters[5].Value = entity.ContainsId;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }            
+        }
     }
 }

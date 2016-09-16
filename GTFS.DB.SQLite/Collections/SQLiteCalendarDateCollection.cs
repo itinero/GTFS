@@ -80,6 +80,33 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<CalendarDate> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO calendar_date VALUES (:feed_id, :service_id, :date, :exception_type);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"date", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"exception_type", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.ServiceId;
+                        command.Parameters[2].Value = entity.Date.ToUnixTime();
+                        command.Parameters[3].Value = (int)entity.ExceptionType;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>

@@ -84,6 +84,41 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Adds range of entities
+        /// </summary>
+        /// <param name="entities"></param>
+        public void AddRange(IEntityCollection<Shape> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach(var entity in entities)
+                    {
+                        string sql = "INSERT INTO shape VALUES (:feed_id, :id, :shape_pt_lat, :shape_pt_lon, :shape_pt_sequence, :shape_dist_traveled);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"shape_pt_lat", DbType.Double));
+                        command.Parameters.Add(new SQLiteParameter(@"shape_pt_lon", DbType.Double));
+                        command.Parameters.Add(new SQLiteParameter(@"shape_pt_sequence", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.Double));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.Id;
+                        command.Parameters[2].Value = entity.Latitude;
+                        command.Parameters[3].Value = entity.Longitude;
+                        command.Parameters[4].Value = entity.Sequence;
+                        command.Parameters[5].Value = entity.DistanceTravelled;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }                
+            }
+        }
+
+        /// <summary>
         /// Returns all entities.
         /// </summary>
         /// <returns></returns>
@@ -143,6 +178,6 @@ namespace GTFS.DB.SQLite.Collections
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.Get().GetEnumerator();
-        }
+        }        
     }
 }

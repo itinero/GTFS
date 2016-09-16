@@ -120,5 +120,10 @@ namespace GTFS.Entities.Collections
         {
             return _entities.GetEnumerator();
         }
+
+        public void AddRange(IEntityCollection<T> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

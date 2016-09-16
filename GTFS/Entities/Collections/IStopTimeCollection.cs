@@ -36,6 +36,12 @@ namespace GTFS.Entities.Collections
         void Add(StopTime entity);
 
         /// <summary>
+        /// Adds an entity.
+        /// </summary>
+        /// <param name="entities"></param>
+        void AddRange(IEnumerable<StopTime> entities);
+
+        /// <summary>
         /// Gets all stop times.
         /// </summary>
         /// <returns></returns>

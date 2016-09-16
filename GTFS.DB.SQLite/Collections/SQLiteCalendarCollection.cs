@@ -93,6 +93,47 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<Calendar> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO calendar VALUES (:feed_id, :service_id, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :start_date, :end_date);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"monday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"tuesday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"wednesday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"thursday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"friday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"saturday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"sunday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"start_date", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"end_date", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.ServiceId;
+                        command.Parameters[2].Value = entity.Monday ? 1 : 0;
+                        command.Parameters[3].Value = entity.Tuesday ? 1 : 0;
+                        command.Parameters[4].Value = entity.Wednesday ? 1 : 0;
+                        command.Parameters[5].Value = entity.Thursday ? 1 : 0;
+                        command.Parameters[6].Value = entity.Friday ? 1 : 0;
+                        command.Parameters[7].Value = entity.Saturday ? 1 : 0;
+                        command.Parameters[8].Value = entity.Sunday ? 1 : 0;
+                        command.Parameters[9].Value = entity.StartDate.ToUnixTime();
+                        command.Parameters[10].Value = entity.EndDate.ToUnixTime();
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>

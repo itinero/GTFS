@@ -64,6 +64,14 @@ namespace GTFS.DB.SQLite.Collections
             throw new NotImplementedException();
         }
 
+        public void AddRange(IEnumerable<Transfer> transfers)
+        {
+            foreach(var transfer in transfers)
+            {
+                Add(transfer);
+            }            
+        }
+
         /// <summary>
         /// Gets all transfers.
         /// </summary>

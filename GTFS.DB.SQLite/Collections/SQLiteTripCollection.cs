@@ -89,6 +89,45 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IUniqueEntityCollection<Trip> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var trip in entities)
+                    {
+                        string sql = "INSERT INTO trip VALUES (:feed_id, :id, :route_id, :service_id, :trip_headsign, :trip_short_name, :direction_id, :block_id, :shape_id, :wheelchair_accessible);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_headsign", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_short_name", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"direction_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"block_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"shape_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"wheelchair_accessible", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = trip.Id;
+                        command.Parameters[2].Value = trip.RouteId;
+                        command.Parameters[3].Value = trip.ServiceId;
+                        command.Parameters[4].Value = trip.Headsign;
+                        command.Parameters[5].Value = trip.ShortName;
+                        command.Parameters[6].Value = trip.Direction.HasValue ? (int?)trip.Direction.Value : null;
+                        command.Parameters[7].Value = trip.BlockId;
+                        command.Parameters[8].Value = trip.ShapeId;
+                        command.Parameters[9].Value = trip.AccessibilityType.HasValue ? (int?)trip.AccessibilityType.Value : null;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         public Trip Get(string entityId)
         {
             string sql = "SELECT id, route_id, service_id, trip_headsign, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible FROM trip WHERE FEED_ID = :id AND ID = :trip_id;";
@@ -203,6 +242,6 @@ namespace GTFS.DB.SQLite.Collections
 
                 return command.ExecuteNonQuery() > 0;
             }
-        }
+        }       
     }
 }

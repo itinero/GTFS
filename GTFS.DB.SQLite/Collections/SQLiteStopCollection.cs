@@ -99,6 +99,51 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IUniqueEntityCollection<Stop> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO stop VALUES (:feed_id, :id, :stop_code, :stop_name, :stop_desc, :stop_lat, :stop_lon, :zone_id, :stop_url, :location_type, :parent_station, :stop_timezone, :wheelchair_boarding);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_code", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_name", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_desc", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_lat", DbType.Double));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_lon", DbType.Double));
+                        command.Parameters.Add(new SQLiteParameter(@"zone_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_url", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"location_type", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"parent_station", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"stop_timezone", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"wheelchair_boarding", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.Id;
+                        command.Parameters[2].Value = entity.Code;
+                        command.Parameters[3].Value = entity.Name;
+                        command.Parameters[4].Value = entity.Description;
+                        command.Parameters[5].Value = entity.Latitude;
+                        command.Parameters[6].Value = entity.Longitude;
+                        command.Parameters[7].Value = entity.Zone;
+                        command.Parameters[8].Value = entity.Url;
+                        command.Parameters[9].Value = entity.LocationType.HasValue ? (int?)entity.LocationType.Value : null;
+                        command.Parameters[10].Value = entity.ParentStation;
+                        command.Parameters[11].Value = entity.Timezone;
+                        command.Parameters[12].Value = entity.WheelchairBoarding;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the entity with the given id.
         /// </summary>

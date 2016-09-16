@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,6 +127,11 @@ namespace GTFS.Entities.Collections
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _entities.GetEnumerator();
+        }
+
+        public void AddRange(IEnumerable<StopTime> entities)
+        {
+            throw new NotImplementedException();
         }
     }
 }

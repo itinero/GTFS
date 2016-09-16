@@ -93,6 +93,45 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IUniqueEntityCollection<Route> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO route VALUES (:feed_id, :id, :agency_id, :route_short_name, :route_long_name, :route_desc, :route_type, :route_url, :route_color, :route_text_color);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_short_name", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_long_name", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_desc", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_type", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"route_url", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"route_color", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"route_text_color", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.Id;
+                        command.Parameters[2].Value = entity.AgencyId;
+                        command.Parameters[3].Value = entity.ShortName;
+                        command.Parameters[4].Value = entity.LongName;
+                        command.Parameters[5].Value = entity.Description;
+                        command.Parameters[6].Value = (int)entity.Type;
+                        command.Parameters[7].Value = entity.Url;
+                        command.Parameters[8].Value = entity.Color;
+                        command.Parameters[9].Value = entity.TextColor;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the entity with the given id.
         /// </summary>

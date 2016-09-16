@@ -89,6 +89,41 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IUniqueEntityCollection<Agency> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO agency VALUES (:feed_id, :id, :agency_name, :agency_url, :agency_timezone, :agency_lang, :agency_phone, :agency_fare_url);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_name", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_url", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_timezone", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_lang", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_phone", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"agency_fare_url", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.Id;
+                        command.Parameters[2].Value = entity.Name;
+                        command.Parameters[3].Value = entity.URL;
+                        command.Parameters[4].Value = entity.Timezone;
+                        command.Parameters[5].Value = entity.LanguageCode;
+                        command.Parameters[6].Value = entity.Phone;
+                        command.Parameters[7].Value = entity.FareURL;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the entity with the given id.
         /// </summary>

@@ -37,6 +37,12 @@ namespace GTFS.Entities.Collections
         void Add(T entity);
 
         /// <summary>
+        /// Adds a range of entities.
+        /// </summary>
+        /// <param name="entities"></param>
+        void AddRange(IUniqueEntityCollection<T> entities);
+
+        /// <summary>
         /// Gets the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>

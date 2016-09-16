@@ -23,6 +23,7 @@
 using GTFS.Entities.Collections;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 namespace GTFS
 {
@@ -105,54 +106,19 @@ namespace GTFS
             {
                 feed.SetFeedInfo(feedInfo);
             }
-            foreach(var entity in thisFeed.Agencies)
-            {
-                feed.Agencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.CalendarDates)
-            {
-                feed.CalendarDates.Add(entity);
-            }
-            foreach (var entity in thisFeed.Calendars)
-            {
-                feed.Calendars.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareAttributes)
-            {
-                feed.FareAttributes.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareRules)
-            {
-                feed.FareRules.Add(entity);
-            }
-            foreach (var entity in thisFeed.Frequencies)
-            {
-                feed.Frequencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.Routes)
-            {
-                feed.Routes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Shapes)
-            {
-                feed.Shapes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Stops)
-            {
-                feed.Stops.Add(entity);
-            }
-            foreach (var entity in thisFeed.StopTimes)
-            {
-                feed.StopTimes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Transfers)
-            {
-                feed.Transfers.Add(entity);
-            }
-            foreach (var entity in thisFeed.Trips)
-            {
-                feed.Trips.Add(entity);
-            }
+            // changed all from individual adds to addrange to improve performance!
+            feed.Agencies.AddRange(thisFeed.Agencies);            
+            feed.CalendarDates.AddRange(thisFeed.CalendarDates);            
+            feed.Calendars.AddRange(thisFeed.Calendars);            
+            feed.FareAttributes.AddRange(thisFeed.FareAttributes);           
+            feed.FareRules.AddRange(thisFeed.FareRules);            
+            feed.Frequencies.AddRange(thisFeed.Frequencies);            
+            feed.Routes.AddRange(thisFeed.Routes);            
+            feed.Shapes.AddRange(thisFeed.Shapes);            
+            feed.Stops.AddRange(thisFeed.Stops);            
+            feed.StopTimes.AddRange(thisFeed.StopTimes);            
+            feed.Transfers.AddRange(thisFeed.Transfers);           
+            feed.Trips.AddRange(thisFeed.Trips);
         }
         
         /// <summary>
