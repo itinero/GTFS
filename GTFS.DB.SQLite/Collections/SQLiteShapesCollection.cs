@@ -149,7 +149,24 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public IEnumerable<Shape> Get(string entityId)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT id, shape_pt_lat, shape_pt_lon, shape_pt_sequence, shape_dist_traveled FROM shape WHERE FEED_ID = :id AND id = :shapeId";
+            var parameters = new List<SQLiteParameter>();
+            parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
+            parameters[0].Value = _id;
+            parameters.Add(new SQLiteParameter(@"shapeId", DbType.String));
+            parameters[1].Value = entityId;
+
+            return new SQLiteEnumerable<Shape>(_connection, sql, parameters.ToArray(), (x) =>
+            {
+                return new Shape()
+                {
+                    Id = x.GetString(0),
+                    Latitude = x.GetDouble(1),
+                    Longitude = x.GetDouble(2),
+                    Sequence = (uint)x.GetInt64(3),
+                    DistanceTravelled = x.IsDBNull(4) ? null : (double?)x.GetDouble(4)
+                };
+            });
         }
 
         /// <summary>
