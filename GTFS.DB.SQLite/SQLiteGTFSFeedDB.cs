@@ -34,14 +34,14 @@ namespace GTFS.DB.SQLite
         /// <summary>
         /// Holds a connection.
         /// </summary>
-        private SQLiteConnection _connection;
+        public SQLiteConnection _connection;
 
         /// <summary>
         /// Creates a new db.
         /// </summary>
         public SQLiteGTFSFeedDB()
         {
-            _connection = new SQLiteConnection("Data Source=:memory:;Version=3;New=True;");
+            _connection = new SQLiteConnection("Data Source=:memory:;Version=3;New=True;", true);
             _connection.Open();
 
             // build database.
@@ -53,7 +53,7 @@ namespace GTFS.DB.SQLite
         /// </summary>
         public SQLiteGTFSFeedDB(string connectionString)
         {
-            _connection = new SQLiteConnection(connectionString);
+            _connection = new SQLiteConnection(connectionString, true);
             _connection.Open();
 
             // build database.
