@@ -36,7 +36,7 @@ namespace GTFS.DB.SQLite
         /// <summary>
         /// Holds the connection.
         /// </summary>
-        private SQLiteConnection _connection;
+        private SQLiteConnection _connection { get; set; }
 
         /// <summary>
         /// Holds the sql.
@@ -51,7 +51,7 @@ namespace GTFS.DB.SQLite
         /// <summary>
         /// Holds function to build entities from reader.
         /// </summary>
-        private Func<SQLiteDataReader, T> _entityBuilder;
+        private Func<SQLiteDataReader, T> _entityBuilder { get; set; }
 
         /// <summary>
         /// Creates a new enumerable based on the given command.
@@ -99,17 +99,17 @@ namespace GTFS.DB.SQLite
         /// <summary>
         /// Holds the data reader.
         /// </summary>
-        private SQLiteDataReader _reader;
+        private SQLiteDataReader _reader { get; set; }
 
         /// <summary>
         /// Holds the command.
         /// </summary>
-        private SQLiteCommand _command;
+        private SQLiteCommand _command { get; set; }
 
         /// <summary>
         /// Function to build the entity.
         /// </summary>
-        private Func<SQLiteDataReader, T> _entityBuilder;
+        private Func<SQLiteDataReader, T> _entityBuilder { get; set; }
 
         /// <summary>
         /// Creates a new enumerator.

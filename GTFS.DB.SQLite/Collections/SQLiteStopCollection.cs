@@ -180,9 +180,8 @@ namespace GTFS.DB.SQLite.Collections
                 
                 command.Parameters[0].Value = _id;
                 command.Parameters[1].Value = entityId;
-                
-                command.ExecuteNonQuery();
-                return true;
+
+                return command.ExecuteNonQuery() > 0;
             }
         }
 

@@ -153,6 +153,8 @@ namespace GTFS.DB.SQLite.Collections
             }).FirstOrDefault();
         }
 
+
+
         public Trip Get(int idx)
         {
             throw new NotImplementedException();
@@ -160,7 +162,18 @@ namespace GTFS.DB.SQLite.Collections
 
         public bool Remove(string entityId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM trip WHERE FEED_ID = :feed_id AND id = :trip_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
         }
 
         public IEnumerable<Trip> Get()
