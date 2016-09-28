@@ -98,5 +98,16 @@ namespace GTFS.Entities
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns string representation of the object
+        /// </summary>
+        /// <summary>
+        /// Returns a string representing this object.
+        /// </summary>
+        public override string ToString()
+        {
+            return System.String.Format("{0} - {1} ({2})", StartTime, EndTime, HeadwaySecs);
+        }
     }
 }
