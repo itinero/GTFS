@@ -22,10 +22,11 @@
 
 namespace GTFS.Entities
 {
+    using System;
     /// <summary>
     /// A stop time of day.
     /// </summary>
-    public struct TimeOfDay
+    public struct TimeOfDay : IComparable
     {
         /// <summary>
         /// Gets or sets the hours.
@@ -98,6 +99,15 @@ namespace GTFS.Entities
                     this.Seconds == other.Seconds;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Compare to another
+        /// </summary>
+        public int CompareTo(object obj)
+        {
+            var other = (TimeOfDay)obj;
+            return (Hours - other.Hours) * 3600 + (Minutes - other.Minutes) * 60 + (Seconds - other.Seconds);
         }
     }
 }
