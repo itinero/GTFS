@@ -1695,6 +1695,7 @@ namespace GTFS
             double result;
             if (!double.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
             { // parsing failed!
+                return 0;
                 throw new GTFSParseException(name, fieldName, value);
             }
             return result;
