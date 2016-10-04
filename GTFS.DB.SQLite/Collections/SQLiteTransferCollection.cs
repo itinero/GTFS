@@ -24,6 +24,7 @@ using GTFS.Entities;
 using GTFS.Entities.Collections;
 using GTFS.Entities.Enumerations;
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
@@ -61,7 +62,24 @@ namespace GTFS.DB.SQLite.Collections
         /// <param name="transfer"></param>
         public void Add(Transfer transfer)
         {
-            throw new NotImplementedException();
+            string sql = "INSERT INTO transfer VALUES (:feed_id, :from_stop_id, :to_stop_id, :transfer_type, :min_transfer_time);";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"from_stop_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"to_stop_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"transfer_type", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"min_transfer_time", DbType.String));                
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = transfer.FromStopId;
+                command.Parameters[2].Value = transfer.ToStopId;
+                command.Parameters[3].Value = transfer.TransferType;
+                command.Parameters[4].Value = transfer.MinimumTransferTime;             
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public void AddRange(IEnumerable<Transfer> transfers)
