@@ -47,7 +47,7 @@ namespace GTFS.IO.CSV
         /// <param name="stream">The stream to read from.</param>
         public CSVStreamReader(Stream stream)
         {
-            _stream = new StreamReader(stream);
+            _stream = new StreamReader(stream, System.Text.Encoding.GetEncoding("iso-8859-1"));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace GTFS.IO.CSV
         /// <param name="seperator">A custom seperator.</param>
         public CSVStreamReader(Stream stream, char seperator)
         {
-            _stream = new StreamReader(stream);
+            _stream = new StreamReader(stream, System.Text.Encoding.GetEncoding("iso-8859-1"));
             _seperator = seperator;
         }
 
