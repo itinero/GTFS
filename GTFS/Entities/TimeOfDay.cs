@@ -109,5 +109,16 @@ namespace GTFS.Entities
             var other = (TimeOfDay)obj;
             return (Hours - other.Hours) * 3600 + (Minutes - other.Minutes) * 60 + (Seconds - other.Seconds);
         }
+
+        /// <summary>
+        /// To String
+        /// </summary>
+        public override string ToString()
+        {
+            string hours = Hours < 10 ? "0" + Hours : "" + Hours;
+            string minutes = Minutes < 10 ? "0" + Minutes : "" + Minutes;
+            string seconds = Seconds < 10 ? "0" + Seconds : "" + Seconds;
+            return String.Format("{0}:{1}:{2}", hours, minutes, seconds);
+        }
     }
 }
