@@ -113,7 +113,8 @@ namespace GTFS.Entities
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("[{0}] {1} - {2}", this.Id, this.Name, this.Description);
+            if (this.Name != "") return this.Name;
+            else return this.Id;
         }
 
         /// <summary>
