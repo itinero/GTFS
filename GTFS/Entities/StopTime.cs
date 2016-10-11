@@ -97,7 +97,8 @@ namespace GTFS.Entities
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("[{0}:{1}] {2}", this.TripId, this.StopId, this.StopHeadsign);
+            return string.Format("{0}-{1}", ArrivalTime, DepartureTime);
+            //return string.Format("[{0}:{1}] {2}", this.TripId, this.StopId, this.StopHeadsign);
         }
 
         /// <summary>
