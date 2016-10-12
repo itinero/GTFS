@@ -69,7 +69,7 @@ namespace GTFS
             };
             this.TimeOfDayReader = (timeOfDayString) =>
             {
-                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
+                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { return new TimeOfDay() { Hours = 0, Minutes = 0, Seconds = 0 }; }
 
                 var timeOfDay = new TimeOfDay();
                 if (timeOfDayString.Length == 8)
@@ -159,6 +159,12 @@ namespace GTFS
             }
             catch (Exception ex)
             { // throw a GFTS parse exception instead.
+                return new TimeOfDay()
+                {
+                    Hours = 0,
+                    Minutes = 0,
+                    Seconds = 0
+                };
                 throw new GTFSParseException(name, fieldName, value, ex);
             }
         }
