@@ -158,5 +158,25 @@ namespace GTFS.Entities
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns a new StopTime object created from a previous stop time object
+        /// </summary>
+        public static StopTime From(StopTime other)
+        {
+            return new StopTime()
+            {
+                ArrivalTime = other.ArrivalTime,
+                DepartureTime = other.DepartureTime,
+                DropOffType = other.DropOffType,
+                PickupType = other.PickupType,
+                ShapeDistTravelled = other.ShapeDistTravelled,
+                StopHeadsign = other.StopHeadsign,
+                StopId = other.StopId,
+                StopSequence = other.StopSequence,
+                Tag = other.Tag,
+                TripId = other.TripId
+            };
+        }
     }
 }

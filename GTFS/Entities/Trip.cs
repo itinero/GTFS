@@ -95,9 +95,9 @@ namespace GTFS.Entities
         /// <returns></returns>
         public override string ToString()
         {
-            if (this.ShortName != "" && this.Headsign != "") return string.Format("{0} (to {1})", this.ShortName, this.Headsign);
-            else if (this.ShortName != "") return string.Format("{0}", this.ShortName);
-            else if (this.Headsign != "") return string.Format("{0} (to {1})", this.Id, this.Headsign);
+            if (this.ShortName != null && this.ShortName != "" && this.Headsign != null && this.Headsign != "") return string.Format("{0} (to {1})", this.ShortName, this.Headsign);
+            else if (this.ShortName != null && this.ShortName != "") return string.Format("{0}", this.ShortName);
+            else if (this.Headsign != null && this.Headsign != "") return string.Format("{0} (to {1})", this.Id, this.Headsign);
             else return this.Id;
         }
 
