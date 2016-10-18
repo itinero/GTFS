@@ -67,6 +67,7 @@ namespace GTFS.Entities.Collections
         /// Update the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>
+        /// <param name="newEntity"></param>
         /// <returns></returns>
         bool Update(string entityId, T newEntity);
 
