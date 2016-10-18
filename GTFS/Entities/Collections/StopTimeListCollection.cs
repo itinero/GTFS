@@ -133,5 +133,10 @@ namespace GTFS.Entities.Collections
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveRange(IEnumerable<StopTime> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
