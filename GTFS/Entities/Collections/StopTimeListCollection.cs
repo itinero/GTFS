@@ -146,5 +146,14 @@ namespace GTFS.Entities.Collections
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveForTrips(IEnumerable<string> tripIds)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

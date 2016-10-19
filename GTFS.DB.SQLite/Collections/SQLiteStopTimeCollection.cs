@@ -228,6 +228,33 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Removes all stop times for the given set of trips.
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveForTrips(IEnumerable<string> tripIds)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var tripId in tripIds)
+                    {
+                        string sql = "DELETE FROM stop_time WHERE FEED_ID = :feed_id AND trip_id = :trip_id;";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = tripId;
+                        
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets all stop times for the given stop.
         /// </summary>
         /// <returns></returns>

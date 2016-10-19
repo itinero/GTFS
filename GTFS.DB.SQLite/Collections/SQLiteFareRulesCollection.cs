@@ -199,5 +199,10 @@ namespace GTFS.DB.SQLite.Collections
                 }
             }            
         }
+
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

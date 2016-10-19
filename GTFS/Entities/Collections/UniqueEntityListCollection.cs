@@ -143,12 +143,29 @@ namespace GTFS.Entities.Collections
             return _entities.GetEnumerator();
         }
 
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
         public bool Update(string entityId, T newEntity)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
         public void AddRange(IUniqueEntityCollection<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<string> entityIds)
         {
             throw new NotImplementedException();
         }

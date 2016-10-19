@@ -43,6 +43,12 @@ namespace GTFS.Entities.Collections
         void AddRange(IUniqueEntityCollection<T> entities);
 
         /// <summary>
+        /// Removes a range of entities.
+        /// </summary>
+        /// <param name="entityIds"></param>
+        void RemoveRange(IEnumerable<string> entityIds);
+
+        /// <summary>
         /// Gets the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>
@@ -83,6 +89,6 @@ namespace GTFS.Entities.Collections
         int Count
         {
             get;
-        }
+        }        
     }
 }

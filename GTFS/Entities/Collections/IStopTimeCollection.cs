@@ -66,6 +66,12 @@ namespace GTFS.Entities.Collections
         int RemoveForTrip(string tripId);
 
         /// <summary>
+        /// Removes all stop times for the given trips.
+        /// </summary>
+        /// <returns></returns>
+        void RemoveForTrips(IEnumerable<string> tripIds);
+
+        /// <summary>
         /// Gets all stop times for the given stop.
         /// </summary>
         /// <returns></returns>

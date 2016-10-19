@@ -176,6 +176,29 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var tripId in entityIds)
+                    {
+                        string sql = "DELETE FROM trip WHERE FEED_ID = :feed_id AND id = :trip_id;";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = tripId;
+                        
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         public IEnumerable<Trip> Get()
         {
             string sql = "SELECT id, route_id, service_id, trip_headsign, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible FROM trip WHERE FEED_ID = :id;";
@@ -255,6 +278,6 @@ namespace GTFS.DB.SQLite.Collections
 
                 return command.ExecuteNonQuery() > 0;
             }
-        }       
+        }
     }
 }
