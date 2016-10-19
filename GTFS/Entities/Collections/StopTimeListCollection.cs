@@ -129,11 +129,19 @@ namespace GTFS.Entities.Collections
             return _entities.GetEnumerator();
         }
 
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
         public void AddRange(IEnumerable<StopTime> entities)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
         public void RemoveRange(IEnumerable<StopTime> entities)
         {
             throw new NotImplementedException();
