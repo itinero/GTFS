@@ -37,6 +37,14 @@ namespace GTFS.DB.SQLite
         public SQLiteConnection _connection;
 
         /// <summary>
+        /// Returns the data source (filename of the db)
+        /// </summary>
+        public string GetDataSource()
+        {
+            return _connection.DataSource;
+        }
+
+        /// <summary>
         /// Creates a new db.
         /// </summary>
         public SQLiteGTFSFeedDB()
