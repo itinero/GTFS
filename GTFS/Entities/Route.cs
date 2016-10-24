@@ -92,6 +92,17 @@ namespace GTFS.Entities
         public int? TextColor { get; set; }
 
         /// <summary>
+        /// Returns a description of this route.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            if (this.LongName != null && this.LongName != "") return this.LongName;
+            else if (this.ShortName != null && this.ShortName != "") return this.ShortName;
+            else return this.Id;
+        }
+
+        /// <summary>
         /// Serves as a hash function.
         /// </summary>
         /// <returns></returns>

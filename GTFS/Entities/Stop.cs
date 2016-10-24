@@ -108,13 +108,15 @@ namespace GTFS.Entities
         public string WheelchairBoarding { get; set; }
 
         /// <summary>
-        /// Returns a description of this trip.
+        /// Returns a description of this stop.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            if (this.Name != "") return this.Name;
-            else return this.Id;
+            string stationText = "";
+            if (this.LocationType == Enumerations.LocationType.Station) stationText = " (station)";
+            if (this.Name != "") return this.Name + stationText;
+            else return this.Id + stationText;
         }
 
         /// <summary>
