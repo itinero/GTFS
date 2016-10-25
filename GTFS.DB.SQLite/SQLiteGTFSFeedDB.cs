@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -221,6 +222,17 @@ namespace GTFS.DB.SQLite
                 command.CommandText = sql;
                 command.ExecuteNonQuery();
             }
+        }
+
+        /// <summary>
+        /// Deletes and recreates the stop_times table in a sorted order - may take time
+        /// </summary>
+        public void SortStopTimes()
+        {
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [stop_time_sorted] ( [FEED_ID] INTEGER NOT NULL, [trip_id] TEXT NOT NULL, [arrival_time] INTEGER, [departure_time] INTEGER, [stop_id] TEXT, [stop_sequence] INTEGER, [stop_headsign] TEXT, [pickup_type] INTEGER, [drop_off_type] INTEGER, [shape_dist_traveled] TEXT );");
+            this.ExecuteNonQuery("INSERT INTO stop_time_sorted (FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled) SELECT FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled FROM stop_time ORDER BY trip_id ASC, stop_sequence ASC;");
+            this.ExecuteNonQuery("DROP TABLE stop_time");
+            this.ExecuteNonQuery("ALTER TABLE stop_time_sorted RENAME TO stop_time");
         }
     }
 }
