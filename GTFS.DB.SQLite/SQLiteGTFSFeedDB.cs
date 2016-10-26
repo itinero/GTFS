@@ -215,13 +215,47 @@ namespace GTFS.DB.SQLite
         /// Executes sql on the db.
         /// </summary>
         /// <param name="sql"></param>
-        private void ExecuteNonQuery(string sql)
+        /// <returns>Returns number of rows affected</returns>
+        private int ExecuteNonQuery(string sql)
         {
             using (var command = _connection.CreateCommand())
             {
                 command.CommandText = sql;
-                command.ExecuteNonQuery();
+                return command.ExecuteNonQuery();
             }
+        }
+
+        /// <summary>
+        /// Deletes and recreates the routes table in a sorted order - may take time
+        /// </summary>
+        public void SortRoutes()
+        {
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [route_sorted] ( [FEED_ID] INTEGER NOT NULL, [id] TEXT NOT NULL, [agency_id] TEXT, [route_short_name] TEXT, [route_long_name] TEXT, [route_desc] TEXT, [route_type] INTEGER NOT NULL, [route_url] TEXT, [route_color] INTEGER, [route_text_color] INTEGER );");
+            this.ExecuteNonQuery("INSERT INTO route_sorted (FEED_ID, id, agency_id, route_short_name, route_long_name, route_desc, route_type, route_url, route_color, route_text_color) SELECT FEED_ID, id, agency_id, route_short_name, route_long_name, route_desc, route_type, route_url, route_color, route_text_color FROM route ORDER BY id ASC;");
+            this.ExecuteNonQuery("DROP TABLE route");
+            this.ExecuteNonQuery("ALTER TABLE route_sorted RENAME TO route");
+        }
+
+        /// <summary>
+        /// Deletes and recreates the trips table in a sorted order - may take time
+        /// </summary>
+        public void SortTrips()
+        {
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [trip_sorted] ( [FEED_ID] INTEGER NOT NULL, [id] TEXT NOT NULL, [route_id] TEXT, [service_id] TEXT, [trip_headsign] TEXT, [trip_short_name] TEXT, [direction_id] INTEGER, [block_id] TEXT, [shape_id] TEXT, [wheelchair_accessible] INTEGER );");
+            this.ExecuteNonQuery("INSERT INTO trip_sorted (FEED_ID, id, route_id, service_id, trip_headsign, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible) SELECT FEED_ID, id, route_id, service_id, trip_headsign, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible FROM trip ORDER BY id ASC;");
+            this.ExecuteNonQuery("DROP TABLE trip");
+            this.ExecuteNonQuery("ALTER TABLE trip_sorted RENAME TO trip");
+        }
+
+        /// <summary>
+        /// Deletes and recreates the stops table in a sorted order - may take time
+        /// </summary>
+        public void SortStops()
+        {
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [stop_sorted] ( [FEED_ID] INTEGER NOT NULL, [id] TEXT NOT NULL, [stop_code] TEXT, [stop_name] TEXT, [stop_desc] TEXT, [stop_lat] REAL, [stop_lon] REAL, [zone_id] TEXT, [stop_url] TEXT, [location_type] INTEGER, [parent_station] TEXT, [stop_timezone] TEXT, [wheelchair_boarding] TEXT );");
+            this.ExecuteNonQuery("INSERT INTO stop_sorted (FEED_ID, id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding) SELECT FEED_ID, id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding FROM stop ORDER BY id ASC;");
+            this.ExecuteNonQuery("DROP TABLE stop");
+            this.ExecuteNonQuery("ALTER TABLE stop_sorted RENAME TO stop");
         }
 
         /// <summary>
@@ -233,6 +267,6 @@ namespace GTFS.DB.SQLite
             this.ExecuteNonQuery("INSERT INTO stop_time_sorted (FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled) SELECT FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled FROM stop_time ORDER BY trip_id ASC, stop_sequence ASC;");
             this.ExecuteNonQuery("DROP TABLE stop_time");
             this.ExecuteNonQuery("ALTER TABLE stop_time_sorted RENAME TO stop_time");
-        }
+        }       
     }
 }
