@@ -267,6 +267,17 @@ namespace GTFS.DB.SQLite
             this.ExecuteNonQuery("INSERT INTO stop_time_sorted (FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled) SELECT FEED_ID, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type,drop_off_type,shape_dist_traveled FROM stop_time ORDER BY trip_id ASC, stop_sequence ASC;");
             this.ExecuteNonQuery("DROP TABLE stop_time");
             this.ExecuteNonQuery("ALTER TABLE stop_time_sorted RENAME TO stop_time");
-        }       
+        }
+
+        /// <summary>
+        /// Deletes and recreates the frequencies table in a sorted order - may take time
+        /// </summary>
+        public void SortFrequencies()
+        {
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [frequency_sorted] ( [FEED_ID] INTEGER NOT NULL, [trip_id] TEXT NOT NULL, [start_time] TEXT, [end_time] TEXT, [headway_secs] TEXT, [exact_times] INTEGER );");
+            this.ExecuteNonQuery("INSERT INTO frequency_sorted (FEED_ID, trip_id, start_time, end_time, headway_secs, exact_times) SELECT FEED_ID, trip_id, start_time, end_time, headway_secs, exact_times FROM frequency ORDER BY trip_id ASC;");
+            this.ExecuteNonQuery("DROP TABLE frequency");
+            this.ExecuteNonQuery("ALTER TABLE frequency_sorted RENAME TO frequency");
+        }
     }
 }
