@@ -100,14 +100,47 @@ namespace GTFS.Entities
         }
 
         /// <summary>
-        /// Returns string representation of the object
-        /// </summary>
-        /// <summary>
         /// Returns a string representing this object.
         /// </summary>
         public override string ToString()
         {
             return System.String.Format("{0} - {1} ({2})", StartTime, EndTime, HeadwaySecs);
+        }
+
+        /// <summary>
+        /// Looks for overlapping times in frequencies
+        /// </summary>
+        public bool IsOverlapping(Frequency other)
+        {
+            TimeOfDay startTime = new TimeOfDay()
+            {
+                Hours = int.Parse(StartTime.Split(':')[0]),
+                Minutes = int.Parse(StartTime.Split(':')[1]),
+                Seconds = int.Parse(StartTime.Split(':')[2])
+            };
+            TimeOfDay endTime = new TimeOfDay()
+            {
+                Hours = int.Parse(EndTime.Split(':')[0]),
+                Minutes = int.Parse(EndTime.Split(':')[1]),
+                Seconds = int.Parse(EndTime.Split(':')[2])
+            };
+            TimeOfDay otherStartTime = new TimeOfDay()
+            {
+                Hours = int.Parse(other.StartTime.Split(':')[0]),
+                Minutes = int.Parse(other.StartTime.Split(':')[1]),
+                Seconds = int.Parse(other.StartTime.Split(':')[2])
+            };
+            TimeOfDay otherEndTime = new TimeOfDay()
+            {
+                Hours = int.Parse(other.EndTime.Split(':')[0]),
+                Minutes = int.Parse(other.EndTime.Split(':')[1]),
+                Seconds = int.Parse(other.EndTime.Split(':')[2])
+            };
+            if (startTime.TotalSeconds < otherStartTime.TotalSeconds)
+            {
+                return endTime.TotalSeconds > otherStartTime.TotalSeconds;
+            }
+            else return otherEndTime.TotalSeconds > startTime.TotalSeconds;
         }
     }
 }
