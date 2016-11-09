@@ -161,7 +161,18 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public bool Remove(string entityId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM fare_attribute WHERE FEED_ID = :feed_id AND fare_id = :fare_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"fare_id", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
         }
 
         /// <summary>
