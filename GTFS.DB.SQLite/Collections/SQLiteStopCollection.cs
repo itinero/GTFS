@@ -151,7 +151,31 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public Stop Get(string entityId)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding FROM stop WHERE FEED_ID = :id AND id = :entityId";
+            var parameters = new List<SQLiteParameter>();
+            parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
+            parameters[0].Value = _id;
+            parameters.Add(new SQLiteParameter(@"entityId", DbType.String));
+            parameters[1].Value = entityId;
+
+            return new SQLiteEnumerable<Stop>(_connection, sql, parameters.ToArray(), (x) =>
+            {
+                return new Stop()
+                {
+                    Id = x.GetString(0),
+                    Code = x.IsDBNull(1) ? null : x.GetString(1),
+                    Name = x.IsDBNull(2) ? null : x.GetString(2),
+                    Description = x.IsDBNull(3) ? null : x.GetString(3),
+                    Latitude = x.GetDouble(4),
+                    Longitude = x.GetDouble(5),
+                    Zone = x.IsDBNull(6) ? null : x.GetString(6),
+                    Url = x.IsDBNull(7) ? null : x.GetString(7),
+                    LocationType = x.IsDBNull(8) ? null : (LocationType?)x.GetInt64(8),
+                    ParentStation = x.IsDBNull(9) ? null : x.GetString(9),
+                    Timezone = x.IsDBNull(10) ? null : x.GetString(10),
+                    WheelchairBoarding = x.IsDBNull(11) ? null : x.GetString(11)
+                };
+            }).FirstOrDefault();
         }
 
         /// <summary>
