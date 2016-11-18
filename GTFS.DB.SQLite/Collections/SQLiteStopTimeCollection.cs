@@ -281,7 +281,28 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public IEnumerable<StopTime> GetForStop(string stopId)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled FROM stop_time WHERE FEED_ID = :id AND stop_id = :stop_id";
+            var parameters = new List<SQLiteParameter>();
+            parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
+            parameters[0].Value = _id;
+            parameters.Add(new SQLiteParameter(@"stop_id", DbType.String));
+            parameters[1].Value = stopId;
+
+            return new SQLiteEnumerable<StopTime>(_connection, sql, parameters.ToArray(), (x) =>
+            {
+                return new StopTime()
+                {
+                    TripId = x.GetString(0),
+                    ArrivalTime = TimeOfDay.FromTotalSeconds(x.GetInt32(1)),
+                    DepartureTime = TimeOfDay.FromTotalSeconds(x.GetInt32(2)),
+                    StopId = x.GetString(3),
+                    StopSequence = (uint)x.GetInt32(4),
+                    StopHeadsign = x.IsDBNull(5) ? null : x.GetString(5),
+                    PickupType = x.IsDBNull(6) ? null : (PickupType?)x.GetInt64(6),
+                    DropOffType = x.IsDBNull(7) ? null : (DropOffType?)x.GetInt64(7),
+                    ShapeDistTravelled = x.IsDBNull(8) ? null : x.GetString(8)
+                };
+            });
         }
 
         /// <summary>
