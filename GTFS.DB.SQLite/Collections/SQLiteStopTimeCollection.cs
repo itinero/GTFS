@@ -131,6 +131,42 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public bool Update(string stopId, string tripId, StopTime newEntity)
+        {
+            string sql = "UPDATE stop_time SET FEED_ID=:feed_id, trip_id=:trip_id, arrival_time=:arrival_time, departure_time=:departure_time, stop_id=:stop_id, stop_sequence=:stop_sequence, stop_headsign=:stop_headsign, pickup_type=:pickup_type, drop_off_type=:drop_off_type, shape_dist_traveled=:shape_dist_traveled WHERE stop_id=:oldStopId AND trip_id=:oldTripId;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"arrival_time", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"departure_time", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"stop_id", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"stop_sequence", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"stop_headsign", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"oldStopId", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"oldTripId", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = newEntity.TripId;
+                command.Parameters[2].Value = newEntity.ArrivalTime.TotalSeconds;
+                command.Parameters[3].Value = newEntity.DepartureTime.TotalSeconds;
+                command.Parameters[4].Value = newEntity.StopId;
+                command.Parameters[5].Value = newEntity.StopSequence;
+                command.Parameters[6].Value = newEntity.StopHeadsign;
+                command.Parameters[7].Value = newEntity.PickupType;
+                command.Parameters[8].Value = newEntity.DropOffType;
+                command.Parameters[9].Value = newEntity.ShapeDistTravelled;
+                command.Parameters[10].Value = stopId;
+                command.Parameters[11].Value = tripId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         public void RemoveRange(IEnumerable<StopTime> entities)
         {
             using (var command = _connection.CreateCommand())
@@ -330,6 +366,6 @@ namespace GTFS.DB.SQLite.Collections
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.Get().GetEnumerator();
-        }
+        }        
     }
 }

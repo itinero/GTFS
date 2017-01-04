@@ -155,5 +155,14 @@ namespace GTFS.Entities.Collections
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
+        public bool Update(string stopId, string tripId, StopTime newEntity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
