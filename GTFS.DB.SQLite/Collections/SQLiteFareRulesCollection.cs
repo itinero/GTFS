@@ -207,6 +207,7 @@ namespace GTFS.DB.SQLite.Collections
 
                         command.ExecuteNonQuery();
                     }
+                    transaction.Commit();
                 }
             }            
         }
