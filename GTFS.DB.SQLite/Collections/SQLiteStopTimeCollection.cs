@@ -175,7 +175,7 @@ namespace GTFS.DB.SQLite.Collections
                 {
                     foreach (var stopTime in entities)
                     {
-                        string sql = "DELETE FROM stop_time WHERE FEED_ID = :feed_id AND trip_id = :trip_id AND arrival_time = :arrival_time AND departure_time = :departure_time and stop_id = :stop_id AND stop_sequence = :stop_sequence AND stop_headsign = :stop_headsign AND pickup_type = :pickup_type AND drop_off_type = :drop_off_type AND shape_dist_traveled = :shape_dist_traveled;";
+                        string sql = "DELETE FROM stop_time WHERE FEED_ID = :feed_id AND trip_id = :trip_id AND arrival_time = :arrival_time AND departure_time = :departure_time and stop_id = :stop_id AND stop_sequence = :stop_sequence;";
                         command.CommandText = sql;
                         command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
                         command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
@@ -183,22 +183,14 @@ namespace GTFS.DB.SQLite.Collections
                         command.Parameters.Add(new SQLiteParameter(@"departure_time", DbType.Int64));
                         command.Parameters.Add(new SQLiteParameter(@"stop_id", DbType.String));
                         command.Parameters.Add(new SQLiteParameter(@"stop_sequence", DbType.Int64));
-                        command.Parameters.Add(new SQLiteParameter(@"stop_headsign", DbType.String));
-                        command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
-                        command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
-                        command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
-
+                        
                         command.Parameters[0].Value = _id;
                         command.Parameters[1].Value = stopTime.TripId;
                         command.Parameters[2].Value = stopTime.ArrivalTime.TotalSeconds;
                         command.Parameters[3].Value = stopTime.DepartureTime.TotalSeconds;
                         command.Parameters[4].Value = stopTime.StopId;
                         command.Parameters[5].Value = stopTime.StopSequence;
-                        command.Parameters[6].Value = stopTime.StopHeadsign;
-                        command.Parameters[7].Value = stopTime.PickupType.HasValue ? (int?)stopTime.PickupType.Value : null;
-                        command.Parameters[8].Value = stopTime.DropOffType.HasValue ? (int?)stopTime.DropOffType.Value : null;
-                        command.Parameters[9].Value = stopTime.ShapeDistTravelled;
-
+                        
                         command.ExecuteNonQuery();
                     }
                     transaction.Commit();
