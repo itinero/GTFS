@@ -1077,10 +1077,26 @@ namespace GTFS
                     stop.Description = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_lat":
-                    stop.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var parsedDouble = this.ParseFieldDouble(header.Name, fieldName, value);
+                    if(parsedDouble == null)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+                    else
+                    {
+                        stop.Latitude = parsedDouble.Value;
+                    }
                     break;
                 case "stop_lon":
-                    stop.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var parseDouble = this.ParseFieldDouble(header.Name, fieldName, value);
+                    if (parseDouble == null)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+                    else
+                    {
+                        stop.Latitude = parseDouble.Value;
+                    }
                     break;
                 case "zone_id":
                     stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
@@ -1682,7 +1698,7 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Parses a double field.
+        /// Parses a double field. Returns null if value is null or empty 
         /// </summary>
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
