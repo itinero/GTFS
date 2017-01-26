@@ -1095,7 +1095,7 @@ namespace GTFS
                     }
                     else
                     {
-                        stop.Latitude = parseDouble.Value;
+                        stop.Longitude = parseDouble.Value;
                     }
                     break;
                 case "zone_id":
