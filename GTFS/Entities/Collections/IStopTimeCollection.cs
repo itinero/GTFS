@@ -42,12 +42,21 @@ namespace GTFS.Entities.Collections
         void AddRange(IEnumerable<StopTime> entities);
 
         /// <summary>
-        /// Updates an entity based on the unique pair of stop and trip id
+        /// Updates an entity based on the non-unique pair of stop and trip id (sequence needed to make it unique)
         /// </summary>
         /// <param name="stopId"></param>
         /// <param name="tripId"></param>
         /// <param name="newEntity"></param>
         bool Update(string stopId, string tripId, StopTime newEntity);
+
+        /// <summary>
+        /// Updates an entity based on the non-unique pair of stop and trip id (sequence needed to make it unique)
+        /// </summary>
+        /// <param name="stopId"></param>
+        /// <param name="tripId"></param>
+        /// <param name="stopSequence"></param>
+        /// <param name="newEntity"></param>
+        bool Update(string stopId, string tripId, uint stopSequence, StopTime newEntity);
 
         /// <summary>
         /// Removes a range of entities
