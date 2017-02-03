@@ -7,6 +7,7 @@ GTFS Feed Parser
 [![Visit our website](https://img.shields.io/badge/website-itinero.tech-020031.svg) ](http://www.itinero.tech/)
 [![MIT licensed](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://github.com/itinero/GTFS/blob/develop/LICENSE)
 
+[![NuGet](https://img.shields.io/nuget/v/GTFS.svg?style=flat)](http://www.nuget.org/packages/GTFS)  
 
 The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have their specific little perks.
 
