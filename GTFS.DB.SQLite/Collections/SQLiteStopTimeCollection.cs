@@ -236,6 +236,16 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void RemoveAll()
+        {
+            string sql = "DELETE from stop_time;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;                
+                command.ExecuteNonQuery();
+            }
+        }
+
         /// <summary>
         /// Returns all stop times.
         /// </summary>

@@ -157,7 +157,7 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
-        /// This doesn't do anything
+        /// This doesn't do anything - placeholder
         /// </summary>
         /// <returns></returns>
         public bool Update(string stopId, string tripId, StopTime newEntity)
@@ -166,10 +166,19 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
-        /// This doesn't do anything
+        /// This doesn't do anything - placeholder
         /// </summary>
         /// <returns></returns>
         public bool Update(string stopId, string tripId, uint stopSequence, StopTime newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This doesn't do anything - placeholder
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
         {
             throw new NotImplementedException();
         }
