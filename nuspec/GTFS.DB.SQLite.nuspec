@@ -21,6 +21,6 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="src\GTFS.DB.SQLite\bin\Release\bin\Release\net40\GTFS.dll" target="lib\net40\GTFS.dll" />
+    <file src="src\GTFS.DB.SQLite\bin\Release\net40\GTFS.dll" target="lib\net40\GTFS.dll" />
   </files>
 </package>
