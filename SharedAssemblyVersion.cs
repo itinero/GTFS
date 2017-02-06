@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 
-// Copyright (c) 2016 Ben Abelshausen
+// Copyright (c) 2017 Ben Abelshausen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,5 +22,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyInformationalVersion("1.6.1-rc1")]
-[assembly: AssemblyVersion("1.6.1")]
+[assembly: AssemblyInformationalVersion("2.0.0-alpha")]
+[assembly: AssemblyVersion("2.0.0")]
