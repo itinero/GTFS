@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "GTFS": "1.0.0-*",
+    "System.Data.SQLite.Core": "1.0.104"
+  },
+
+  "frameworks": {
+    "net4.0": {
+      "buildOptions": {
+        "define": [ "NET40" ],
+        "compile": {
+          "includeFiles": [
+            "../../SharedAssemblyVersion.cs"
+          ]
+        }
+      },
+      "frameworkAssemblies": {
+        "System.Data": ""
+      }
+    }
+  }
+}

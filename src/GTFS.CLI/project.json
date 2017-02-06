@@ -1,0 +1,31 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "GTFS": "1.0.0-*",
+    "GTFS.DB.SQLite": "1.0.0-*",
+    "GTFS.IO.Directory": "1.0.0-*",
+    "NetTopologySuite": "1.14.0",
+    "NetTopologySuite.IO.GeoJSON": "1.14.0",
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "frameworks": {
+    "net4.0": {
+      "buildOptions": {
+        "define": [ "NET40" ],
+        "compile": {
+          "includeFiles": [
+            "../../SharedAssemblyVersion.cs"
+          ]
+        }
+      },
+      "frameworkAssemblies": {
+        "System.Xml": ""
+      }
+    }
+  }
+}

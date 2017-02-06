@@ -28,3 +28,6 @@ OutputWindowsPhone*/
 test-results*/
 *.vsp
 .DotSettings
+
+.vs/*
+*.lock.json
