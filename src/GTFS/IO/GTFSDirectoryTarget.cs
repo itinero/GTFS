@@ -23,6 +23,7 @@
 using System.Collections.Generic;
 using System.IO;
 
+#if !PCL
 namespace GTFS.IO
 {
     /// <summary>
@@ -110,3 +111,4 @@ namespace GTFS.IO
         }
     }
 }
+#endif

@@ -32,10 +32,7 @@
       "frameworkAssemblies": {
         "mscorlib": "2.0.5.0",
         "System": "",
-        "System.Core": "2.0.5.0",
-        "System.Net": "2.0.5.0",
-        "System.Xml": "",
-        "System.Xml.Serialization": ""
+        "System.Core": "2.0.5.0"
       }
     },
     "net4.0": {
@@ -48,7 +45,6 @@
         }
       },
       "frameworkAssemblies": {
-        "System.Xml": ""
       }
     }
   }

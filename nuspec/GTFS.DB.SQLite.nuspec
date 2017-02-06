@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GTFS.DB.SQLite</id>
+    <version>$version$</version>
+    <authors>Ben Abelshausen and contributors</authors>
+    <owners>Ben Abelshausen</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      An SQLite DB adapter for the GTFS package.
+    </description>
+    <tags></tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="GTFS" version="[$version$, )" />
+        <dependency id="System.Data.SQLite.Core" version="[1.0.104, )" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Data" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="bin\Release\bin\Release\net40\GTFS.dll" target="lib\net40\GTFS.dll" />
+  </files>
+</package>

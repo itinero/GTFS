@@ -3,7 +3,6 @@
 
   "dependencies": {
     "NUnit": "3.4.1",
-    "GTFS.IO.Directory": "1.0.0-*",
     "GTFS.DB.SQLite": "1.0.0-*",
     "GTFS": "1.0.0-*",
     "dotnet-test-nunit": "3.4.0-beta-2"
