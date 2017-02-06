@@ -22,6 +22,7 @@
 
 using GTFS.Entities.Collections;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace GTFS
@@ -360,6 +361,16 @@ namespace GTFS
             {
                 throw new ArgumentOutOfRangeException("value", string.Format("The given string can is not a hex-color: {0}.", value));
             }
+        }
+
+        /// <summary>
+        /// Returns a string representing the object in a culture invariant way.
+        /// </summary>
+        public static string ToInvariantString(this object obj)
+        {
+            return obj is IConvertible ? ((IConvertible)obj).ToString(CultureInfo.InvariantCulture)
+                : obj is IFormattable ? ((IFormattable)obj).ToString(null, CultureInfo.InvariantCulture)
+                : obj.ToString();
         }
     }
 }

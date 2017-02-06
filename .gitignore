@@ -31,3 +31,4 @@ test-results*/
 
 .vs/*
 *.lock.json
+*.routerdb
