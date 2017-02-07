@@ -55,7 +55,7 @@ namespace GTFS
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), feed.Shapes);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), feed.Stops);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), feed.StopTimes);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), feed.Transfers);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "transfers"), feed.Transfers);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), feed.Trips);
         }
 
@@ -97,7 +97,7 @@ namespace GTFS
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), shapesToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), stopsToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), stopTimesToWrite);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), transfersToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "transfers"), transfersToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), tripsToWrite);
         }
 
