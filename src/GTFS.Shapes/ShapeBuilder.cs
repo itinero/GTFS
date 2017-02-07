@@ -220,17 +220,29 @@ namespace GTFS.Shapes
             }
         }
 
+        private Dictionary<string, Result<RouterPoint>> _stopsResolvedCache;
+
         /// <summary>
         /// Resolves the given stop.
         /// </summary>
         private Result<RouterPoint> ResolveStop(Router router, IProfileInstance profile, Stop stop, out Coordinate coordinate)
         {
+            if (_stopsResolvedCache == null)
+            {
+                _stopsResolvedCache = new Dictionary<string, Result<RouterPoint>>();
+            }
             coordinate = new Coordinate((float)stop.Latitude, (float)stop.Longitude);
-            var result = router.TryResolve(profile, coordinate); 
+            Result<RouterPoint> result;
+            if (_stopsResolvedCache.TryGetValue(stop.Id, out result))
+            {
+                return result;
+            }
+            result = router.TryResolve(profile, coordinate); 
             if (result.IsError)
             {
                 result = router.TryResolve(profile, coordinate, _maxResolveDistanceInMeter);
             }
+            _stopsResolvedCache[stop.Id] = result;
             return result;
         }
 

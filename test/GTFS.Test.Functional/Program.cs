@@ -1,4 +1,5 @@
-﻿using GTFS.IO;
+﻿using GTFS.Entities.Enumerations;
+using GTFS.IO;
 using GTFS.Shapes;
 using Itinero;
 using Itinero.Geo;
@@ -45,9 +46,14 @@ namespace GTFS.Test.Functional
             var router = new Router(routerDb);
             var train = routerDb.GetSupportedVehicle("train");
 
+            var profilePerRouteType = new Dictionary<RouteTypeExtended, IProfileInstance>();
+            profilePerRouteType.Add(RouteType.Tram.ToExtended(), routerDb.GetSupportedProfile("tram"));
+            profilePerRouteType.Add(RouteType.Rail.ToExtended(), routerDb.GetSupportedProfile("train"));
+            profilePerRouteType.Add(RouteType.Bus.ToExtended(), routerDb.GetSupportedProfile("transit-bus"));
+            
             var resolvedErrors = new FeatureCollection();
             var reader = new GTFSReader<GTFSFeed>();
-            using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\nmbs")))
+            using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\delijn")))
             {
                 var feed = reader.Read(sources);
 
@@ -67,7 +73,16 @@ namespace GTFS.Test.Functional
                     resolvedErrors.Add(new Feature(new Point(new GeoAPI.Geometries.Coordinate(location.Longitude, location.Latitude)),
                         attributesTable));
                 };
-                shapeBuilder.BuildShapes(feed, router, (t) => train.Shortest(), true, true);
+                shapeBuilder.BuildShapes(feed, router, (t) =>
+                {
+                    var route = feed.Routes.Get(t.RouteId);
+                    IProfileInstance profile;
+                    if (!profilePerRouteType.TryGetValue(route.Type, out profile))
+                    {
+                        throw new Exception(string.Format("No profile found for route type: {0}", route.Type));
+                    }
+                    return profile;
+                }, true, true);
 
                 var resolvedErrorsJson = ToJson(resolvedErrors);
 
