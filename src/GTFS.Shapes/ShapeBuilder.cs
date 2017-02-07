@@ -76,14 +76,13 @@ namespace GTFS.Shapes
             }
 
             // build a shape per trip.
-            var t = 0;
             var shapeId = 0;
             var tripIds = new List<string>(feed.Trips.Select(x => x.Id));
-            foreach(var tripId in tripIds)
+            for (var t = 0; t < feed.Trips.Count; t++)
+            //foreach(var tripId in tripIds)
             {
-                var trip = feed.Trips.Get(tripId);
+                var trip = feed.Trips.Get(t);
                 var profile = getProfile(trip);
-                t++;
                 GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Information,
                     "Building for trip {0}...{1}/{2}", trip.ToInvariantString(), t, feed.Trips.Count);
                 var stopTimes = new List<StopTime>(feed.StopTimes.GetForTrip(trip.Id));
