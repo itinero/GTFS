@@ -826,7 +826,46 @@ namespace GTFS
         /// <returns></returns>
         protected virtual FeedInfo ParseFeedInfo(T feed, GTFSSourceFileHeader header, string[] data)
         {
-            return null;
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_name");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_url");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_lang");
+
+            // parse/set all fields.
+            FeedInfo feedInfo = new FeedInfo();
+            for(int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseFeedInfoField(feed, header, feedInfo, header.GetColumn(idx), data[idx]);
+            }
+            return feedInfo;
+        }
+
+        private void ParseFeedInfoField(T feed, GTFSSourceFileHeader header, FeedInfo feedInfo, string fieldName, string value)
+        {
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_name");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_url");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_lang");
+            switch (fieldName)
+            {
+                case "feed_publisher_name":
+                    feedInfo.PublisherName = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_publisher_url":
+                    feedInfo.PublisherUrl = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_lang":
+                    feedInfo.Lang = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_start_date":
+                    feedInfo.StartDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_end_date":
+                    feedInfo.EndDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_version":
+                    feedInfo.Version = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>

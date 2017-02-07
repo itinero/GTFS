@@ -73,7 +73,7 @@ namespace GTFS.DB.SQLite
         /// <param name="feedInfo"></param>
         public void SetFeedInfo(FeedInfo feedInfo)
         {
-            string sql = "UPDATE feed SET feed_publisher_name = :feed_publisher_name, feed_publisher_url = :feed_publisher_url, feed_lang = :feed_lang, feed_start_date = :feed_start_date, feed_end_date = :feed_end_date, feed_version = feed_version WHERE ID = :id;";
+            string sql = "UPDATE feed SET feed_publisher_name = :feed_publisher_name, feed_publisher_url = :feed_publisher_url, feed_lang = :feed_lang, feed_start_date = :feed_start_date, feed_end_date = :feed_end_date, feed_version = :feed_version WHERE ID = :id;";
             using (var command = _connection.CreateCommand())
             {
                 command.CommandText = sql;
