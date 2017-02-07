@@ -7,6 +7,7 @@
   "dependencies": {
     "GTFS": "1.0.0-*",
     "GTFS.Shapes": "1.0.0-*",
+    "Itinero.Geo": "0.38.18-rc1",
     "Itinero.IO.Osm": "0.38.18-rc1",
     "NetTopologySuite": "1.14.0",
     "NetTopologySuite.IO.GeoJSON": "1.14.0",

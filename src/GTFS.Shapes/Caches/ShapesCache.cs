@@ -76,5 +76,27 @@ namespace GTFS.Shapes.Caches
             shape = null;
             return false;
         }
+
+        /// <summary>
+        /// Gets the shapes array.
+        /// </summary>
+        public ShapesArray ShapesArray
+        {
+            get
+            {
+                return _shapeArray;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of shapes.
+        /// </summary>
+        public long ShapeCount
+        {
+            get
+            {
+                return _nextShapeArrayId;
+            }
+        }
     }
 }

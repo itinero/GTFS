@@ -1,6 +1,7 @@
 ﻿using GTFS.IO;
 using GTFS.Shapes;
 using Itinero;
+using Itinero.Geo;
 using Itinero.IO.Osm;
 using Itinero.Profiles;
 using NetTopologySuite.Features;
@@ -50,8 +51,15 @@ namespace GTFS.Test.Functional
             {
                 var feed = reader.Read(sources);
 
-                ShapeBuilder.StopNotResolved = (stop, location, routerpoint) =>
+                var shapeBuilder = new ShapeBuilder();
+                var stopsInError = new HashSet<string>();
+                shapeBuilder.StopNotResolved = (stop, location, routerpoint) =>
                 {
+                    if (stopsInError.Contains(stop.Id))
+                    {
+                        return;
+                    }
+                    stopsInError.Add(stop.Id);
                     var attributesTable = new AttributesTable();
                     attributesTable.AddAttribute("error", routerpoint.ErrorMessage);
                     attributesTable.AddAttribute("stop_name", stop.Name);
@@ -59,9 +67,23 @@ namespace GTFS.Test.Functional
                     resolvedErrors.Add(new Feature(new Point(new GeoAPI.Geometries.Coordinate(location.Longitude, location.Latitude)),
                         attributesTable));
                 };
-                ShapeBuilder.BuildShapes(feed, router, (t) => train.Shortest(), true, true);
+                shapeBuilder.BuildShapes(feed, router, (t) => train.Shortest(), true, true);
 
                 var resolvedErrorsJson = ToJson(resolvedErrors);
+
+                var shapeFeatures = new FeatureCollection();
+                for (var i = 0; i < shapeBuilder.TripShapes.ShapeCount; i++)
+                {
+                    var shape = new List<Itinero.LocalGeo.Coordinate>(shapeBuilder.TripShapes.ShapesArray[i]);
+                    var lineString = new LineString(shape.ToCoordinatesArray());
+                    var feature = new Feature(lineString, new AttributesTable());
+                    shapeFeatures.Add(feature);
+                }
+                var shapeFeaturesJson = ToJson(shapeFeatures);
+                using (var stream = new StreamWriter(File.Open("temp.geojson", FileMode.Create)))
+                {
+                    stream.Write(shapeFeaturesJson);
+                }
 
                 var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
                 var writer = new GTFSWriter<GTFSFeed>();

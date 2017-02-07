@@ -34,22 +34,34 @@ namespace GTFS.Shapes
     /// <summary>
     /// Builds shapes for a feed based on a routing profile.
     /// </summary>
-    public static class ShapeBuilder
+    public class ShapeBuilder
     {
+        private readonly int _maxResolveDistanceInMeter;
+
+        /// <summary>
+        /// Creates a new shape builder.
+        /// </summary>
+        public ShapeBuilder(int maxResolveDistanceInMeter = 200)
+        {
+            _maxResolveDistanceInMeter = maxResolveDistanceInMeter;
+        }
+
+        private ShapesCache<TripStops> _tripShapeCache = null;
+
         /// <summary>
         /// Called when a stop could not be resolved.
         /// </summary>
-        public static Action<Stop, Coordinate, Result<RouterPoint>> StopNotResolved;
+        public Action<Stop, Coordinate, Result<RouterPoint>> StopNotResolved;
 
         /// <summary>
         /// Called when a shape between stops could not be routed.
         /// </summary>
-        public static Action<Stop, Stop> ShapeNotRoutable;
+        public Action<Stop, Stop> ShapeNotRoutable;
 
         /// <summary>
         /// Builds shapes along the routes in the given feed using the given router and profile.
         /// </summary>
-        public static void BuildShapes(IGTFSFeed feed, Router router, Func<Trip, IProfileInstance> getProfile, bool useTripCache = true,
+        public void BuildShapes(IGTFSFeed feed, Router router, Func<Trip, IProfileInstance> getProfile, bool useTripCache = true,
             bool useStopCache = false)
         {
             // initialize a caching structure of shapes.
@@ -58,10 +70,9 @@ namespace GTFS.Shapes
             {
                 stopShapeCache = new ShapesCache<StopPair>();
             }
-            ShapesCache<TripStops> tripShapeCache = null;
             if (useTripCache)
             {
-                tripShapeCache = new ShapesCache<TripStops>();
+                _tripShapeCache = new ShapesCache<TripStops>();
             }
 
             // build a shape per trip.
@@ -89,7 +100,7 @@ namespace GTFS.Shapes
                 // get trip shape from cache or build it from scratch.
                 var shape = new List<Coordinate>();
                 IEnumerable<Coordinate> cachedTripShape;
-                if (tripShapeCache != null && tripShapeCache.TryGet(tripStops, out cachedTripShape))
+                if (_tripShapeCache != null && _tripShapeCache.TryGet(tripStops, out cachedTripShape))
                 {
                     shape.AddRange(cachedTripShape);
                 }
@@ -97,11 +108,11 @@ namespace GTFS.Shapes
                 {
                     // build shape.
                     var stop1 = feed.Stops.Get(stopTimes[0].StopId);
-                    var stop1Coordinate = new Coordinate((float)stop1.Latitude, (float)stop1.Longitude);
-                    var stop1Resolved = router.TryResolve(profile, stop1Coordinate);
-                    if (stop1Resolved.IsError && ShapeBuilder.StopNotResolved != null)
+                    Coordinate stop1Coordinate;
+                    var stop1Resolved = this.ResolveStop(router, profile, stop1, out stop1Coordinate);
+                    if (stop1Resolved.IsError && this.StopNotResolved != null)
                     {
-                        ShapeBuilder.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
+                        this.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
                     }
                     stopTimes[0].ShapeDistTravelled = 0;
                     feed.StopTimes.AddOrReplace(stopTimes[0]);
@@ -110,11 +121,11 @@ namespace GTFS.Shapes
                         // calculate shape between two stops.
                         var localShape = new List<Coordinate>();
                         var stop2 = feed.Stops.Get(stopTimes[i + 1].StopId);
-                        var stop2Coordinate = new Coordinate((float)stop2.Latitude, (float)stop2.Longitude);
-                        var stop2Resolved = router.TryResolve(profile, stop2Coordinate);
-                        if (stop2Resolved.IsError && ShapeBuilder.StopNotResolved != null)
+                        Coordinate stop2Coordinate;
+                        var stop2Resolved = this.ResolveStop(router, profile, stop2, out stop2Coordinate);
+                        if (stop2Resolved.IsError && this.StopNotResolved != null)
                         {
-                            ShapeBuilder.StopNotResolved(stop2, stop2Coordinate, stop2Resolved);
+                            this.StopNotResolved(stop2, stop2Coordinate, stop2Resolved);
                         }
 
                         // check cache.
@@ -144,9 +155,9 @@ namespace GTFS.Shapes
                                 {
                                     GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
                                         stop1.Id, stop2.Id);
-                                    if (ShapeBuilder.ShapeNotRoutable != null)
+                                    if (this.ShapeNotRoutable != null)
                                     {
-                                        ShapeBuilder.ShapeNotRoutable(stop1, stop2);
+                                        this.ShapeNotRoutable(stop1, stop2);
                                     }
                                     localShape.Add(stop1Coordinate);
                                     localShape.Add(stop2Coordinate);
@@ -182,9 +193,9 @@ namespace GTFS.Shapes
                     }
 
                     // add to cache.
-                    if (tripShapeCache != null)
+                    if (_tripShapeCache != null)
                     {
-                        tripShapeCache.Add(tripStops, shape);
+                        _tripShapeCache.Add(tripStops, shape);
                     }
                 }
 
@@ -209,88 +220,118 @@ namespace GTFS.Shapes
             }
         }
 
-
-        private class StopPair
+        /// <summary>
+        /// Resolves the given stop.
+        /// </summary>
+        private Result<RouterPoint> ResolveStop(Router router, IProfileInstance profile, Stop stop, out Coordinate coordinate)
         {
-            /// <summary>
-            /// Gets or sets the stop1.
-            /// </summary>
-            public string Stop1 { get; set; }
-
-            /// <summary>
-            /// Gets or sets the stop2.
-            /// </summary>
-            public string Stop2 { get; set; }
-
-            /// <summary>
-            /// Gets the hashcode.
-            /// </summary>
-            /// <returns></returns>
-            public override int GetHashCode()
+            coordinate = new Coordinate((float)stop.Latitude, (float)stop.Longitude);
+            var result = router.TryResolve(profile, coordinate); 
+            if (result.IsError)
             {
-                return this.Stop1.GetHashCode() ^
-                    this.Stop2.GetHashCode();
+                result = router.TryResolve(profile, coordinate, _maxResolveDistanceInMeter);
             }
-
-            /// <summary>
-            /// Returns true if the given object has the same id's.
-            /// </summary>
-            public override bool Equals(object obj)
-            {
-                var other = (obj as StopPair);
-                if (other == null)
-                {
-                    return false;
-                }
-                return other.Stop1.Equals(this.Stop1) &&
-                    other.Stop2.Equals(this.Stop2);
-            }
+            return result;
         }
 
-        private class TripStops
+        /// <summary>
+        /// Gets the trip shapes.
+        /// </summary>
+        public ShapesCache<TripStops> TripShapes
         {
-            /// <summary>
-            /// Gets or sets the stops sequence.
-            /// </summary>
-            public List<string> Stops { get; set; }
-
-            /// <summary>
-            /// Gets the hashcode.
-            /// </summary>
-            /// <returns></returns>
-            public override int GetHashCode()
+            get
             {
-                var hash = this.Stops.Count.GetHashCode();
-                for (var i = 0; i < this.Stops.Count; i++)
-                {
-                    hash = hash ^ this.Stops[i].GetHashCode();
-                }
-                return hash;
+                return _tripShapeCache;
             }
+        }
+    }
 
-            /// <summary>
-            /// Returns true if the given object has the same id's.
-            /// </summary>
-            public override bool Equals(object obj)
+    /// <summary>
+    /// A pair of stop id's.
+    /// </summary>
+    public class StopPair
+    {
+        /// <summary>
+        /// Gets or sets the stop1.
+        /// </summary>
+        public string Stop1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stop2.
+        /// </summary>
+        public string Stop2 { get; set; }
+
+        /// <summary>
+        /// Gets the hashcode.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return this.Stop1.GetHashCode() ^
+                this.Stop2.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns true if the given object has the same id's.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as StopPair);
+            if (other == null)
             {
-                var other = (obj as TripStops);
-                if (other == null)
+                return false;
+            }
+            return other.Stop1.Equals(this.Stop1) &&
+                other.Stop2.Equals(this.Stop2);
+        }
+    }
+
+    /// <summary>
+    /// A sequence of trip stops.
+    /// </summary>
+    public class TripStops
+    {
+        /// <summary>
+        /// Gets or sets the stops sequence.
+        /// </summary>
+        public List<string> Stops { get; set; }
+
+        /// <summary>
+        /// Gets the hashcode.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            var hash = this.Stops.Count.GetHashCode();
+            for (var i = 0; i < this.Stops.Count; i++)
+            {
+                hash = hash ^ this.Stops[i].GetHashCode();
+            }
+            return hash;
+        }
+
+        /// <summary>
+        /// Returns true if the given object has the same id's.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            var other = (obj as TripStops);
+            if (other == null)
+            {
+                return false;
+            }
+            if (other.Stops.Count != this.Stops.Count)
+            {
+                return false;
+            }
+            for (var i = 0; i < this.Stops.Count; i++)
+            {
+                if (!this.Stops[i].Equals(other.Stops[i]))
                 {
                     return false;
                 }
-                if (other.Stops.Count != this.Stops.Count)
-                {
-                    return false;
-                }
-                for (var i = 0; i < this.Stops.Count; i++)
-                {
-                    if (!this.Stops[i].Equals(other.Stops[i]))
-                    {
-                        return false;
-                    }
-                }
-                return true;
             }
+            return true;
         }
     }
 }
