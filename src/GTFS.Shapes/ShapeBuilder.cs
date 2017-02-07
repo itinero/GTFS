@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using GTFS.Entities;
+using GTFS.Shapes.Caches;
 using Itinero;
 using Itinero.LocalGeo;
 using Itinero.Profiles;
@@ -37,17 +38,20 @@ namespace GTFS.Shapes
         /// <summary>
         /// Builds shapes along the routes in the given feed using the given router and profile.
         /// </summary>
-        public static void BuildShapes(IGTFSFeed feed, Router router, IProfileInstance profile)
+        public static void BuildShapes(IGTFSFeed feed, Router router, IProfileInstance profile, bool useTripCache = true,
+            bool useStopCache = false)
         {
             // initialize a caching structure of shapes.
-            var shapeMap = new Dictionary<StopPair, int>();
-            var shapeArray = new Itinero.Graphs.Geometric.Shapes.ShapesArray(1000);
-            var nextShapeArrayId = 0;
-            var shapeArrayBlock = 1000;
-            var tripShapeMap = new Dictionary<TripStops, int>();
-            var tripShapeArray = new Itinero.Graphs.Geometric.Shapes.ShapesArray(1000);
-            var tripNextShapeArrayId = 0;
-            var tripShapeArrayBlock = 1000;
+            ShapesCache<StopPair> stopShapeCache = null;
+            if (useStopCache)
+            {
+                stopShapeCache = new ShapesCache<StopPair>();
+            }
+            ShapesCache<TripStops> tripShapeCache = null;
+            if (useTripCache)
+            {
+                tripShapeCache = new ShapesCache<TripStops>();
+            }
 
             // build a shape per trip.
             var t = 0;
@@ -72,10 +76,10 @@ namespace GTFS.Shapes
 
                 // get trip shape from cache or build it from scratch.
                 var shape = new List<Coordinate>();
-                int tripShapeArrayId;
-                if (tripShapeMap.TryGetValue(tripStops, out tripShapeArrayId))
+                IEnumerable<Coordinate> cachedTripShape;
+                if (tripShapeCache != null && tripShapeCache.TryGet(tripStops, out cachedTripShape))
                 {
-                    shape.AddRange(tripShapeArray[tripShapeArrayId]);
+                    shape.AddRange(cachedTripShape);
                 }
                 else
                 {
@@ -99,10 +103,10 @@ namespace GTFS.Shapes
                             Stop1 = stop1.Id,
                             Stop2 = stop2.Id
                         };
-                        int shapeArrayId;
-                        if (shapeMap.TryGetValue(stopPair, out shapeArrayId))
+                        IEnumerable<Coordinate> localCachedShape;
+                        if (stopShapeCache != null && stopShapeCache.TryGet(stopPair, out localCachedShape))
                         { // shape is in cache.
-                            localShape.AddRange(shapeArray[shapeArrayId]);
+                            localShape.AddRange(localCachedShape);
                         }
                         else
                         { // shape not in cache.
@@ -130,13 +134,10 @@ namespace GTFS.Shapes
                             }
 
                             // add to cache.
-                            if (nextShapeArrayId >= shapeArray.Length)
+                            if (stopShapeCache != null)
                             {
-                                shapeArray.Resize(shapeArray.Length + shapeArrayBlock);
+                                stopShapeCache.Add(stopPair, localShape);
                             }
-                            shapeArray[nextShapeArrayId] = new Itinero.Graphs.Geometric.Shapes.ShapeEnumerable(localShape);
-                            shapeMap[stopPair] = nextShapeArrayId;
-                            nextShapeArrayId++;
                         }
 
                         // calculate distance and add to main shape.
@@ -155,15 +156,12 @@ namespace GTFS.Shapes
                         stop1Coordinate = stop2Coordinate;
                         stop1Resolved = stop2Resolved;
                     }
-                    
+
                     // add to cache.
-                    if (tripNextShapeArrayId >= tripShapeArray.Length)
+                    if (tripShapeCache != null)
                     {
-                        tripShapeArray.Resize(tripShapeArray.Length + tripShapeArrayBlock);
+                        tripShapeCache.Add(tripStops, shape);
                     }
-                    tripShapeArray[tripNextShapeArrayId] = new Itinero.Graphs.Geometric.Shapes.ShapeEnumerable(shape);
-                    tripShapeMap[tripStops] = tripNextShapeArrayId;
-                    tripNextShapeArrayId++;
                 }
 
                 // build shape objects.

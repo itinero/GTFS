@@ -46,7 +46,7 @@ namespace GTFS.Test.Functional
             {
                 var feed = reader.Read(sources);
 
-                GTFS.Shapes.ShapeBuilder.BuildShapes(feed, router, train.Shortest());
+                GTFS.Shapes.ShapeBuilder.BuildShapes(feed, router, train.Shortest(), true, false);
 
                 var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
                 var writer = new GTFSWriter<GTFSFeed>();

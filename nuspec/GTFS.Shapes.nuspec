@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GTFS.Shapes</id>
+    <version>$version$</version>
+    <authors>Ben Abelshausen and contributors</authors>
+    <owners>Ben Abelshausen</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      .NET implementation of a General Transit Feed Specification (GTFS) feed parser. (see https://developers.google.com/transit/gtfs/reference).
+    </description>
+    <tags>routing, gtfs</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="Itinero" version="[0.38.18-rc1, )" />
+      </group>
+      <group targetFramework=".NETPortable4.0-Profile147">
+        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="Itinero" version="[0.38.18-rc1, )" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="[1.6.0, )" />
+        <dependency id="System.Reflection.TypeExtensions" version="[4.3.0, )" />
+        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="Itinero" version="[0.38.18-rc1, )" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETPortable4.0-Profile147" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETPortable4.0-Profile147" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETPortable4.0-Profile147" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="src\GTFS.Shapes\bin\Release\netstandard1.3\GTFS.Shapes.dll" target="lib\netstandard1.3\GTFS.Shapes.dll" />
+    <file src="src\GTFS.Shapes\bin\Release\net40\GTFS.Shapes.dll" target="lib\net40\GTFS.Shapes.dll" />
+    <file src="src\GTFS.Shapes\bin\Release\portable40-net403+sl5+win8+wp8\GTFS.Shapes.dll" target="lib\portable40-net403+sl5+win8+wp8\GTFS.Shapes.dll" />
+  </files>
+</package>
