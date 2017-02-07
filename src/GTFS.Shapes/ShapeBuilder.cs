@@ -25,6 +25,7 @@ using GTFS.Shapes.Caches;
 using Itinero;
 using Itinero.LocalGeo;
 using Itinero.Profiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,9 +37,19 @@ namespace GTFS.Shapes
     public static class ShapeBuilder
     {
         /// <summary>
+        /// Called when a stop could not be resolved.
+        /// </summary>
+        public static Action<Stop, Coordinate, Result<RouterPoint>> StopNotResolved;
+
+        /// <summary>
+        /// Called when a shape between stops could not be routed.
+        /// </summary>
+        public static Action<Stop, Stop> ShapeNotRoutable;
+
+        /// <summary>
         /// Builds shapes along the routes in the given feed using the given router and profile.
         /// </summary>
-        public static void BuildShapes(IGTFSFeed feed, Router router, IProfileInstance profile, bool useTripCache = true,
+        public static void BuildShapes(IGTFSFeed feed, Router router, Func<Trip, IProfileInstance> getProfile, bool useTripCache = true,
             bool useStopCache = false)
         {
             // initialize a caching structure of shapes.
@@ -60,6 +71,7 @@ namespace GTFS.Shapes
             foreach(var tripId in tripIds)
             {
                 var trip = feed.Trips.Get(tripId);
+                var profile = getProfile(trip);
                 t++;
                 GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Information,
                     "Building for trip {0}...{1}/{2}", trip.ToInvariantString(), t, feed.Trips.Count);
@@ -87,6 +99,10 @@ namespace GTFS.Shapes
                     var stop1 = feed.Stops.Get(stopTimes[0].StopId);
                     var stop1Coordinate = new Coordinate((float)stop1.Latitude, (float)stop1.Longitude);
                     var stop1Resolved = router.TryResolve(profile, stop1Coordinate);
+                    if (stop1Resolved.IsError && ShapeBuilder.StopNotResolved != null)
+                    {
+                        ShapeBuilder.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
+                    }
                     stopTimes[0].ShapeDistTravelled = 0;
                     feed.StopTimes.AddOrReplace(stopTimes[0]);
                     for (var i = 0; i < stopTimes.Count - 1; i++)
@@ -96,6 +112,10 @@ namespace GTFS.Shapes
                         var stop2 = feed.Stops.Get(stopTimes[i + 1].StopId);
                         var stop2Coordinate = new Coordinate((float)stop2.Latitude, (float)stop2.Longitude);
                         var stop2Resolved = router.TryResolve(profile, stop2Coordinate);
+                        if (stop2Resolved.IsError && ShapeBuilder.StopNotResolved != null)
+                        {
+                            ShapeBuilder.StopNotResolved(stop2, stop2Coordinate, stop2Resolved);
+                        }
 
                         // check cache.
                         var stopPair = new StopPair()
@@ -124,6 +144,10 @@ namespace GTFS.Shapes
                                 {
                                     GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
                                         stop1.Id, stop2.Id);
+                                    if (ShapeBuilder.ShapeNotRoutable != null)
+                                    {
+                                        ShapeBuilder.ShapeNotRoutable(stop1, stop2);
+                                    }
                                     localShape.Add(stop1Coordinate);
                                     localShape.Add(stop2Coordinate);
                                 }
@@ -184,6 +208,7 @@ namespace GTFS.Shapes
                 shapeId++;
             }
         }
+
 
         private class StopPair
         {

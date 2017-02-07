@@ -1,7 +1,10 @@
 ﻿using GTFS.IO;
+using GTFS.Shapes;
 using Itinero;
 using Itinero.IO.Osm;
 using Itinero.Profiles;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,17 +44,38 @@ namespace GTFS.Test.Functional
             var router = new Router(routerDb);
             var train = routerDb.GetSupportedVehicle("train");
 
+            var resolvedErrors = new FeatureCollection();
             var reader = new GTFSReader<GTFSFeed>();
             using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\nmbs")))
             {
                 var feed = reader.Read(sources);
 
-                GTFS.Shapes.ShapeBuilder.BuildShapes(feed, router, train.Shortest(), true, false);
+                ShapeBuilder.StopNotResolved = (stop, location, routerpoint) =>
+                {
+                    var attributesTable = new AttributesTable();
+                    attributesTable.AddAttribute("error", routerpoint.ErrorMessage);
+                    attributesTable.AddAttribute("stop_name", stop.Name);
+                    attributesTable.AddAttribute("stop_id", stop.Id);
+                    resolvedErrors.Add(new Feature(new Point(new GeoAPI.Geometries.Coordinate(location.Longitude, location.Latitude)),
+                        attributesTable));
+                };
+                ShapeBuilder.BuildShapes(feed, router, (t) => train.Shortest(), true, true);
+
+                var resolvedErrorsJson = ToJson(resolvedErrors);
 
                 var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
                 var writer = new GTFSWriter<GTFSFeed>();
                 writer.Write(feed, targets);
             }
+        }
+        
+        private static string ToJson(FeatureCollection featureCollection)
+        {
+            var jsonSerializer = new NetTopologySuite.IO.GeoJsonSerializer();
+            var jsonStream = new StringWriter();
+            jsonSerializer.Serialize(jsonStream, featureCollection);
+            var json = jsonStream.ToInvariantString();
+            return json;
         }
     }
 }
