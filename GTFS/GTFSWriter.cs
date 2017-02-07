@@ -60,6 +60,48 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Writes the given feed to the given target files.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// /// <param name="agencyIds"></param>
+        /// <param name="target"></param>
+        public void Write(T feed, IEnumerable<string> agencyIds, IEnumerable<IGTFSTargetFile> target)
+        {
+            var agenciesToWrite = feed.Agencies.Where(x => agencyIds.Contains(x.Id));
+            var routesToWrite = feed.Routes.Where(x => agencyIds.Contains(x.AgencyId));
+            var routeIds = routesToWrite.Select(x => x.Id).ToList();
+            var tripsToWrite = feed.Trips.Where(x => routeIds.Contains(x.RouteId));
+            var tripIds = tripsToWrite.Select(x => x.Id).ToList();
+            var stopTimesToWrite = feed.StopTimes.Where(x => tripIds.Contains(x.TripId));
+            var stopIds = stopTimesToWrite.Select(x => x.StopId).ToList();
+            var stopsToWrite = feed.Stops.Where(x => stopIds.Contains(x.Id));
+            var transfersToWrite = feed.Transfers.Where(x => stopIds.Contains(x.FromStopId) || stopIds.Contains(x.ToStopId));
+            var shapeIds = tripsToWrite.Select(x => x.ShapeId).ToList();
+            var shapesToWrite = feed.Shapes.Where(x => shapeIds.Contains(x.Id));
+            var frequenciesToWrite = feed.Frequencies.Where(x => tripIds.Contains(x.TripId));
+            var fareRulesToWrite = feed.FareRules.Where(x => routeIds.Contains(x.RouteId));
+            var fareRulesIds = fareRulesToWrite.Select(x => x.FareId).ToList();
+            var fareAttributesToWrite = feed.FareAttributes.Where(x => fareRulesIds.Contains(x.FareId));
+            var serviceIds = tripsToWrite.Select(x => x.ServiceId).ToList();
+            var calendarsToWrite = feed.Calendars.Where(x => serviceIds.Contains(x.ServiceId));
+            var calendarDatesToWrite = feed.CalendarDates.Where(x => serviceIds.Contains(x.ServiceId));
+            // write files on-by-one.
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), agenciesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), calendarDatesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), calendarsToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_attributes"), fareAttributesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_rules"), fareRulesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "feed_info"), feed.GetFeedInfo());
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "frequencies"), frequenciesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "routes"), routesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), shapesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), stopsToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), stopTimesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), transfersToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), tripsToWrite);
+        }
+
+        /// <summary>
         /// Writes all agencies to the given agencies file.
         /// </summary>
         /// <param name="agenciesFile"></param>
