@@ -1167,7 +1167,7 @@ namespace GTFS
                     stopTime.DropOffType = this.ParseFieldDropOffType(header.Name, fieldName, value);
                     break;
                 case "shape_dist_traveled":
-                    stopTime.ShapeDistTravelled = this.ParseFieldString(header.Name, fieldName, value);
+                    stopTime.ShapeDistTravelled = this.ParseFieldDouble(header.Name, fieldName, value);
                     break;
             }
         }

@@ -89,7 +89,7 @@ namespace GTFS.Entities
         /// Gets or sets a distance from the first shape point.
         /// </summary>
         [FieldName("shape_dist_traveled")]
-        public string ShapeDistTravelled { get; set; }
+        public double? ShapeDistTravelled { get; set; }
 
         /// <summary>
         /// Returns a description of this trip.
@@ -149,7 +149,7 @@ namespace GTFS.Entities
                     this.DepartureTime.Equals(other.DepartureTime) &&
                     this.DropOffType== other.DropOffType &&
                     this.PickupType == other.PickupType &&
-                    (this.ShapeDistTravelled ?? string.Empty) == (other.ShapeDistTravelled ?? string.Empty) &&
+                    (this.ShapeDistTravelled ?? 0) == (other.ShapeDistTravelled ?? 0) &&
                     (this.StopHeadsign ?? string.Empty) == (other.StopHeadsign ?? string.Empty) &&
                     (this.StopId ?? string.Empty) == (other.StopId ?? string.Empty) &&
                     this.StopSequence == other.StopSequence &&

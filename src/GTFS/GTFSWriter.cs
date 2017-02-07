@@ -555,7 +555,7 @@ namespace GTFS
                     data[5] = this.WriteFieldString("stop_times", "stop_headsign", entity.StopHeadsign, true);
                     data[6] = this.WriteFieldPickupType("stop_times", "pickup_type", entity.PickupType);
                     data[7] = this.WriteFieldDropOffType("stop_times", "drop_off_type", entity.DropOffType);
-                    data[8] = this.WriteFieldString("stop_times", "shape_dist_traveled", entity.ShapeDistTravelled);
+                    data[8] = this.WriteFieldDouble("stop_times", "shape_dist_traveled", entity.ShapeDistTravelled);
                     file.Write(data);
                 }
                 file.Close();

@@ -75,7 +75,7 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters.Add(new SQLiteParameter(@"stop_headsign", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
-                command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.Double));
 
                 command.Parameters[0].Value = _id;
                 command.Parameters[1].Value = stopTime.TripId;
@@ -115,7 +115,7 @@ namespace GTFS.DB.SQLite.Collections
                     StopHeadsign = x.IsDBNull(5) ? null : x.GetString(5),
                     PickupType = x.IsDBNull(6) ? null : (PickupType?)x.GetInt64(6),
                     DropOffType = x.IsDBNull(7) ? null : (DropOffType?)x.GetInt64(7),
-                    ShapeDistTravelled = x.IsDBNull(8) ? null : x.GetString(8)
+                    ShapeDistTravelled = x.IsDBNull(8) ? (double?)null : x.GetDouble(8)
                 };
             });
         }

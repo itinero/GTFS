@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true
@@ -7,7 +7,7 @@
   "dependencies": {
     "GTFS": "1.0.0-*",
     "GTFS.Shapes": "1.0.0-*",
-    "Itinero.IO.Osm": "0.38.17-rc1",
+    "Itinero.IO.Osm": "0.38.18-rc1",
     "NUnit": "3.4.1"
   },
 

@@ -22,8 +22,10 @@
 
 using GTFS.Entities;
 using Itinero;
+using Itinero.LocalGeo;
 using Itinero.Profiles;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GTFS.Shapes
 {
@@ -37,43 +39,234 @@ namespace GTFS.Shapes
         /// </summary>
         public static void BuildShapes(IGTFSFeed feed, Router router, IProfileInstance profile)
         {
+            // initialize a caching structure of shapes.
+            var shapeMap = new Dictionary<StopPair, int>();
+            var shapeArray = new Itinero.Graphs.Geometric.Shapes.ShapesArray(1000);
+            var nextShapeArrayId = 0;
+            var shapeArrayBlock = 1000;
+            var tripShapeMap = new Dictionary<TripStops, int>();
+            var tripShapeArray = new Itinero.Graphs.Geometric.Shapes.ShapesArray(1000);
+            var tripNextShapeArrayId = 0;
+            var tripShapeArrayBlock = 1000;
+
+            // build a shape per trip.
             var t = 0;
-            foreach(var trip in feed.Trips)
+            var shapeId = 0;
+            var tripIds = new List<string>(feed.Trips.Select(x => x.Id));
+            foreach(var tripId in tripIds)
             {
+                var trip = feed.Trips.Get(tripId);
                 t++;
                 GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Information,
                     "Building for trip {0}...{1}/{2}", trip.ToInvariantString(), t, feed.Trips.Count);
                 var stopTimes = new List<StopTime>(feed.StopTimes.GetForTrip(trip.Id));
                 stopTimes.Sort((x, y) => x.StopSequence.CompareTo(y.StopSequence));
 
-                var stop1 = feed.Stops.Get(stopTimes[0].StopId);
-                var stop1Resolved = router.TryResolve(profile, (float)stop1.Latitude, (float)stop1.Longitude);
-                for (var i = 0; i < stopTimes.Count - 1; i++)
+                // check trip cache.
+                var tripStops = new TripStops();
+                tripStops.Stops = new List<string>();
+                for (var i = 0; i < stopTimes.Count; i++)
                 {
-                    var stop2 = feed.Stops.Get(stopTimes[i + 1].StopId);
-                    var stop2Resolved = router.TryResolve(profile, (float)stop2.Latitude, (float)stop2.Longitude);
-                    if (stop1Resolved.IsError || stop2Resolved.IsError)
+                    tripStops.Stops.Add(stopTimes[i].StopId);
+                }
+
+                // get trip shape from cache or build it from scratch.
+                var shape = new List<Coordinate>();
+                int tripShapeArrayId;
+                if (tripShapeMap.TryGetValue(tripStops, out tripShapeArrayId))
+                {
+                    shape.AddRange(tripShapeArray[tripShapeArrayId]);
+                }
+                else
+                {
+                    // build shape.
+                    var stop1 = feed.Stops.Get(stopTimes[0].StopId);
+                    var stop1Coordinate = new Coordinate((float)stop1.Latitude, (float)stop1.Longitude);
+                    var stop1Resolved = router.TryResolve(profile, stop1Coordinate);
+                    stopTimes[0].ShapeDistTravelled = 0;
+                    feed.StopTimes.AddOrReplace(stopTimes[0]);
+                    for (var i = 0; i < stopTimes.Count - 1; i++)
                     {
-                        GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, one of points could not be resolved: {0}->{1}",
-                            stop1.Id, stop2.Id);
-                    }
-                    else
-                    {
-                        var route = router.TryCalculate(profile, stop1Resolved.Value, stop2Resolved.Value);
-                        if (route.IsError)
+                        // calculate shape between two stops.
+                        var localShape = new List<Coordinate>();
+                        var stop2 = feed.Stops.Get(stopTimes[i + 1].StopId);
+                        var stop2Coordinate = new Coordinate((float)stop2.Latitude, (float)stop2.Longitude);
+                        var stop2Resolved = router.TryResolve(profile, stop2Coordinate);
+
+                        // check cache.
+                        var stopPair = new StopPair()
                         {
-                            GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
-                                stop1.Id, stop2.Id);
+                            Stop1 = stop1.Id,
+                            Stop2 = stop2.Id
+                        };
+                        int shapeArrayId;
+                        if (shapeMap.TryGetValue(stopPair, out shapeArrayId))
+                        { // shape is in cache.
+                            localShape.AddRange(shapeArray[shapeArrayId]);
+                        }
+                        else
+                        { // shape not in cache.
+                            if (stop1Resolved.IsError || stop2Resolved.IsError)
+                            {
+                                GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, one of points could not be resolved: {0}->{1}",
+                                    stop1.Id, stop2.Id);
+                                localShape.Add(stop1Coordinate);
+                                localShape.Add(stop2Coordinate);
+                            }
+                            else
+                            {
+                                var route = router.TryCalculate(profile, stop1Resolved.Value, stop2Resolved.Value);
+                                if (route.IsError)
+                                {
+                                    GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
+                                        stop1.Id, stop2.Id);
+                                    localShape.Add(stop1Coordinate);
+                                    localShape.Add(stop2Coordinate);
+                                }
+                                else
+                                {
+                                    localShape.AddRange(route.Value.Shape);
+                                }
+                            }
+
+                            // add to cache.
+                            if (nextShapeArrayId >= shapeArray.Length)
+                            {
+                                shapeArray.Resize(shapeArray.Length + shapeArrayBlock);
+                            }
+                            shapeArray[nextShapeArrayId] = new Itinero.Graphs.Geometric.Shapes.ShapeEnumerable(localShape);
+                            shapeMap[stopPair] = nextShapeArrayId;
+                            nextShapeArrayId++;
+                        }
+
+                        // calculate distance and add to main shape.
+                        var localDistance = Coordinate.DistanceEstimateInMeter(localShape);
+                        if (i > 0)
+                        {
+                            shape.AddRange(localShape.GetRange(1, localShape.Count - 1));
                         }
                         else
                         {
-
+                            shape.AddRange(localShape);
                         }
-                    }
 
-                    stop1 = stop2;
-                    stop1Resolved = stop2Resolved;
+                        // move to next pair.
+                        stop1 = stop2;
+                        stop1Coordinate = stop2Coordinate;
+                        stop1Resolved = stop2Resolved;
+                    }
+                    
+                    // add to cache.
+                    if (tripNextShapeArrayId >= tripShapeArray.Length)
+                    {
+                        tripShapeArray.Resize(tripShapeArray.Length + tripShapeArrayBlock);
+                    }
+                    tripShapeArray[tripNextShapeArrayId] = new Itinero.Graphs.Geometric.Shapes.ShapeEnumerable(shape);
+                    tripShapeMap[tripStops] = tripNextShapeArrayId;
+                    tripNextShapeArrayId++;
                 }
+
+                // build shape objects.
+                var distance = 0f;
+                for (var i = 0; i < shape.Count - 1; i++)
+                {
+                    feed.Shapes.Add(new Shape()
+                    {
+                        Id = shapeId.ToInvariantString(),
+                        DistanceTravelled = distance,
+                        Sequence = (uint)i,
+                        Latitude = shape[i].Latitude,
+                        Longitude = shape[i].Longitude
+                    });
+
+                    distance += Coordinate.DistanceEstimateInMeter(shape[i + 0], shape[i + 1]);
+                }
+                trip.ShapeId = shapeId.ToInvariantString();
+                feed.Trips.AddOrReplace(trip, (tr) => tr.Id);
+                shapeId++;
+            }
+        }
+
+        private class StopPair
+        {
+            /// <summary>
+            /// Gets or sets the stop1.
+            /// </summary>
+            public string Stop1 { get; set; }
+
+            /// <summary>
+            /// Gets or sets the stop2.
+            /// </summary>
+            public string Stop2 { get; set; }
+
+            /// <summary>
+            /// Gets the hashcode.
+            /// </summary>
+            /// <returns></returns>
+            public override int GetHashCode()
+            {
+                return this.Stop1.GetHashCode() ^
+                    this.Stop2.GetHashCode();
+            }
+
+            /// <summary>
+            /// Returns true if the given object has the same id's.
+            /// </summary>
+            public override bool Equals(object obj)
+            {
+                var other = (obj as StopPair);
+                if (other == null)
+                {
+                    return false;
+                }
+                return other.Stop1.Equals(this.Stop1) &&
+                    other.Stop2.Equals(this.Stop2);
+            }
+        }
+
+        private class TripStops
+        {
+            /// <summary>
+            /// Gets or sets the stops sequence.
+            /// </summary>
+            public List<string> Stops { get; set; }
+
+            /// <summary>
+            /// Gets the hashcode.
+            /// </summary>
+            /// <returns></returns>
+            public override int GetHashCode()
+            {
+                var hash = this.Stops.Count.GetHashCode();
+                for (var i = 0; i < this.Stops.Count; i++)
+                {
+                    hash = hash ^ this.Stops[i].GetHashCode();
+                }
+                return hash;
+            }
+
+            /// <summary>
+            /// Returns true if the given object has the same id's.
+            /// </summary>
+            public override bool Equals(object obj)
+            {
+                var other = (obj as TripStops);
+                if (other == null)
+                {
+                    return false;
+                }
+                if (other.Stops.Count != this.Stops.Count)
+                {
+                    return false;
+                }
+                for (var i = 0; i < this.Stops.Count; i++)
+                {
+                    if (!this.Stops[i].Equals(other.Stops[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
         }
     }
