@@ -169,5 +169,14 @@ namespace GTFS.Entities.Collections
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

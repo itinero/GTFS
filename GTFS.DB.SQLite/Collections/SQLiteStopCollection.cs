@@ -238,6 +238,22 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Removes all entities
+        /// </summary>
+        public void RemoveAll()
+        {
+            string sql = "DELETE FROM stop WHERE FEED_ID = :feed_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));                
+
+                command.Parameters[0].Value = _id;
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Edits the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>

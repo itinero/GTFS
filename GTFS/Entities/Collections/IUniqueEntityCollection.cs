@@ -70,6 +70,11 @@ namespace GTFS.Entities.Collections
         bool Remove(string entityId);
 
         /// <summary>
+        /// Removes all entities from the collection and database
+        /// </summary>
+        void RemoveAll();
+
+        /// <summary>
         /// Update the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>

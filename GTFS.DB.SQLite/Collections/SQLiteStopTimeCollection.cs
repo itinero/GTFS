@@ -238,10 +238,13 @@ namespace GTFS.DB.SQLite.Collections
 
         public void RemoveAll()
         {
-            string sql = "DELETE from stop_time;";
+            string sql = "DELETE from stop_time WHERE FEED_ID = :feed_id;";
             using (var command = _connection.CreateCommand())
             {
-                command.CommandText = sql;                
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+
+                command.Parameters[0].Value = _id;
                 command.ExecuteNonQuery();
             }
         }

@@ -279,5 +279,10 @@ namespace GTFS.DB.SQLite.Collections
                 return command.ExecuteNonQuery() > 0;
             }
         }
+
+        public void RemoveAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

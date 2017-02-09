@@ -240,5 +240,10 @@ namespace GTFS.DB.SQLite.Collections
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
