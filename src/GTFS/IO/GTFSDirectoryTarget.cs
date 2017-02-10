@@ -83,12 +83,7 @@ namespace GTFS.IO
         /// <returns></returns>
         private Stream OpenWrite(string path, string name)
         {
-            var file = new FileInfo(Path.Combine(path, name + ".txt"));
-            if (file.Exists)
-            {
-                file.Delete();
-            }
-            return file.OpenWrite();
+            return File.Open(Path.Combine(path, name + ".txt"), FileMode.Create);
         }
 
         /// <summary>

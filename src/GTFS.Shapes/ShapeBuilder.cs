@@ -23,11 +23,12 @@
 using GTFS.Entities;
 using GTFS.Shapes.Caches;
 using Itinero;
+using Itinero.Algorithms.Collections;
 using Itinero.LocalGeo;
 using Itinero.Profiles;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace GTFS.Shapes
 {
@@ -45,9 +46,7 @@ namespace GTFS.Shapes
         {
             _maxResolveDistanceInMeter = maxResolveDistanceInMeter;
         }
-
-        private ShapesCache<TripStops> _tripShapeCache = null;
-
+        
         /// <summary>
         /// Called when a stop could not be resolved.
         /// </summary>
@@ -61,8 +60,7 @@ namespace GTFS.Shapes
         /// <summary>
         /// Builds shapes along the routes in the given feed using the given router and profile.
         /// </summary>
-        public void BuildShapes(IGTFSFeed feed, Router router, Func<Trip, IProfileInstance> getProfile, bool useTripCache = true,
-            bool useStopCache = false)
+        public void BuildShapes(IGTFSFeed feed, Router router, Func<Trip, IProfileInstance> getProfile, bool useStopCache = true)
         {
             // initialize a caching structure of shapes.
             ShapesCache<StopPair> stopShapeCache = null;
@@ -70,152 +68,180 @@ namespace GTFS.Shapes
             {
                 stopShapeCache = new ShapesCache<StopPair>();
             }
-            if (useTripCache)
-            {
-                _tripShapeCache = new ShapesCache<TripStops>();
-            }
+            var shapeCache = new HugeDictionary<TripStops, string>();
 
             // build a shape per trip.
             var shapeId = 0;
-            var tripIds = new List<string>(feed.Trips.Select(x => x.Id));
-            for (var t = 0; t < feed.Trips.Count; t++)
-            //foreach(var tripId in tripIds)
+            var stopTimes = new List<int>(feed.StopTimes.Count);
+            for (var i = 0; i < feed.StopTimes.Count; i++)
             {
-                var trip = feed.Trips.Get(t);
+                stopTimes.Add(i);
+            }
+            stopTimes.Sort((x, y) =>
+            {
+                var xStopTime = feed.StopTimes[x];
+                var yStopTime = feed.StopTimes[y];
+                if (xStopTime.TripId == yStopTime.TripId)
+                {
+                    return xStopTime.StopSequence.CompareTo(yStopTime.StopSequence);
+                }
+                return xStopTime.TripId.CompareTo(yStopTime.TripId);
+            });
+            var trips = new List<Trip>(feed.Trips);
+            trips.Sort((x, y) => x.Id.CompareTo(y.Id));
+            var tripStopTimes = new List<int>();
+            var tripStopTimesIndex = 0;
+            for (var t = 0; t < trips.Count; t++)
+            {
+                var trip = trips[t];
                 var profile = getProfile(trip);
                 GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Information,
                     "Building for trip {0}...{1}/{2}", trip.ToInvariantString(), t, feed.Trips.Count);
-                var stopTimes = new List<StopTime>(feed.StopTimes.GetForTrip(trip.Id));
-                stopTimes.Sort((x, y) => x.StopSequence.CompareTo(y.StopSequence));
+
+                // extract stop times for current trip.
+                tripStopTimes.Clear();
+                for (; tripStopTimesIndex < stopTimes.Count; tripStopTimesIndex++)
+                {
+                    var current = feed.StopTimes[stopTimes[tripStopTimesIndex]];
+                    if (current.TripId != trip.Id)
+                    {
+                        break;
+                    }
+                    tripStopTimes.Add(stopTimes[tripStopTimesIndex]);
+                }
 
                 // check trip cache.
                 var tripStops = new TripStops();
                 tripStops.Stops = new List<string>();
-                for (var i = 0; i < stopTimes.Count; i++)
+                for (var i = 0; i < tripStopTimes.Count; i++)
                 {
-                    tripStops.Stops.Add(stopTimes[i].StopId);
+                    var current = feed.StopTimes[tripStopTimes[i]];
+                    tripStops.Stops.Add(current.StopId);
                 }
 
                 // get trip shape from cache or build it from scratch.
                 var shape = new List<Coordinate>();
-                IEnumerable<Coordinate> cachedTripShape;
-                if (_tripShapeCache != null && _tripShapeCache.TryGet(tripStops, out cachedTripShape))
+                var distance = 0f;
+                var stopTime1 = feed.StopTimes[tripStopTimes[0]];
+                var stop1 = feed.Stops.Get(stopTime1.StopId);
+                Coordinate stop1Coordinate;
+                var stop1Resolved = this.ResolveStop(router, profile, stop1, out stop1Coordinate);
+                if (stop1Resolved.IsError && this.StopNotResolved != null)
                 {
-                    shape.AddRange(cachedTripShape);
+                    this.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
                 }
-                else
+                stopTime1.ShapeDistTravelled = System.Math.Round(distance / 1000, 2);
+                feed.StopTimes[tripStopTimes[0]] = stopTime1;
+                for (var i = 0; i < tripStopTimes.Count - 1; i++)
                 {
-                    // build shape.
-                    var stop1 = feed.Stops.Get(stopTimes[0].StopId);
-                    Coordinate stop1Coordinate;
-                    var stop1Resolved = this.ResolveStop(router, profile, stop1, out stop1Coordinate);
-                    if (stop1Resolved.IsError && this.StopNotResolved != null)
+                    // calculate shape between two stops.
+                    var localShape = new List<Coordinate>();
+                    var stopTime2 = feed.StopTimes[tripStopTimes[i + 1]];
+                    var stop2 = feed.Stops.Get(stopTime2.StopId);
+                    Coordinate stop2Coordinate;
+                    var stop2Resolved = this.ResolveStop(router, profile, stop2, out stop2Coordinate);
+                    if (stop2Resolved.IsError && this.StopNotResolved != null)
                     {
-                        this.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
+                        this.StopNotResolved(stop2, stop2Coordinate, stop2Resolved);
                     }
-                    stopTimes[0].ShapeDistTravelled = 0;
-                    feed.StopTimes.AddOrReplace(stopTimes[0]);
-                    for (var i = 0; i < stopTimes.Count - 1; i++)
-                    {
-                        // calculate shape between two stops.
-                        var localShape = new List<Coordinate>();
-                        var stop2 = feed.Stops.Get(stopTimes[i + 1].StopId);
-                        Coordinate stop2Coordinate;
-                        var stop2Resolved = this.ResolveStop(router, profile, stop2, out stop2Coordinate);
-                        if (stop2Resolved.IsError && this.StopNotResolved != null)
-                        {
-                            this.StopNotResolved(stop2, stop2Coordinate, stop2Resolved);
-                        }
 
-                        // check cache.
-                        var stopPair = new StopPair()
+                    // check cache.
+                    var stopPair = new StopPair()
+                    {
+                        Stop1 = stop1.Id,
+                        Stop2 = stop2.Id
+                    };
+                    IEnumerable<Coordinate> localCachedShape;
+                    if (stopShapeCache != null && stopShapeCache.TryGet(stopPair, out localCachedShape))
+                    { // shape is in cache.
+                        localShape.AddRange(localCachedShape);
+                    }
+                    else
+                    { // shape not in cache.
+                        if (stop1Resolved.IsError || stop2Resolved.IsError)
                         {
-                            Stop1 = stop1.Id,
-                            Stop2 = stop2.Id
-                        };
-                        IEnumerable<Coordinate> localCachedShape;
-                        if (stopShapeCache != null && stopShapeCache.TryGet(stopPair, out localCachedShape))
-                        { // shape is in cache.
-                            localShape.AddRange(localCachedShape);
+                            GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, one of points could not be resolved: {0}->{1}",
+                                stop1.Id, stop2.Id);
+                            localShape.Add(stop1Coordinate);
+                            localShape.Add(stop2Coordinate);
                         }
                         else
-                        { // shape not in cache.
-                            if (stop1Resolved.IsError || stop2Resolved.IsError)
+                        {
+                            var route = router.TryCalculate(profile, stop1Resolved.Value, stop2Resolved.Value);
+                            if (route.IsError)
                             {
-                                GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, one of points could not be resolved: {0}->{1}",
+                                GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
                                     stop1.Id, stop2.Id);
+                                if (this.ShapeNotRoutable != null)
+                                {
+                                    this.ShapeNotRoutable(stop1, stop2);
+                                }
                                 localShape.Add(stop1Coordinate);
                                 localShape.Add(stop2Coordinate);
                             }
                             else
                             {
-                                var route = router.TryCalculate(profile, stop1Resolved.Value, stop2Resolved.Value);
-                                if (route.IsError)
-                                {
-                                    GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Error, "Could not determine shape between stops, route couldn't be calculated: {0}->{1}",
-                                        stop1.Id, stop2.Id);
-                                    if (this.ShapeNotRoutable != null)
-                                    {
-                                        this.ShapeNotRoutable(stop1, stop2);
-                                    }
-                                    localShape.Add(stop1Coordinate);
-                                    localShape.Add(stop2Coordinate);
-                                }
-                                else
-                                {
-                                    localShape.AddRange(route.Value.Shape);
-                                }
-                            }
-
-                            // add to cache.
-                            if (stopShapeCache != null)
-                            {
-                                stopShapeCache.Add(stopPair, localShape);
+                                localShape.AddRange(route.Value.Shape);
                             }
                         }
 
-                        // calculate distance and add to main shape.
-                        var localDistance = Coordinate.DistanceEstimateInMeter(localShape);
-                        if (i > 0)
+                        // add to cache.
+                        if (stopShapeCache != null)
                         {
-                            shape.AddRange(localShape.GetRange(1, localShape.Count - 1));
+                            stopShapeCache.Add(stopPair, localShape);
                         }
-                        else
-                        {
-                            shape.AddRange(localShape);
-                        }
-
-                        // move to next pair.
-                        stop1 = stop2;
-                        stop1Coordinate = stop2Coordinate;
-                        stop1Resolved = stop2Resolved;
                     }
 
-                    // add to cache.
-                    if (_tripShapeCache != null)
+                    // calculate distance and add to main shape.
+                    var localDistance = Coordinate.DistanceEstimateInMeter(localShape);
+                    if (i > 0)
                     {
-                        _tripShapeCache.Add(tripStops, shape);
+                        shape.AddRange(localShape.GetRange(1, localShape.Count - 1));
                     }
+                    else
+                    {
+                        shape.AddRange(localShape);
+                    }
+                    distance += localDistance;
+
+                    // update stoptime.
+                    stopTime2.ShapeDistTravelled = System.Math.Round(distance / 1000, 2);
+                    feed.StopTimes[tripStopTimes[i + 1]] = stopTime2;
+
+                    // move to next pair.
+                    stop1 = stop2;
+                    stopTime1 = stopTime2;
+                    stop1Coordinate = stop2Coordinate;
+                    stop1Resolved = stop2Resolved;
                 }
 
                 // build shape objects.
-                var distance = 0f;
-                for (var i = 0; i < shape.Count - 1; i++)
+                string cachedShapeId;
+                if (!shapeCache.TryGetValue(tripStops, out cachedShapeId))
                 {
-                    feed.Shapes.Add(new Shape()
-                    {
-                        Id = shapeId.ToInvariantString(),
-                        DistanceTravelled = distance,
-                        Sequence = (uint)i,
-                        Latitude = shape[i].Latitude,
-                        Longitude = shape[i].Longitude
-                    });
+                    shape = shape.ToArray().Simplify(1).ToList();
 
-                    distance += Coordinate.DistanceEstimateInMeter(shape[i + 0], shape[i + 1]);
+                    distance = 0f;
+                    for (var i = 0; i < shape.Count - 1; i++)
+                    {
+                        feed.Shapes.Add(new Shape()
+                        {
+                            Id = shapeId.ToInvariantString(),
+                            DistanceTravelled = System.Math.Round(distance / 1000, 2),
+                            Sequence = (uint)i,
+                            Latitude = System.Math.Round(shape[i].Latitude, 7),
+                            Longitude = System.Math.Round(shape[i].Longitude, 7)
+                        });
+
+                        distance += Coordinate.DistanceEstimateInMeter(shape[i + 0], shape[i + 1]);
+                    }
+                    cachedShapeId = shapeId.ToInvariantString();
+                    shapeId++;
+
+                    shapeCache[tripStops] = cachedShapeId;
                 }
-                trip.ShapeId = shapeId.ToInvariantString();
+                trip.ShapeId = cachedShapeId;
                 feed.Trips.AddOrReplace(trip, (tr) => tr.Id);
-                shapeId++;
             }
         }
 
@@ -243,17 +269,6 @@ namespace GTFS.Shapes
             }
             _stopsResolvedCache[stop.Id] = result;
             return result;
-        }
-
-        /// <summary>
-        /// Gets the trip shapes.
-        /// </summary>
-        public ShapesCache<TripStops> TripShapes
-        {
-            get
-            {
-                return _tripShapeCache;
-            }
         }
     }
 

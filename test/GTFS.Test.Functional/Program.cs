@@ -53,7 +53,7 @@ namespace GTFS.Test.Functional
             
             var resolvedErrors = new FeatureCollection();
             var reader = new GTFSReader<GTFSFeed>();
-            using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\delijn")))
+            using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\nmbs")))
             {
                 var feed = reader.Read(sources);
 
@@ -82,23 +82,9 @@ namespace GTFS.Test.Functional
                         throw new Exception(string.Format("No profile found for route type: {0}", route.Type));
                     }
                     return profile;
-                }, true, true);
+                }, true);
 
                 var resolvedErrorsJson = ToJson(resolvedErrors);
-
-                var shapeFeatures = new FeatureCollection();
-                for (var i = 0; i < shapeBuilder.TripShapes.ShapeCount; i++)
-                {
-                    var shape = new List<Itinero.LocalGeo.Coordinate>(shapeBuilder.TripShapes.ShapesArray[i]);
-                    var lineString = new LineString(shape.ToCoordinatesArray());
-                    var feature = new Feature(lineString, new AttributesTable());
-                    shapeFeatures.Add(feature);
-                }
-                var shapeFeaturesJson = ToJson(shapeFeatures);
-                using (var stream = new StreamWriter(File.Open("temp.geojson", FileMode.Create)))
-                {
-                    stream.Write(shapeFeaturesJson);
-                }
 
                 var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
                 var writer = new GTFSWriter<GTFSFeed>();

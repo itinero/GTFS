@@ -157,6 +157,32 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Gets the number of entities.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the entity at the given idx.
+        /// </summary>
+        public StopTime this[int idx]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns></returns>

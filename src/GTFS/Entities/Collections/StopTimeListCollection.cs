@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,10 +31,7 @@ namespace GTFS.Entities.Collections
     /// </summary>
     public class StopTimeListCollection : IStopTimeCollection
     {
-        /// <summary>
-        /// Holds the list containing all stops.
-        /// </summary>
-        private List<StopTime> _entities;
+        private readonly List<StopTime> _entities;
 
         /// <summary>
         /// Creates a unique entity collection based on a list.
@@ -108,6 +106,33 @@ namespace GTFS.Entities.Collections
                 {
                     return x.StopId == stopId;
                 });
+        }
+
+        /// <summary>
+        /// Gets the number of entities.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return _entities.Count;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the entity at the given idx.
+        /// </summary>
+        public StopTime this[int idx]
+        {
+            get
+            {
+                return _entities[idx];
+            }
+
+            set
+            {
+                _entities[idx] = value;
+            }
         }
 
         /// <summary>

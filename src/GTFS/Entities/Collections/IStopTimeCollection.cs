@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 
 namespace GTFS.Entities.Collections
@@ -64,5 +65,22 @@ namespace GTFS.Entities.Collections
         /// </summary>
         /// <returns></returns>
         int RemoveForStop(string stopId);
+
+        /// <summary>
+        /// Gets the entity at the given index.
+        /// </summary>
+        StopTime this[int idx]
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Returns the number of entities.
+        /// </summary>
+        int Count
+        {
+            get;
+        }
     }
 }
