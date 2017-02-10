@@ -12,17 +12,17 @@
     <tags>routing, gtfs</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0">
-        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="GTFS" version="[$version$, )" />
         <dependency id="Itinero" version="[0.38.18-rc1, )" />
       </group>
       <group targetFramework=".NETPortable4.0-Profile147">
-        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="GTFS" version="[$version$, )" />
         <dependency id="Itinero" version="[0.38.18-rc1, )" />
       </group>
       <group targetFramework=".NETStandard1.3">
         <dependency id="NETStandard.Library" version="[1.6.0, )" />
         <dependency id="System.Reflection.TypeExtensions" version="[4.3.0, )" />
-        <dependency id="GTFS" version="[1.0.0, )" />
+        <dependency id="GTFS" version="[$version$, )" />
         <dependency id="Itinero" version="[0.38.18-rc1, )" />
       </group>
     </dependencies>
