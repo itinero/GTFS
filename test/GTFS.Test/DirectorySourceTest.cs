@@ -340,7 +340,7 @@ namespace GTFS.Test
             Assert.AreEqual(string.Empty, stopTimes[idx].StopHeadsign);
             Assert.AreEqual(null, stopTimes[idx].PickupType);
             Assert.AreEqual(null, stopTimes[idx].DropOffType);
-            Assert.AreEqual(string.Empty, stopTimes[idx].ShapeDistTravelled);
+            Assert.AreEqual(null, stopTimes[idx].ShapeDistTravelled);
         }
 
         /// <summary>
