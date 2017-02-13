@@ -197,7 +197,7 @@ namespace GTFS
                 {
                     // oeps, file was not found!
                     // TODO: check if we should not return all missing files in the exception?
-                    throw new GTFSRequiredFileMissingException(missingRequiredFiles.First());
+                    //throw new GTFSRequiredFileMissingException(missingRequiredFiles.First());
                 }
 
                 var missingRequiredFileSets = GetRequiredFileSets()
@@ -208,7 +208,7 @@ namespace GTFS
                 {
                     // oeps, no file from file set was found!
                     // TODO: check if we should not return all missing file sets in the exception?
-                    throw new GTFSRequiredFileSetMissingException(missingRequiredFileSets.First());
+                    //throw new GTFSRequiredFileSetMissingException(missingRequiredFileSets.First());
                 }
             }
 
