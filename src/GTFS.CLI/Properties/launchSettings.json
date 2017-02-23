@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GTFS.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "--read-feed C:\\work\\data\\gtfs\\nmbs --add-shapes routerdb=C:\\work\\itinero\\data\\transit.routerdb --write-feed C:\\work\\data\\gtfs\\nmbs-shapes"
+    }
+  }
+}

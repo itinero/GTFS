@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true
@@ -7,6 +7,8 @@
   "dependencies": {
     "GTFS": "1.0.0-*",
     "GTFS.DB.SQLite": "1.0.0-*",
+    "GTFS.Shapes": "1.0.0-*",
+    "Itinero": "0.38.19-rc1",
     "NetTopologySuite": "1.14.0",
     "NetTopologySuite.IO.GeoJSON": "1.14.0",
     "Newtonsoft.Json": "9.0.1"

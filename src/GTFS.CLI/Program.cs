@@ -15,6 +15,15 @@ namespace GTFS.CLI
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
+            Itinero.Logging.Logger.LogAction = (o, level, message, parameters) =>
+            {
+                Console.WriteLine(string.Format("[{0}] {1} - {2}", o, level, message));
+            };
+            GTFS.Logging.Logger.LogAction = (o, level, message, parameter) =>
+            {
+                Console.WriteLine(string.Format("[{0}] {1} - {2}", o, level, message));
+            };
+
             // parse switches first.
             var switches = SwitchParser.ParseSwitches(args);
 

@@ -17,7 +17,8 @@ namespace GTFS.CLI
         /// </summary>
         private static List<Switch> _switches = new List<Switch>(new Switch[] { 
            new SwitchReadFeed(), new SwitchWriteFeed(), new SwitchFilterBoundingBox(), 
-           new SwitchFilterRoutes(), new SwitchFilterBoundingGeoJSON(), new SwitchValidateFeed() });
+           new SwitchFilterRoutes(), new SwitchFilterBoundingGeoJSON(), new SwitchValidateFeed() ,
+           new SwitchFilterAddShapes() });
 
         /// <summary>
         /// Parses the switch line arguments into a sorted list of switchs.
