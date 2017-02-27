@@ -97,6 +97,11 @@ namespace GTFS.Shapes
                 var profile = getProfile(trip);
                 GTFS.Logging.Logger.Log("ShapeBuilder", Logging.TraceEventType.Information,
                     "Building for trip {0}...{1}/{2}", trip.ToInvariantString(), t, feed.Trips.Count);
+                if (!router.Db.SupportProfile(profile.Profile.FullName))
+                {
+                    throw new Exception(string.Format("Profile {1} for trip {0} not supported!",
+                        trip.ToInvariantString(), profile.Profile.FullName));
+                }
 
                 // extract stop times for current trip.
                 tripStopTimes.Clear();

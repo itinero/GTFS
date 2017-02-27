@@ -36,60 +36,64 @@ namespace GTFS.Test.Functional
             //var train = DynamicVehicle.LoadFromStream(File.OpenRead(@".\Osm\profiles\train.lua"));
             //var tram = DynamicVehicle.LoadFromStream(File.OpenRead(@".\Osm\profiles\tram.lua"));
             //var transitBus = DynamicVehicle.LoadFromStream(File.OpenRead(@".\Osm\profiles\transit-bus.lua"));
-            //var routerDb = new RouterDb();
+            var routerDb = RouterDb.Deserialize(File.OpenRead("transit.routerdb"));
             //routerDb.LoadOsmData(File.OpenRead(@"C:\work\data\OSM\belgium-latest.osm.pbf"), tram, train, transitBus);
             //using (var stream = File.Open("transit.routerdb", FileMode.Create))
             //{
             //    routerDb.Serialize(stream);
             //}
-            var routerDb = RouterDb.Deserialize(File.OpenRead("transit.routerdb"));
-            var router = new Router(routerDb);
-            var train = routerDb.GetSupportedVehicle("train");
+            //var routerDb = RouterDb.Deserialize(File.OpenRead(@"C:\work\itinero\data\transit.routerdb"));
+            //var router = new Router(routerDb);
+            //var train = routerDb.GetSupportedVehicle("train");
 
-            var profilePerRouteType = new Dictionary<RouteTypeExtended, IProfileInstance>();
-            profilePerRouteType.Add(RouteType.Tram.ToExtended(), routerDb.GetSupportedProfile("tram"));
-            profilePerRouteType.Add(RouteType.Rail.ToExtended(), routerDb.GetSupportedProfile("train"));
-            profilePerRouteType.Add(RouteType.Bus.ToExtended(), routerDb.GetSupportedProfile("transit-bus"));
+            //var profilePerRouteType = new Dictionary<RouteTypeExtended, IProfileInstance>();
+            //profilePerRouteType.Add(RouteType.Tram.ToExtended(), routerDb.GetSupportedProfile("tram"));
+            //profilePerRouteType.Add(RouteType.Rail.ToExtended(), routerDb.GetSupportedProfile("train"));
+            //profilePerRouteType.Add(RouteType.Bus.ToExtended(), routerDb.GetSupportedProfile("transit-bus"));
             
-            var resolvedErrors = new FeatureCollection();
-            var reader = new GTFSReader<GTFSFeed>();
-            using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\nmbs")))
-            {
-                var feed = reader.Read(sources);
+            //var resolvedErrors = new FeatureCollection();
+            //var reader = new GTFSReader<GTFSFeed>();
+            //using (var sources = new GTFSDirectorySource(new DirectoryInfo(@"C:\work\data\gtfs\nmbs")))
+            //{
+            //    var feed = reader.Read(sources);
 
-                var shapeBuilder = new ShapeBuilder();
-                var stopsInError = new HashSet<string>();
-                shapeBuilder.StopNotResolved = (stop, location, routerpoint) =>
-                {
-                    if (stopsInError.Contains(stop.Id))
-                    {
-                        return;
-                    }
-                    stopsInError.Add(stop.Id);
-                    var attributesTable = new AttributesTable();
-                    attributesTable.AddAttribute("error", routerpoint.ErrorMessage);
-                    attributesTable.AddAttribute("stop_name", stop.Name);
-                    attributesTable.AddAttribute("stop_id", stop.Id);
-                    resolvedErrors.Add(new Feature(new Point(new GeoAPI.Geometries.Coordinate(location.Longitude, location.Latitude)),
-                        attributesTable));
-                };
-                shapeBuilder.BuildShapes(feed, router, (t) =>
-                {
-                    var route = feed.Routes.Get(t.RouteId);
-                    IProfileInstance profile;
-                    if (!profilePerRouteType.TryGetValue(route.Type, out profile))
-                    {
-                        throw new Exception(string.Format("No profile found for route type: {0}", route.Type));
-                    }
-                    return profile;
-                }, true);
+            //    var shapeBuilder = new ShapeBuilder();
+            //    var stopsInError = new HashSet<string>();
+            //    shapeBuilder.StopNotResolved = (stop, location, routerpoint) =>
+            //    {
+            //        if (stopsInError.Contains(stop.Id))
+            //        {
+            //            return;
+            //        }
+            //        stopsInError.Add(stop.Id);
+            //        var attributesTable = new AttributesTable();
+            //        attributesTable.AddAttribute("error", routerpoint.ErrorMessage);
+            //        attributesTable.AddAttribute("stop_name", stop.Name);
+            //        attributesTable.AddAttribute("stop_id", stop.Id);
+            //        resolvedErrors.Add(new Feature(new Point(new GeoAPI.Geometries.Coordinate(location.Longitude, location.Latitude)),
+            //            attributesTable));
+            //    };
+            //    shapeBuilder.BuildShapes(feed, router, (t) =>
+            //    {
+            //        if (t.Id == "IC1972519281")
+            //        {
+            //            System.Diagnostics.Debug.WriteLine("IC1972519281");
+            //        }
+            //        var route = feed.Routes.Get(t.RouteId);
+            //        IProfileInstance profile;
+            //        if (!profilePerRouteType.TryGetValue(route.Type, out profile))
+            //        {
+            //            throw new Exception(string.Format("No profile found for route type: {0}", route.Type));
+            //        }
+            //        return profile;
+            //    }, true);
 
-                var resolvedErrorsJson = ToJson(resolvedErrors);
+            //    var resolvedErrorsJson = ToJson(resolvedErrors);
 
-                var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
-                var writer = new GTFSWriter<GTFSFeed>();
-                writer.Write(feed, targets);
-            }
+            //    var targets = new GTFSDirectoryTarget(new DirectoryInfo(@"C:\work\data\gtfs\nmbs-shapes"));
+            //    var writer = new GTFSWriter<GTFSFeed>();
+            //    writer.Write(feed, targets);
+            //}
         }
         
         private static string ToJson(FeatureCollection featureCollection)

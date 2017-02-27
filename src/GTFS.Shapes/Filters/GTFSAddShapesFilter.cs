@@ -42,7 +42,7 @@ namespace GTFS.Shapes.Filters
         /// </summary>
         public GTFSAddShapesFilter(RouterDb routerDb, Dictionary<RouteTypeExtended, IProfileInstance> profilesPerRouteType = null)
         {
-            _routerDb = new RouterDb();
+            _routerDb = routerDb;
 
             if (profilesPerRouteType == null)
             { // by default use profiles named, tram, train and transit-bus.
