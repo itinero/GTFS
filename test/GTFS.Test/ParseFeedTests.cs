@@ -62,7 +62,7 @@ namespace GTFS.Test
         [Test]
         public void ParseFeedWithStopTimesFileMissing()
         {
-            var reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>(true);
             var source = new List<IGTFSSourceFile>
             {
                 new GTFSSourceFileStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"),"agency"),
@@ -102,7 +102,7 @@ namespace GTFS.Test
         [Test]
         public void ParseFeedWithBothCalendarFileMissing()
         {
-            var reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>(true);
             var source = new List<IGTFSSourceFile>
             {
                 new GTFSSourceFileStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"),"agency"),

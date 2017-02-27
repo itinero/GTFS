@@ -124,13 +124,12 @@ namespace GTFS.Test
         public void ParseAgenciesWithoutAgencyId()
         {
             const string Agency = "agency";
-            var reader = new GTFSReader<GTFSFeed>();
+            var reader = new GTFSReader<GTFSFeed>(true);
             var source = new List<IGTFSSourceFile>
             {
                 new GTFSSourceFileStream(_executingAssembly.GetManifestResourceStream("GTFS.Test.other_feed.agencies_no_id.txt"),Agency)
             };
-
-
+            
             Assert.Throws<GTFSRequiredFieldMissingException>(() =>
             {
                 reader.Read(source, source.First(x => x.Name.Equals(Agency)));

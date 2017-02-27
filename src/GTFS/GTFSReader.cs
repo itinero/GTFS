@@ -47,7 +47,7 @@ namespace GTFS
         /// Creates a new GTFS reader.
         /// </summary>
         public GTFSReader()
-            : this(true)
+            : this(false)
         {
 
         }
@@ -1694,9 +1694,17 @@ namespace GTFS
             value = this.CleanFieldValue(value);
 
             double result;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
             if (!double.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
             { // parsing failed!
-                throw new GTFSParseException(name, fieldName, value);
+                if (_strict)
+                {
+                    throw new GTFSParseException(name, fieldName, value);
+                }
+                return null;
             }
             return result;
         }
