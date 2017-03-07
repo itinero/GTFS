@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using GTFS.Attributes;
 using GTFS.Entities.Enumerations;
 
@@ -143,6 +144,26 @@ namespace GTFS.Entities
                     this.Url == other.Url;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns a new route given another route object
+        /// </summary>
+        public static Route From(Route route)
+        {
+            return new Route()
+            {
+                AgencyId = route.AgencyId,
+                Color = route.Color,
+                Description = route.Description,
+                Id = route.Id,
+                LongName = route.LongName,
+                ShortName = route.ShortName,
+                Tag = route.Tag,
+                TextColor = route.TextColor,
+                Type = route.Type,
+                Url = route.Url
+            };
         }
     }
 }
