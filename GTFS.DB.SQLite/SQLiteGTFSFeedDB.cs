@@ -193,7 +193,9 @@ namespace GTFS.DB.SQLite
             this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [transfer] ( [FEED_ID] INTEGER NOT NULL, [from_stop_id] TEXT, [to_stop_id] TEXT, [transfer_type] INTEGER, [min_transfer_time] TEXT );");
             this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [trip] ( [FEED_ID] INTEGER NOT NULL, [id] TEXT NOT NULL, [route_id] TEXT, [service_id] TEXT, [trip_headsign] TEXT, [trip_short_name] TEXT, [direction_id] INTEGER, [block_id] TEXT, [shape_id] TEXT, [wheelchair_accessible] INTEGER );");
             // CREATE TABLE TO STORE GPX FILENAMES
-            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [gpx_filenames] ( [route_id] TEXT, [gpx_filename] TEXT);");            
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [gpx_filenames] ( [route_id] TEXT, [gpx_filename] TEXT);");
+            // CREATE TABLE TO STORE LOGS OF EDITS
+            this.ExecuteNonQuery("CREATE TABLE IF NOT EXISTS [log] ( [timestamp] TEXT, [action] TEXT, [route_id] TEXT, [pc_name] TEXT, [pc_ip] TEXT, [note] TEXT);");
             // CREATE DATABASE INDEXES FOR EFFICIENT LOOKUP
             this.ExecuteNonQuery("CREATE INDEX IF NOT EXISTS stop_idx ON stop (id)");
             this.ExecuteNonQuery("CREATE INDEX IF NOT EXISTS shape_idx ON shape (id)");
