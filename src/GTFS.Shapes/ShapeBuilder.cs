@@ -135,7 +135,7 @@ namespace GTFS.Shapes
                 {
                     this.StopNotResolved(stop1, stop1Coordinate, stop1Resolved);
                 }
-                stopTime1.ShapeDistTravelled = System.Math.Round(distance / 1000, 2);
+                stopTime1.ShapeDistTravelled = System.Math.Round(distance, 2);
                 feed.StopTimes[tripStopTimes[0]] = stopTime1;
                 for (var i = 0; i < tripStopTimes.Count - 1; i++)
                 {
@@ -186,7 +186,8 @@ namespace GTFS.Shapes
                             }
                             else
                             {
-                                localShape.AddRange(route.Value.Shape);
+                                var routeShape = route.Value.Shape.Simplify(0.1f);
+                                localShape.AddRange(routeShape);
                             }
                         }
 
@@ -210,7 +211,7 @@ namespace GTFS.Shapes
                     distance += localDistance;
 
                     // update stoptime.
-                    stopTime2.ShapeDistTravelled = System.Math.Round(distance / 1000, 2);
+                    stopTime2.ShapeDistTravelled = System.Math.Round(distance, 2);
                     feed.StopTimes[tripStopTimes[i + 1]] = stopTime2;
 
                     // move to next pair.
@@ -224,21 +225,28 @@ namespace GTFS.Shapes
                 string cachedShapeId;
                 if (!shapeCache.TryGetValue(tripStops, out cachedShapeId))
                 {
-                    shape = shape.ToArray().Simplify(1).ToList();
 
                     distance = 0f;
-                    for (var i = 0; i < shape.Count - 1; i++)
+                    feed.Shapes.Add(new Shape()
                     {
+                        Id = shapeId.ToInvariantString(),
+                        DistanceTravelled = System.Math.Round(distance, 2),
+                        Sequence = 0,
+                        Latitude = System.Math.Round(shape[0].Latitude, 7),
+                        Longitude = System.Math.Round(shape[0].Longitude, 7)
+                    });
+                    for (var i = 1; i < shape.Count; i++)
+                    {
+                        distance += Coordinate.DistanceEstimateInMeter(shape[i - 1], shape[i]);
+
                         feed.Shapes.Add(new Shape()
                         {
                             Id = shapeId.ToInvariantString(),
-                            DistanceTravelled = System.Math.Round(distance / 1000, 2),
+                            DistanceTravelled = System.Math.Round(distance, 2),
                             Sequence = (uint)i,
                             Latitude = System.Math.Round(shape[i].Latitude, 7),
                             Longitude = System.Math.Round(shape[i].Longitude, 7)
                         });
-
-                        distance += Coordinate.DistanceEstimateInMeter(shape[i + 0], shape[i + 1]);
                     }
                     cachedShapeId = shapeId.ToInvariantString();
                     shapeId++;

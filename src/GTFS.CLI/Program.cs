@@ -47,8 +47,15 @@ namespace GTFS.CLI
 
             if (collapsedSwitches[0].CanExecute)
             { // execute the last remaining fully collapsed command.
+                var ticks = DateTime.Now.Ticks;
                 collapsedSwitches[0].Execute();
+                Itinero.Logging.Logger.Log("Program", Itinero.Logging.TraceEventType.Information, "Processing finished, took {0}.",
+                    (new TimeSpan(DateTime.Now.Ticks - ticks)).ToString());
             }
+
+#if DEBUG
+            Console.ReadLine();
+#endif
         }
     }
 }
