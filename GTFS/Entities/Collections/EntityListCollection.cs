@@ -121,7 +121,20 @@ namespace GTFS.Entities.Collections
             return _entities.GetEnumerator();
         }
 
+        /// <summary>
+        /// Adds a range of entities
+        /// </summary>
+        /// <returns></returns>
         public void AddRange(IEntityCollection<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Removes all entities
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
         {
             throw new NotImplementedException();
         }

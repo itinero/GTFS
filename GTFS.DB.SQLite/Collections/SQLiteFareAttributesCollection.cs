@@ -192,5 +192,10 @@ namespace GTFS.DB.SQLite.Collections
         {
             return this.Get().GetEnumerator();
         }
+
+        public void RemoveAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -192,6 +192,23 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Removes all entities
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
+        {
+            string sql = "DELETE from shape WHERE FEED_ID = :feed_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+
+                command.Parameters[0].Value = _id;
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns></returns>
