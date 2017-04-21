@@ -63,12 +63,13 @@ namespace GTFS
         /// Writes the given feed to the given target files.
         /// </summary>
         /// <param name="feed"></param>
-        /// /// <param name="agencyIds"></param>
+        /// <param name="selectedAgencyIds"></param>
+        /// <param name="selectedRouteIds"></param>
         /// <param name="target"></param>
-        public void Write(T feed, IEnumerable<string> agencyIds, IEnumerable<IGTFSTargetFile> target)
+        public void Write(T feed, IEnumerable<string> selectedAgencyIds, IEnumerable<string> selectedRouteIds, IEnumerable<IGTFSTargetFile> target)
         {
-            var agenciesToWrite = feed.Agencies.Where(x => agencyIds.Contains(x.Id));
-            var routesToWrite = feed.Routes.Where(x => agencyIds.Contains(x.AgencyId));
+            var agenciesToWrite = feed.Agencies.Where(x => selectedAgencyIds.Contains(x.Id));
+            var routesToWrite = feed.Routes.Where(x => selectedAgencyIds.Contains(x.AgencyId) && selectedRouteIds.Contains(x.Id));
             var routeIds = routesToWrite.Select(x => x.Id).ToList();
             var tripsToWrite = feed.Trips.Where(x => routeIds.Contains(x.RouteId));
             var tripIds = tripsToWrite.Select(x => x.Id).ToList();
