@@ -63,13 +63,35 @@ namespace GTFS
         /// Writes the given feed to the given target files.
         /// </summary>
         /// <param name="feed"></param>
-        /// <param name="selectedAgencyIds"></param>
-        /// <param name="selectedRouteIds"></param>
+        /// <param name="selectedIds"></param>
         /// <param name="target"></param>
-        public void Write(T feed, IEnumerable<string> selectedAgencyIds, IEnumerable<string> selectedRouteIds, IEnumerable<IGTFSTargetFile> target)
+        /// <param name="selectedAgencies"></param>
+        /// <param name="selectedRoutes"></param>
+        public void Write(T feed, IEnumerable<string> selectedIds, IEnumerable<IGTFSTargetFile> target, bool selectedAgencies = false, bool selectedRoutes = false)
         {
-            var agenciesToWrite = feed.Agencies.Where(x => selectedAgencyIds.Contains(x.Id));
-            var routesToWrite = feed.Routes.Where(x => selectedAgencyIds.Contains(x.AgencyId) && selectedRouteIds.Contains(x.Id));
+            if (!selectedAgencies && !selectedRoutes) return;
+
+            List<Agency> agenciesToWrite = new List<Agency>();
+            List<Route> routesToWrite = new List<Route>();
+
+            if (selectedAgencies)
+            {
+                agenciesToWrite = feed.Agencies.Where(x => selectedIds.Contains(x.Id)).ToList();
+                routesToWrite = feed.Routes.Where(x => selectedIds.Contains(x.AgencyId)).ToList();
+            }
+            else if (selectedRoutes)
+            {
+                routesToWrite = feed.Routes.Where(x => selectedIds.Contains(x.Id)).ToList();
+                foreach (Route route in routesToWrite)
+                {
+                    Agency agency = feed.Agencies.Where(x => route.AgencyId == x.Id).ToList().First();
+                    if (!agenciesToWrite.Contains(agency))
+                    {
+                        agenciesToWrite.Add(agency);
+                    }
+                }
+            }
+
             var routeIds = routesToWrite.Select(x => x.Id).ToList();
             var tripsToWrite = feed.Trips.Where(x => routeIds.Contains(x.RouteId));
             var tripIds = tripsToWrite.Select(x => x.Id).ToList();
