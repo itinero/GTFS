@@ -69,7 +69,8 @@ namespace GTFS
         /// <param name="selectedRoutes"></param>
         public void Write(T feed, IEnumerable<string> selectedIds, IEnumerable<IGTFSTargetFile> target, bool selectedAgencies = false, bool selectedRoutes = false)
         {
-            if (!selectedAgencies && !selectedRoutes) return;
+            if (!selectedAgencies && !selectedRoutes) throw new Exception("One of the 2 booleans must be true!");
+            if (selectedAgencies && selectedRoutes) throw new Exception("Only one of the 2 booleans may be true!");
 
             List<Agency> agenciesToWrite = new List<Agency>();
             List<Route> routesToWrite = new List<Route>();
