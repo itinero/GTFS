@@ -206,7 +206,15 @@ namespace GTFS.DB.SQLite.Collections
         /// </summary>
         public int Count
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                string sql = "SELECT count(id) FROM route;";
+                using (var command = _connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    return int.Parse(command.ExecuteScalar().ToString());
+                }
+            }
         }
 
         /// <summary>
