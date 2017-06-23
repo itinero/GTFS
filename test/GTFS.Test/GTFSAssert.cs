@@ -340,8 +340,6 @@ namespace GTFS.Test
         /// <summary>
         /// Compares two stoptimes.
         /// </summary>
-        /// <param name="actual"></param>
-        /// <param name="expected"></param>
         public static void AreEqual(StopTime actual, StopTime expected)
         {
             if (actual == null)
@@ -358,6 +356,7 @@ namespace GTFS.Test
             Assert.AreEqual(actual.StopId, expected.StopId);
             Assert.AreEqual(actual.StopSequence, expected.StopSequence);
             Assert.AreEqual(actual.TripId, expected.TripId);
+            Assert.AreEqual(actual.TimepointType, expected.TimepointType);
         }
 
         /// <summary>
