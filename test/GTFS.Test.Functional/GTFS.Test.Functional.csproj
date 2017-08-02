@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net451</TargetFramework>
+    <AssemblyName>GTFS.Test.Functional</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>GTFS.Test.Functional</PackageId>
+    <RuntimeIdentifiers>win10-x64;osx.10.10-x64;ubuntu.14.04-x64</RuntimeIdentifiers>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GTFS\GTFS.csproj" />
+    <ProjectReference Include="..\..\src\GTFS.Shapes\GTFS.Shapes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Itinero.Geo" Version="1.2.0" />
+    <PackageReference Include="Itinero.IO.Osm" Version="1.2.0" />
+    <PackageReference Include="NetTopologySuite" Version="1.14.0" />
+    <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="1.14.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="NUnit" Version="3.4.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <None Update="Osm\profiles\*.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System.Xml" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

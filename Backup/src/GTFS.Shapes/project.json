@@ -3,7 +3,7 @@
 
   "dependencies": {
     "GTFS": "1.0.0-*",
-    "Itinero": "0.40.5-rc1"
+    "Itinero": "1.2.0"
   },
 
   "frameworks": {

@@ -2,7 +2,7 @@
   "profiles": {
     "GTFS.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "--read-feed C:\\work\\data\\gtfs\\delijn-latest-sneldienst --add-shapes routerdb=C:\\work\\itinero\\data\\transit.routerdb --write-feed C:\\work\\data\\gtfs\\delijn-latest-sneldienst-shape"
+      "commandLineArgs": "--read-feed C:\\work\\data\\gtfs\\delijn-latest --add-shapes routerdb=C:\\work\\data\\routing\\belgium-transit.routerdb --write-feed C:\\work\\data\\gtfs\\delijn-latest-shapes-new"
     }
   }
 }
