@@ -136,5 +136,29 @@ namespace GTFS.Test
             },
             GTFSRequiredFieldMissingException.MessageFormat, "agency_id", Agency);
         }
+
+        /// <summary>
+        /// Tests parsing single agency with an email address
+        /// </summary>
+        [Test]
+        public void ParseSingleAgencyWithEmail()
+        {
+            var reader = new GTFSReader<GTFSFeed>();
+            var source = new List<IGTFSSourceFile>
+            {
+                new GTFSSourceFileStream(_executingAssembly.GetManifestResourceStream("GTFS.Test.other_feed.agency_with_email.txt"),"agency")
+            };
+
+
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("agency")));
+
+
+            var agencies = feed.Agencies;
+            Assert.IsNotNull(agencies);
+
+            var agency = agencies.SingleOrDefault();
+            Assert.IsNotNull(agency);
+            Assert.AreEqual("support@demotransit.com", agency.Email);
+        }
     }
 }

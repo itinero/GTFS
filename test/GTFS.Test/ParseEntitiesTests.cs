@@ -91,6 +91,7 @@ namespace GTFS.Test
             Assert.IsNotNull(feed.Agencies);
             var agencies = new List<Agency>(feed.Agencies);
             Assert.AreEqual(1, agencies.Count);
+            Assert.AreEqual(null, agencies[0].Email);
             Assert.AreEqual(null, agencies[0].FareURL);
             Assert.AreEqual("DTA", agencies[0].Id);
             Assert.AreEqual(null, agencies[0].LanguageCode);
