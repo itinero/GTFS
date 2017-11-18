@@ -15,11 +15,12 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnitLite" Version="3.6.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\test\GTFS.Test\GTFS.Test.csproj" />
+    <ProjectReference Include="..\GTFS.Test\GTFS.Test.csproj" />
   </ItemGroup>
 
 </Project>
