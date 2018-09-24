@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>GTFS.CLI</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>GTFS.CLI</PackageId>
