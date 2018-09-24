@@ -66,7 +66,7 @@ namespace GTFS.Validation
             var stopIds = new HashSet<string>();
             foreach(var stop in feed.Stops)
             {
-                if(stopIds.Contains(stop.Id))
+                if (stopIds.Contains(stop.Id))
                 { // oeps, duplicate id.
                     messages = string.Format("Duplicate stop id found: {0}", stop.Id);
                     return false;
@@ -114,7 +114,7 @@ namespace GTFS.Validation
             foreach(var stopTime in feed.StopTimes)
             {
                 var stopTimeId = new Tuple<string, uint>(stopTime.TripId, stopTime.StopSequence);
-                if(stopTimes.Contains(stopTimeId))
+                if (stopTimes.Contains(stopTimeId))
                 { // oeps, duplicate id.
                     messages = string.Format("Duplicate stop_time entry found: {0}", stopTime.TripId, stopTime.StopSequence);
                     return false;

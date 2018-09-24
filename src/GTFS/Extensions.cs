@@ -243,17 +243,17 @@ namespace GTFS
         {
             var radius_earth = 6371000;
 
-            var degToRandian = System.Math.PI / 180;
+            var degToRandian = Math.PI / 180;
             var lat1_rad = latitude1 * degToRandian;
             var lon1_rad = longitude1 * degToRandian;
             var lat2_rad = latitude2 * degToRandian;
             var lon2_rad = longitude2 * degToRandian;
             var dLat = (lat2_rad - lat1_rad);
             var dLon = (lon2_rad - lon1_rad);
-            var a = System.Math.Pow(System.Math.Sin(dLat / 2), 2) +
-                System.Math.Cos(lat1_rad) * System.Math.Cos(lat2_rad) *
-                System.Math.Pow(System.Math.Sin(dLon / 2), 2);
-            var c = 2 * System.Math.Atan2(System.Math.Sqrt(a), System.Math.Sqrt(1 - a));
+            var a = Math.Pow(Math.Sin(dLat / 2), 2) +
+                Math.Cos(lat1_rad) * Math.Cos(lat2_rad) *
+                Math.Pow(Math.Sin(dLon / 2), 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             var distance = radius_earth * c;
             return distance;
         }
@@ -339,23 +339,23 @@ namespace GTFS
 
             if (value.Length == 6)
             { // assume # is missing.
-                return Int32.Parse("FF" + value, System.Globalization.NumberStyles.HexNumber,
-                                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse("FF" + value, NumberStyles.HexNumber,
+                                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 7)
             { // assume #rrggbb
-                return Int32.Parse("FF" + value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse("FF" + value.Replace("#", ""), NumberStyles.HexNumber,
+                                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 9)
             {
-                return Int32.Parse(value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse(value.Replace("#", ""), NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 10)
             {
-                return Int32.Parse(value.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber,
-                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse(value.Replace("0x", ""), NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture);
             }
             else
             {

@@ -237,7 +237,7 @@ namespace GTFS
                 }
 
                 // check if there is a next file.
-                if(selectedFile == null)
+                if (selectedFile == null)
                 {
                     throw new Exception("Could not select a next file based on the current dependency tree and the current file list.");
                 }
@@ -553,6 +553,9 @@ namespace GTFS
                     break;
                 case "agency_url":
                     agency.URL = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "agency_email":
+                    agency.Email = this.ParseFieldString(header.Name, fieldName, value);
                     break;
             }
         }

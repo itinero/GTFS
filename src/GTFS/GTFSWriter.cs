@@ -69,7 +69,7 @@ namespace GTFS
             if (agenciesFile != null)
             {
                 bool initialized = false;
-                var data = new string[7];
+                var data = new string[8];
                 foreach (var agency in agencies)
                 {
                     if (!initialized)
@@ -87,6 +87,7 @@ namespace GTFS
                         data[4] = "agency_lang";
                         data[5] = "agency_phone";
                         data[6] = "agency_fare_url";
+                        data[7] = "agency_email";
                         agenciesFile.Write(data);
                         initialized = true;
                     }
@@ -99,6 +100,7 @@ namespace GTFS
                     data[4] = this.WriteFieldString("agency", "agency_lang", agency.LanguageCode);
                     data[5] = this.WriteFieldString("agency", "agency_phone", agency.Phone);
                     data[6] = this.WriteFieldString("agency", "agency_fare_url", agency.FareURL);
+                    data[6] = this.WriteFieldString("agency", "agency_email", agency.Email);
                     agenciesFile.Write(data);
                 }
                 agenciesFile.Close();
