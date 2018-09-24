@@ -665,7 +665,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value)
         {
-            var quote = value != null && value.Contains(",");
+            var quote = !string.IsNullOrWhiteSpace(value) && value.Contains(",");
             return this.WriteFieldString(name, fieldName, value, quote);
         }
 
@@ -679,7 +679,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
         {
-            if(quote)
+            if (quote)
             { // quotes.
                 var valueBuilder = new StringBuilder();
                 valueBuilder.Append('"');
@@ -813,6 +813,22 @@ namespace GTFS
         private string WriteFieldDouble(string name, string fieldName, double? value)
         {
             if(value.HasValue)
+            {
+                return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Writes an int.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string WriteFieldInt(string name, string fieldName, int? value)
+        {
+            if (value.HasValue)
             {
                 return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }
