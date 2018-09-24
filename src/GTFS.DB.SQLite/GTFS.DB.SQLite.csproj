@@ -12,11 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GTFS\GTFS.csproj" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.109.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.104" />
+    <ProjectReference Include="..\GTFS\GTFS.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
