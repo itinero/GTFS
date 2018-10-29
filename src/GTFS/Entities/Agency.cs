@@ -76,6 +76,12 @@ namespace GTFS.Entities
         public string FareURL { get; set; }
 
         /// <summary>
+        /// Gets or sets an email address that is monitored by the agency's customer service department
+        /// </summary>
+        [FieldName("agency_email")]
+        public string Email { get; set; }
+
+        /// <summary>
         /// Returns a description of this trip.
         /// </summary>
         /// <returns></returns>
@@ -93,6 +99,7 @@ namespace GTFS.Entities
             unchecked
             {
                 int hash = 83;
+                hash = hash * 89 + this.Email.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + this.FareURL.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + this.Id.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + this.LanguageCode.GetHashCodeEmptyWhenNull();
@@ -112,7 +119,8 @@ namespace GTFS.Entities
             var other = (obj as Agency);
             if (other != null)
             {
-                return (this.FareURL ?? string.Empty) == (other.FareURL ?? string.Empty) &&
+                return (this.Email ?? string.Empty) == (other.Email ?? string.Empty) &&
+                    (this.FareURL ?? string.Empty) == (other.FareURL ?? string.Empty) &&
                     (this.Id ?? string.Empty) == (other.Id ?? string.Empty) &&
                     (this.LanguageCode ?? string.Empty) == (other.LanguageCode ?? string.Empty) &&
                     (this.Name ?? string.Empty) == (other.Name ?? string.Empty) &&
