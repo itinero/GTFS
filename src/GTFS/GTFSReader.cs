@@ -749,6 +749,9 @@ namespace GTFS
                 case "transfers":
                     fareAttribute.Transfers = this.ParseFieldUInt(header.Name, fieldName, value);
                     break;
+                case "agency_id":
+                    fareAttribute.AgencyId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
                 case "transfer_duration":
                     fareAttribute.TransferDuration = this.ParseFieldString(header.Name, fieldName, value);
                     break;
