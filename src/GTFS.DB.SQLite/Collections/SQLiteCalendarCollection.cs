@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Text;
 
 namespace GTFS.DB.SQLite.Collections
 {
@@ -93,6 +94,47 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<Calendar> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO calendar VALUES (:feed_id, :service_id, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :start_date, :end_date);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"monday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"tuesday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"wednesday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"thursday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"friday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"saturday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"sunday", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"start_date", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"end_date", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.ServiceId;
+                        command.Parameters[2].Value = entity.Monday ? 1 : 0;
+                        command.Parameters[3].Value = entity.Tuesday ? 1 : 0;
+                        command.Parameters[4].Value = entity.Wednesday ? 1 : 0;
+                        command.Parameters[5].Value = entity.Thursday ? 1 : 0;
+                        command.Parameters[6].Value = entity.Friday ? 1 : 0;
+                        command.Parameters[7].Value = entity.Saturday ? 1 : 0;
+                        command.Parameters[8].Value = entity.Sunday ? 1 : 0;
+                        command.Parameters[9].Value = entity.StartDate.ToUnixTime();
+                        command.Parameters[10].Value = entity.EndDate.ToUnixTime();
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>
@@ -123,6 +165,48 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Returns the entities for the given id's.
+        /// </summary>
+        /// <param name="entityIds"></param>
+        /// <returns></returns>
+        public IEnumerable<Calendar> Get(List<string> entityIds)
+        {
+            if (entityIds.Count == 0)
+            {
+                return new List<Calendar>();
+            }
+            var sql = new StringBuilder("SELECT service_id, monday, tuesday, wednesday, thursday, friday, saturday, sunday, start_date, end_date FROM calendar WHERE FEED_ID = :feed_id AND service_id = :service_id0");
+            var parameters = new List<SQLiteParameter>();
+            parameters.Add(new SQLiteParameter("feed_id", DbType.Int64));
+            parameters[0].Value = _id;
+            int i = 0;
+            foreach (var entityId in entityIds)
+            {
+                if (i > 0) sql.Append($" OR service_id = :service_id{i}");
+                parameters.Add(new SQLiteParameter($"service_id{i}", DbType.String));
+                parameters[1 + i].Value = entityId;
+                i++;
+            }
+
+            return new SQLiteEnumerable<Calendar>(_connection, sql.ToString(), parameters.ToArray(), (x) =>
+            {
+                return new Calendar()
+                {
+                    ServiceId = x.GetString(0),
+                    Monday = x.IsDBNull(1) ? false : x.GetInt64(1) == 1,
+                    Tuesday = x.IsDBNull(2) ? false : x.GetInt64(2) == 1,
+                    Wednesday = x.IsDBNull(3) ? false : x.GetInt64(3) == 1,
+                    Thursday = x.IsDBNull(4) ? false : x.GetInt64(4) == 1,
+                    Friday = x.IsDBNull(5) ? false : x.GetInt64(5) == 1,
+                    Saturday = x.IsDBNull(6) ? false : x.GetInt64(6) == 1,
+                    Sunday = x.IsDBNull(7) ? false : x.GetInt64(7) == 1,
+                    StartDate = x.GetInt64(8).FromUnixTime(),
+                    EndDate = x.GetInt64(9).FromUnixTime()
+                };
+            });
+        }
+
+        /// <summary>
         /// Returns all entities for the given id.
         /// </summary>
         /// <param name="entityId"></param>
@@ -132,6 +216,23 @@ namespace GTFS.DB.SQLite.Collections
             throw new NotImplementedException();
         }
 
+        public IEnumerable<string> GetIds()
+        {
+            var serviceIds = new List<string>();
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = "SELECT service_id FROM calendar";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        serviceIds.Add(Convert.ToString(reader["service_id"]));
+                    }
+                }
+            }
+            return serviceIds;
+        }
+
         /// <summary>
         /// Removes all entities identified by the given id.
         /// </summary>
@@ -139,7 +240,59 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public bool Remove(string entityId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM calendar WHERE FEED_ID = :feed_id AND service_id = :service_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = entityId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Removes a range of entities by their IDs
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entityId in entityIds)
+                    {
+                        string sql = "DELETE FROM calendar WHERE FEED_ID = :feed_id AND service_id = :service_id;";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"service_id", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entityId;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            string sql = "DELETE from calendar WHERE FEED_ID = :feed_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+
+                command.Parameters[0].Value = _id;
+                command.ExecuteNonQuery();
+            }
         }
 
         /// <summary>

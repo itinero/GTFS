@@ -83,6 +83,37 @@ namespace GTFS.DB.SQLite.Collections
             }
         }
 
+        public void AddRange(IEntityCollection<Frequency> entities)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entity in entities)
+                    {
+                        string sql = "INSERT INTO frequency VALUES (:feed_id, :trip_id, :start_time, :end_time, :headway_secs, :exact_times);";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"start_time", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"end_time", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"headway_secs", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"exact_times", DbType.Int64));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entity.TripId;
+                        command.Parameters[2].Value = entity.StartTime;
+                        command.Parameters[3].Value = entity.EndTime;
+                        command.Parameters[4].Value = entity.HeadwaySecs;
+                        command.Parameters[5].Value = entity.ExactTimes;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
         /// <summary>
         /// Returns all entities.
         /// </summary>
@@ -118,13 +149,81 @@ namespace GTFS.DB.SQLite.Collections
         }
 
         /// <summary>
+        /// Returns the entities for the given id's.
+        /// </summary>
+        /// <param name="entityIds"></param>
+        /// <returns></returns>
+        public IEnumerable<Frequency> Get(List<string> entityIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> GetIds()
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Removes all entities identified by the given id.
         /// </summary>
         /// <param name="entityId"></param>
         /// <returns></returns>
-        public bool Remove(string entityId)
+        public bool Remove(string tripId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM frequency WHERE FEED_ID = :feed_id AND trip_id = :trip_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+
+                command.Parameters[0].Value = _id;
+                command.Parameters[1].Value = tripId;
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Removes a range of entities by their IDs
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            using (var command = _connection.CreateCommand())
+            {
+                using (var transaction = _connection.BeginTransaction())
+                {
+                    foreach (var entityId in entityIds)
+                    {
+                        string sql = "DELETE FROM frequency WHERE FEED_ID = :feed_id AND trip_id = :trip_id;";
+                        command.CommandText = sql;
+                        command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+                        command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
+
+                        command.Parameters[0].Value = _id;
+                        command.Parameters[1].Value = entityId;
+
+                        command.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            string sql = "DELETE FROM frequency WHERE FEED_ID = :feed_id;";
+            using (var command = _connection.CreateCommand())
+            {
+                command.CommandText = sql;
+                command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
+
+                command.Parameters[0].Value = _id;
+
+                command.ExecuteNonQuery();
+            }
         }
 
         /// <summary>
