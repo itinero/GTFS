@@ -75,6 +75,19 @@ namespace GTFS.DB
         bool TableExists(string tableName);
 
         /// <summary>
+        /// Checks if the given table contains a column with the given name.
+        /// </summary>
+        /// <param name="tableName">The table in this database to check.</param>
+        /// <param name="columnName">The column in the given table to look for.</param>
+        /// <returns>True if the given table contains a column with the given name.</returns>
+        bool ColumnExists(string tableName, string columnName);
+
+        /// <summary>
+        /// Returns the data source of the DB
+        /// </summary>
+        string GetFullDataSource();
+
+        /// <summary>
         /// Returns the connection string
         /// </summary>
         string ConnectionString { get; }
@@ -83,5 +96,50 @@ namespace GTFS.DB
         /// The Tag for this DB
         /// </summary>
         object Tag { get; set; }
+
+        /// <summary>
+        /// Sort all tables in the DB
+        /// </summary>
+        void SortAllTables();
+
+        /// <summary>
+        /// Deletes and recreates the routes table in a sorted order - may take time
+        /// </summary>
+        void SortRoutes();
+
+        /// <summary>
+        /// Deletes and recreates the trips table in a sorted order - may take time
+        /// </summary>
+        void SortTrips();
+
+        /// <summary>
+        /// Deletes and recreates the stops table in a sorted order - may take time
+        /// </summary>
+        void SortStops();
+
+        /// <summary>
+        /// Deletes and recreates the stop_times table in a sorted order - may take time
+        /// </summary>
+        void SortStopTimes();
+
+        /// <summary>
+        /// Deletes and recreates the frequencies table in a sorted order - may take time
+        /// </summary>
+        void SortFrequencies();
+
+        /// <summary>
+        /// Deletes and recreates the calendars table in a sorted order (first by date then by exception_type) - may take time
+        /// </summary>
+        void SortCalendars();
+
+        /// <summary>
+        /// Deletes and recreates the calendar_dates table in a sorted order (first by date then by exception_type) - may take time
+        /// </summary>
+        void SortCalendarDates();
+
+        /// <summary>
+        /// Deletes and recreates the shapes table in a sorted order (first by id then by sequence) - will take time
+        /// </summary>
+        void SortShapes();
     }
 }
