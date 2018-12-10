@@ -22,6 +22,7 @@
 
 using GTFS.Entities.Collections;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -102,60 +103,25 @@ namespace GTFS
         public static void CopyTo(this IGTFSFeed thisFeed, IGTFSFeed feed)
         {
             var feedInfo = thisFeed.GetFeedInfo();
-            if(feedInfo != null)
+            if (feedInfo != null)
             {
                 feed.SetFeedInfo(feedInfo);
             }
-            foreach(var entity in thisFeed.Agencies)
-            {
-                feed.Agencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.CalendarDates)
-            {
-                feed.CalendarDates.Add(entity);
-            }
-            foreach (var entity in thisFeed.Calendars)
-            {
-                feed.Calendars.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareAttributes)
-            {
-                feed.FareAttributes.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareRules)
-            {
-                feed.FareRules.Add(entity);
-            }
-            foreach (var entity in thisFeed.Frequencies)
-            {
-                feed.Frequencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.Routes)
-            {
-                feed.Routes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Shapes)
-            {
-                feed.Shapes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Stops)
-            {
-                feed.Stops.Add(entity);
-            }
-            foreach (var entity in thisFeed.StopTimes)
-            {
-                feed.StopTimes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Transfers)
-            {
-                feed.Transfers.Add(entity);
-            }
-            foreach (var entity in thisFeed.Trips)
-            {
-                feed.Trips.Add(entity);
-            }
+
+            feed.Agencies.AddRange(thisFeed.Agencies);
+            feed.CalendarDates.AddRange(thisFeed.CalendarDates);
+            feed.Calendars.AddRange(thisFeed.Calendars);
+            feed.FareAttributes.AddRange(thisFeed.FareAttributes);
+            feed.FareRules.AddRange(thisFeed.FareRules);
+            feed.Frequencies.AddRange(thisFeed.Frequencies);
+            feed.Routes.AddRange(thisFeed.Routes);
+            feed.Shapes.AddRange(thisFeed.Shapes);
+            feed.Stops.AddRange(thisFeed.Stops);
+            feed.StopTimes.AddRange(thisFeed.StopTimes);
+            feed.Transfers.AddRange(thisFeed.Transfers);
+            feed.Trips.AddRange(thisFeed.Trips);
         }
-        
+
         /// <summary>
         /// Merges the content of the given feed with this feed by adding or replacing entities.
         /// </summary>
@@ -371,6 +337,37 @@ namespace GTFS
             return obj is IConvertible ? ((IConvertible)obj).ToString(CultureInfo.InvariantCulture)
                 : obj is IFormattable ? ((IFormattable)obj).ToString(null, CultureInfo.InvariantCulture)
                 : obj.ToString();
+        }
+
+        /// <summary>
+        /// Splits the given list of entities into groups of size maxGroupCount.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_self"></param>
+        /// <param name="maxGroupCount"></param>
+        /// <returns></returns>
+        public static Dictionary<int, List<T>> SplitIntoGroupsByGroupIdx<T>(this IEnumerable<T> _self, int maxGroupCount = 900)
+        {
+            var dict = new Dictionary<int, List<T>>();
+            int groupIdx = 0;
+            int numElementsInCurrentGroup = 0;
+            foreach (var item in _self)
+            {
+                if (numElementsInCurrentGroup == maxGroupCount)
+                {
+                    groupIdx++;
+                    numElementsInCurrentGroup = 0;
+                }
+
+                if (!dict.ContainsKey(groupIdx))
+                {
+                    dict.Add(groupIdx, new List<T>());
+                }
+                dict[groupIdx].Add(item);
+                numElementsInCurrentGroup++;
+            }
+
+            return dict;
         }
     }
 }

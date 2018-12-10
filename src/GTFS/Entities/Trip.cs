@@ -140,5 +140,25 @@ namespace GTFS.Entities
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns a new trip given another trip object
+        /// </summary>
+        public static Trip From(Trip trip)
+        {
+            return new Trip()
+            {
+                AccessibilityType = trip.AccessibilityType,
+                BlockId = trip.BlockId,
+                Direction = trip.Direction,
+                Headsign = trip.Headsign,
+                Id = trip.Id,
+                RouteId = trip.RouteId,
+                ServiceId = trip.ServiceId,
+                ShapeId = trip.ShapeId,
+                ShortName = trip.ShortName,
+                Tag = trip.Tag
+            };
+        }
     }
 }

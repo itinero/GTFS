@@ -75,6 +75,9 @@ namespace GTFS.Entities
         [FieldName("agency_fare_url")]
         public string FareURL { get; set; }
 
+        /// <summary>
+        /// Contains a single valid email address actively monitored by the agency’s customer service department. This email address will be considered a direct contact point where transit riders can reach a customer service representative at the agency.
+        /// </summary>
         [FieldName("agency_email")]
         public string Email { get; set; }
 

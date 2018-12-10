@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using GTFS.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,6 +36,8 @@ namespace GTFS.DB.Memory
         /// Holds all the feeds that have been added.
         /// </summary>
         private List<IGTFSFeed> _feeds = new List<IGTFSFeed>();
+
+        public string ConnectionString => throw new NotImplementedException();
 
         /// <summary>
         /// Adds a new empty feed to this db.
@@ -90,5 +93,12 @@ namespace GTFS.DB.Memory
         {
             return _feeds[id];
         }
+
+        public bool TableExists(string tableName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Tag { get; set; }
     }
 }

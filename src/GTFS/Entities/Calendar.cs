@@ -29,14 +29,19 @@ namespace GTFS.Entities
     /// Represents dates for service IDs using a weekly schedule. Specify when service starts and ends, as well as days of the week where service is available.
     /// </summary>
     [FileName("calendar")]
-    public class Calendar : GTFSEntity
+    public class Calendar : GTFSEntity, IComparable
     {
+        private string _serviceId { get; set; }
         /// <summary>
         /// Gets or sets an ID that uniquely identifies a set of dates when service is available for one or more routes. Each service_id value can appear at most once in a calendar file. This value is dataset unique. It is referenced by the trips.txt file.
         /// </summary>
         [Required]
         [FieldName("service_id")]
-        public string ServiceId { get; set; }
+        public string ServiceId
+        {
+            get { return _serviceId; }
+            set { _serviceId = value; OnEntityChanged(); }
+        }
 
         /// <summary>
         /// Contains a byte that represents the week-mask.
@@ -51,7 +56,7 @@ namespace GTFS.Entities
         public bool Monday
         {
             get { return this[DayOfWeek.Monday]; }
-            set { this[DayOfWeek.Monday] = value; }
+            set { this[DayOfWeek.Monday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -62,7 +67,7 @@ namespace GTFS.Entities
         public bool Tuesday
         {
             get { return this[DayOfWeek.Tuesday]; }
-            set { this[DayOfWeek.Tuesday] = value; }
+            set { this[DayOfWeek.Tuesday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -73,7 +78,7 @@ namespace GTFS.Entities
         public bool Wednesday
         {
             get { return this[DayOfWeek.Wednesday]; }
-            set { this[DayOfWeek.Wednesday] = value; }
+            set { this[DayOfWeek.Wednesday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -84,7 +89,7 @@ namespace GTFS.Entities
         public bool Thursday
         {
             get { return this[DayOfWeek.Thursday]; }
-            set { this[DayOfWeek.Thursday] = value; }
+            set { this[DayOfWeek.Thursday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -95,7 +100,7 @@ namespace GTFS.Entities
         public bool Friday
         {
             get { return this[DayOfWeek.Friday]; }
-            set { this[DayOfWeek.Friday] = value; }
+            set { this[DayOfWeek.Friday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -106,7 +111,7 @@ namespace GTFS.Entities
         public bool Saturday
         {
             get { return this[DayOfWeek.Saturday]; }
-            set { this[DayOfWeek.Saturday] = value; }
+            set { this[DayOfWeek.Saturday] = value; OnEntityChanged(); }
         }
 
         /// <summary>
@@ -117,22 +122,32 @@ namespace GTFS.Entities
         public bool Sunday
         {
             get { return this[DayOfWeek.Sunday]; }
-            set { this[DayOfWeek.Sunday] = value; }
+            set { this[DayOfWeek.Sunday] = value; OnEntityChanged(); }
         }
 
+        private DateTime _startDate { get; set; }
         /// <summary>
         /// Gets or sets the start date for the service.
         /// </summary>
         [Required]
         [FieldName("start_date")]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            set { _startDate = value; OnEntityChanged(); }
+        }
 
+        private DateTime _endDate { get; set; }
         /// <summary>
         /// Gets or sets the end date for the service. This date is included in the service interval.
         /// </summary>
         [Required]
         [FieldName("end_date")]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate
+        {
+            get { return _endDate; }
+            set { _endDate = value; OnEntityChanged(); }
+        }
 
         /// <summary>
         /// Gets or sets the day of week.
@@ -233,6 +248,16 @@ namespace GTFS.Entities
                 this.Friday ? "1" : "0",
                 this.Saturday ? "1" : "0",
                 this.Sunday ? "1" : "0");
+        }
+
+        /// <summary>
+        /// Compares this Calendar to the given object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            return this.ToString().CompareTo(obj.ToString());
         }
 
         /// <summary>

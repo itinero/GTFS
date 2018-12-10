@@ -70,7 +70,19 @@ namespace GTFS
             };
             this.TimeOfDayReader = (timeOfDayString) =>
             {
-                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
+                if (string.IsNullOrWhiteSpace(timeOfDayString))
+                {
+                    return new TimeOfDay()
+                    {
+                        Hours = 0,
+                        Minutes = 0,
+                        Seconds = 0
+                    };
+                }
+                else if (!(timeOfDayString.Length == 8 || timeOfDayString.Length == 7))
+                {
+                    throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString));
+                }
 
                 var timeOfDay = new TimeOfDay();
                 if (timeOfDayString.Length == 8)
@@ -153,14 +165,16 @@ namespace GTFS
         {
             try
             {
-                if(string.IsNullOrWhiteSpace(value))
-                {
-                    return null;
-                }
                 return this.TimeOfDayReader.Invoke(value);
             }
             catch (Exception ex)
             { // throw a GFTS parse exception instead.
+                return new TimeOfDay()
+                {
+                    Hours = 0,
+                    Minutes = 0,
+                    Seconds = 0
+                };
                 throw new GTFSParseException(name, fieldName, value, ex);
             }
         }
@@ -828,7 +842,46 @@ namespace GTFS
         /// <returns></returns>
         protected virtual FeedInfo ParseFeedInfo(T feed, GTFSSourceFileHeader header, string[] data)
         {
-            return null;
+            // check required fields.
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_name");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_url");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_lang");
+
+            // parse/set all fields.
+            FeedInfo feedInfo = new FeedInfo();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseFeedInfoField(feed, header, feedInfo, header.GetColumn(idx), data[idx]);
+            }
+            return feedInfo;
+        }
+
+        private void ParseFeedInfoField(T feed, GTFSSourceFileHeader header, FeedInfo feedInfo, string fieldName, string value)
+        {
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_name");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_url");
+            this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_lang");
+            switch (fieldName)
+            {
+                case "feed_publisher_name":
+                    feedInfo.PublisherName = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_publisher_url":
+                    feedInfo.PublisherUrl = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_lang":
+                    feedInfo.Lang = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_start_date":
+                    feedInfo.StartDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_end_date":
+                    feedInfo.EndDate = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "feed_version":
+                    feedInfo.Version = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
         }
 
         /// <summary>
@@ -1064,7 +1117,7 @@ namespace GTFS
         /// <param name="value"></param>
         protected virtual void ParseStopField(T feed, GTFSSourceFileHeader header, Stop stop, string fieldName, string value)
         {
-            switch (fieldName)
+            switch (fieldName.Trim())
             {
                 case "stop_id":
                     stop.Id = this.ParseFieldString(header.Name, fieldName, value);
@@ -1079,10 +1132,26 @@ namespace GTFS
                     stop.Description = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_lat":
-                    stop.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var parsedDouble = this.ParseFieldDouble(header.Name, fieldName, value);
+                    if (parsedDouble == null)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+                    else
+                    {
+                        stop.Latitude = parsedDouble.Value;
+                    }
                     break;
                 case "stop_lon":
-                    stop.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var parseDouble = this.ParseFieldDouble(header.Name, fieldName, value);
+                    if (parseDouble == null)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+                    else
+                    {
+                        stop.Longitude = parseDouble.Value;
+                    }
                     break;
                 case "zone_id":
                     stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
@@ -1099,7 +1168,7 @@ namespace GTFS
                 case "stop_timezone":
                     stop.Timezone = this.ParseFieldString(header.Name, fieldName, value);
                     break;
-                case " wheelchair_boarding ":
+                case "wheelchair_boarding":
                     stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
                     break;
             }
@@ -1707,6 +1776,31 @@ namespace GTFS
 
             uint result;
             if(!uint.TryParse(value, out result))
+            { // parsing failed!
+                throw new GTFSParseException(name, fieldName, value);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Parses a positive integer field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual int? ParseFieldInt(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            int result;
+            if (!int.TryParse(value, out result))
             { // parsing failed!
                 throw new GTFSParseException(name, fieldName, value);
             }

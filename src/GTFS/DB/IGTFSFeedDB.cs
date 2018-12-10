@@ -23,6 +23,7 @@
 using GTFS.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
@@ -65,5 +66,22 @@ namespace GTFS.DB
         /// <param name="id"></param>
         /// <returns></returns>
         IGTFSFeed GetFeed(int id);
+
+        /// <summary>
+        /// Checks if a table with the given name exists in this database.
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        bool TableExists(string tableName);
+
+        /// <summary>
+        /// Returns the connection string
+        /// </summary>
+        string ConnectionString { get; }
+
+        /// <summary>
+        /// The Tag for this DB
+        /// </summary>
+        object Tag { get; set; }
     }
 }

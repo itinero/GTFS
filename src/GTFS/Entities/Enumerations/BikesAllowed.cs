@@ -23,25 +23,21 @@
 namespace GTFS.Entities.Enumerations
 {
     /// <summary>
-    ///  Indicates whether passengers are picked up at a stop as part of the normal schedule or whether a pickup at the stop is not available.
+    /// Type of accessibility for bicycle boardings are possible from the specified stop or station.
     /// </summary>
-    public enum PickupType
+    public enum BikesAllowed
     {
         /// <summary>
-        /// Regularly scheduled pickup.
+        /// Indicates that there is no bicycle information for this trip.
         /// </summary>
-        Regular = 0,
+        NoInformation,
         /// <summary>
-        /// No pickup available.
+        /// Indicates that the vehicle being used on this particular trip can accommodate at least one bicycle.
         /// </summary>
-        NoPickup = 1,
+        SomeAccessibility,
         /// <summary>
-        /// Must phone agency to arrange pickup.
+        /// Indicates that no bicycles are allowed on this trip.
         /// </summary>
-        PhoneForPickup = 2,
-        /// <summary>
-        /// Must coordinate with driver to arrange pickup.
-        /// </summary>
-        DriverForPickup = 3
+        NoAccessibility
     }
 }

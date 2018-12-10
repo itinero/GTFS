@@ -63,6 +63,15 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
+        public void AddRange(IUniqueEntityCollection<T> entities)
+        {
+            _entities.AddRange(entities);
+        }
+
+        /// <summary>
         /// Gets the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>
@@ -89,6 +98,20 @@ namespace GTFS.Entities.Collections
             return _entities[idx];
         }
 
+        public IEnumerable<string> GetIds()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
+        public bool Update(string entityId, T newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Removes the entity with the given id.
         /// </summary>
@@ -106,6 +129,24 @@ namespace GTFS.Entities.Collections
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// This is just a placeholder
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Replaces the internal list of entities with a new, empty list.
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
+        {
+            _entities = new List<T>();
         }
 
         /// <summary>

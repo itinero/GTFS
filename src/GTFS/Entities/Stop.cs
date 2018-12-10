@@ -108,12 +108,20 @@ namespace GTFS.Entities
         public string WheelchairBoarding { get; set; }
 
         /// <summary>
-        /// Returns a description of this trip.
+        /// Returns a description of this stop.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("[{0}] {1} - {2}", this.Id, this.Name, this.Description);
+            var stationText = this.LocationType == Enumerations.LocationType.Station ? " (station)" : "";
+            if (!string.IsNullOrWhiteSpace(this.Name))
+            {
+                return this.Name + stationText;
+            }
+            else
+            {
+                return this.Id + stationText;
+            }
         }
 
         /// <summary>
@@ -163,6 +171,29 @@ namespace GTFS.Entities
                     (this.Zone ?? string.Empty) == (other.Zone ?? string.Empty);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns a new Stop object created from a previous stop object
+        /// </summary>
+        public static Stop From(Stop other, string newStopId = null)
+        {
+            return new Stop()
+            {
+                Id = newStopId ?? other.Id,
+                Code = other.Code,
+                Name = other.Name,
+                Description = other.Description,
+                Latitude = other.Latitude,
+                Longitude = other.Longitude,
+                Zone = other.Zone,
+                Url = other.Url,
+                LocationType = other.LocationType,
+                ParentStation = other.ParentStation,
+                Timezone = other.Timezone,
+                WheelchairBoarding = other.WheelchairBoarding,
+                Tag = other.Tag
+            };
         }
     }
 }

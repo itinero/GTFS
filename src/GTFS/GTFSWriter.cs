@@ -43,20 +43,32 @@ namespace GTFS
         /// <param name="target"></param>
         public void Write(T feed, IEnumerable<IGTFSTargetFile> target)
         {
+            // order files by id
+            var agenciesToWrite = feed.Agencies.OrderBy(x => x.Id).ToList();
+            var calendarDatesToWrite = feed.CalendarDates.OrderBy(x => x.ServiceId).OrderBy(y => y.ExceptionType).OrderBy(z => z.Date).ToList();
+            var calendarsToWrite = feed.Calendars.OrderBy(x => x.ServiceId).ToList();
+            var fareAttributesToWrite = feed.FareAttributes.OrderBy(x => x.FareId).ToList();
+            var fareRulesToWrite = feed.FareRules.OrderBy(x => x.RouteId).ToList();
+            var frequenciesToWrite = feed.Frequencies.OrderBy(x => x.TripId).ToList();
+            var routesToWrite = feed.Routes.OrderBy(x => x.Id).ToList();
+            var stopsToWrite = feed.Stops.OrderBy(x => x.Id).ToList();
+            var stopTimesToWrite = feed.StopTimes.OrderBy(x => x.TripId).ToList();
+            var tripsToWrite = feed.Trips.OrderBy(x => x.Id).ToList();
+
             // write files on-by-one.
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), feed.Agencies);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), feed.CalendarDates);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), feed.Calendars);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_attributes"), feed.FareAttributes);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_rules"), feed.FareRules);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), agenciesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), calendarDatesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), calendarsToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_attributes"), fareAttributesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "fare_rules"), fareRulesToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "feed_info"), feed.GetFeedInfo());
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "frequencies"), feed.Frequencies);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "routes"), feed.Routes);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "frequencies"), frequenciesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "routes"), routesToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), feed.Shapes);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), feed.Stops);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), feed.StopTimes);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), feed.Transfers);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), feed.Trips);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), stopsToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), stopTimesToWrite);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "transfers"), feed.Transfers);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), tripsToWrite);
         }
 
         /// <summary>
@@ -814,7 +826,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldDouble(string name, string fieldName, double? value)
         {
-            if(value.HasValue)
+            if (value.HasValue)
             {
                 return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }
@@ -910,7 +922,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldPickupType(string name, string fieldName, PickupType? value)
         {
-            if(value.HasValue)
+            if (value.HasValue)
             {
                 switch (value.Value)
                 {
@@ -933,7 +945,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
         {
-            if(!value.HasValue)
+            if (!value.HasValue)
             {
                 return string.Empty;
             }

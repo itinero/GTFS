@@ -23,6 +23,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace GTFS.Entities.Collections
 {
@@ -63,6 +64,15 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
+        /// Adds a range of entities
+        /// </summary>
+        /// <returns></returns>
+        public void AddRange(IEntityCollection<T> entities)
+        {
+            _entities.AddRange(entities);
+        }
+
+        /// <summary>
         /// Returns all entities.
         /// </summary>
         /// <returns></returns>
@@ -85,6 +95,25 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
+        /// Returns the entities for the given id's.
+        /// </summary>
+        /// <param name="entityIds"></param>
+        /// <returns></returns>
+        public IEnumerable<T> Get(List<string> entityIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get all entity ids
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetIds()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Removes the entity with the given id.
         /// </summary>
         /// <param name="entityId"></param>
@@ -104,6 +133,28 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
+        /// Removes all entities
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
+        {
+            _entities = new List<T>();
+        }
+
+        /// <summary>
+        /// Removes a range of entities by their IDs
+        /// </summary>
+        /// <param name="entityIds"></param>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<string> entityIds)
+        {
+            foreach (var id in entityIds)
+            {
+                Remove(id);
+            };
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the entities.
         /// </summary>
         /// <returns></returns>
@@ -116,7 +167,7 @@ namespace GTFS.Entities.Collections
         /// Returns an enumerator that iterates through the entities.
         /// </summary>
         /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _entities.GetEnumerator();
         }
