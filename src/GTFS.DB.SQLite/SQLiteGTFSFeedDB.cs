@@ -45,13 +45,9 @@ namespace GTFS.DB.SQLite
         /// Creates a new db.
         /// </summary>
         public SQLiteGTFSFeedDB()
+            : this("Data Source=:memory:;Version=3;New=True;")
         {
-            ConnectionString = "Data Source=:memory:;Version=3;New=True;";
-            _connection = new SQLiteConnection(ConnectionString, true);
-            _connection.Open();
-
-            // build database.
-            this.RebuildDB();
+            
         }
 
         /// <summary>

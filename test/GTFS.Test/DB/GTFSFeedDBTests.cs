@@ -44,8 +44,7 @@ namespace GTFS.Test.DB
             var assembly = Assembly.GetExecutingAssembly();
 
             var result = new List<IGTFSSourceFile>();
-            var agencySource = new GTFSSourceFileStream(assembly.GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency");
-            result.Add(agencySource);
+            result.Add(new GTFSSourceFileStream(assembly.GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency"));
             result.Add(new GTFSSourceFileStream(assembly.GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar"));
             result.Add(new GTFSSourceFileStream(assembly.GetManifestResourceStream("GTFS.Test.sample_feed.calendar_dates.txt"), "calendar_dates"));
             result.Add(new GTFSSourceFileStream(assembly.GetManifestResourceStream("GTFS.Test.sample_feed.fare_attributes.txt"), "fare_attributes"));

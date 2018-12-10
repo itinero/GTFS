@@ -11,12 +11,12 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <ItemGroup>
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
     <Compile Include="..\..\SharedAssemblyVersion.cs" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <PropertyGroup>
     <DefineConstants>TRACE;NETSTANDARD13;NETFX_CORE;DOTNET_CORE</DefineConstants>
   </PropertyGroup>
 

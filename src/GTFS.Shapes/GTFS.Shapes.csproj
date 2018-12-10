@@ -19,17 +19,14 @@
 
   <ItemGroup>
     <PackageReference Include="Itinero" Version="1.3.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <PropertyGroup>
     <DefineConstants>$(DefineConstants);NETSTANDARD13;NETFX_CORE;DOTNET_CORE</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  <ItemGroup>
     <Compile Include="..\..\SharedAssemblyVersion.cs" />
   </ItemGroup>
 
