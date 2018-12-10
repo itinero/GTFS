@@ -2,7 +2,7 @@
 using GTFS.IO;
 using GTFS.Shapes;
 using Itinero;
-using Itinero.Geo;
+//using Itinero.Geo;
 using Itinero.IO.Osm;
 using Itinero.Profiles;
 using NetTopologySuite.Features;

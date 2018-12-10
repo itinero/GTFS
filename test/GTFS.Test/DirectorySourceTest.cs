@@ -347,8 +347,8 @@ namespace GTFS.Test
             // @ SORTED: CITY1,,,NANAA,2,,,,,0
             idx = 17;
             Assert.AreEqual("CITY1", stopTimes[idx].TripId);
-            Assert.AreEqual(null, stopTimes[idx].ArrivalTime);
-            Assert.AreEqual(null, stopTimes[idx].DepartureTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 0, Minutes = 0, Seconds = 0 }, stopTimes[idx].ArrivalTime);
+            Assert.AreEqual(new TimeOfDay() { Hours = 0, Minutes = 0, Seconds = 0 }, stopTimes[idx].DepartureTime);
             Assert.AreEqual("NANAA", stopTimes[idx].StopId);
             Assert.AreEqual(2, stopTimes[idx].StopSequence);
             Assert.AreEqual(string.Empty, stopTimes[idx].StopHeadsign);
