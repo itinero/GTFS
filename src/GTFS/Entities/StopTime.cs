@@ -139,6 +139,7 @@ namespace GTFS.Entities
                 hash = hash * 59 + this.StopId.GetHashCodeEmptyWhenNull();
                 hash = hash * 59 + this.StopSequence.GetHashCode();
                 hash = hash * 59 + this.TripId.GetHashCodeEmptyWhenNull();
+                hash = hash * 59 + this.TimepointType.GetHashCode();
                 return hash;
             }
         }
@@ -159,7 +160,8 @@ namespace GTFS.Entities
                     (this.StopHeadsign ?? string.Empty) == (other.StopHeadsign ?? string.Empty) &&
                     (this.StopId ?? string.Empty) == (other.StopId ?? string.Empty) &&
                     this.StopSequence == other.StopSequence &&
-                    (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty);
+                    (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty) &&
+                    this.TimepointType == other.TimepointType;
             }
             return false;
         }
@@ -180,7 +182,8 @@ namespace GTFS.Entities
                 StopId = other.StopId,
                 StopSequence = other.StopSequence,
                 Tag = other.Tag,
-                TripId = other.TripId
+                TripId = other.TripId,
+                TimepointType = other.TimepointType
             };
         }
     }

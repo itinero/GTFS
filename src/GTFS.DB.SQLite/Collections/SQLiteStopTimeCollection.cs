@@ -104,7 +104,7 @@ namespace GTFS.DB.SQLite.Collections
                 {
                     foreach (var stopTime in entities)
                     {
-                        string sql = "INSERT INTO stop_time VALUES (:feed_id, :trip_id, :arrival_time, :departure_time, :stop_id, :stop_sequence, :stop_headsign, :pickup_type, :drop_off_type, :shape_dist_traveled);";
+                        string sql = "INSERT INTO stop_time VALUES (:feed_id, :trip_id, :arrival_time, :departure_time, :stop_id, :stop_sequence, :stop_headsign, :pickup_type, :drop_off_type, :shape_dist_traveled, :timepoint);";
                         command.CommandText = sql;
                         command.Parameters.Add(new SQLiteParameter(@"feed_id", DbType.Int64));
                         command.Parameters.Add(new SQLiteParameter(@"trip_id", DbType.String));
@@ -116,6 +116,7 @@ namespace GTFS.DB.SQLite.Collections
                         command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
                         command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
                         command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
+                        command.Parameters.Add(new SQLiteParameter(@"timepoint", DbType.Int64));
 
                         command.Parameters[0].Value = _id;
                         command.Parameters[1].Value = stopTime.TripId;
@@ -127,6 +128,7 @@ namespace GTFS.DB.SQLite.Collections
                         command.Parameters[7].Value = stopTime.PickupType.HasValue ? (int?)stopTime.PickupType.Value : null;
                         command.Parameters[8].Value = stopTime.DropOffType.HasValue ? (int?)stopTime.DropOffType.Value : null;
                         command.Parameters[9].Value = stopTime.ShapeDistTravelled;
+                        command.Parameters[10].Value = (int)stopTime.TimepointType;
 
                         command.ExecuteNonQuery();
                     }
@@ -170,7 +172,7 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public IEnumerable<StopTime> GetForTrip(string tripId)
         {
-            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled FROM stop_time WHERE FEED_ID = :id AND trip_id = :trip_id";
+            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled, timepoint FROM stop_time WHERE FEED_ID = :id AND trip_id = :trip_id";
             var parameters = new List<SQLiteParameter>();
             parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
             parameters[0].Value = _id;
@@ -211,7 +213,7 @@ namespace GTFS.DB.SQLite.Collections
             var groups = tripIds.SplitIntoGroupsByGroupIdx();
             foreach (var group in groups)
             {
-                var sql = new StringBuilder("SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled FROM stop_time WHERE FEED_ID = :feed_id AND trip_id = :trip_id0");
+                var sql = new StringBuilder("SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled, timepoint FROM stop_time WHERE FEED_ID = :feed_id AND trip_id = :trip_id0");
                 var parameters = new List<SQLiteParameter>();
                 parameters.Add(new SQLiteParameter("feed_id", DbType.Int64));
                 parameters[0].Value = _id;
@@ -248,7 +250,7 @@ namespace GTFS.DB.SQLite.Collections
 
         public bool Update(string stopId, string tripId, StopTime newEntity)
         {
-            string sql = "UPDATE stop_time SET FEED_ID=:feed_id, trip_id=:trip_id, arrival_time=:arrival_time, departure_time=:departure_time, stop_id=:stop_id, stop_sequence=:stop_sequence, stop_headsign=:stop_headsign, pickup_type=:pickup_type, drop_off_type=:drop_off_type, shape_dist_traveled=:shape_dist_traveled WHERE stop_id=:oldStopId AND trip_id=:oldTripId;";
+            string sql = "UPDATE stop_time SET FEED_ID=:feed_id, trip_id=:trip_id, arrival_time=:arrival_time, departure_time=:departure_time, stop_id=:stop_id, stop_sequence=:stop_sequence, stop_headsign=:stop_headsign, pickup_type=:pickup_type, drop_off_type=:drop_off_type, shape_dist_traveled=:shape_dist_traveled, timepoint=:timepoint WHERE stop_id=:oldStopId AND trip_id=:oldTripId;";
             using (var command = _connection.CreateCommand())
             {
                 command.CommandText = sql;
@@ -262,6 +264,7 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"timepoint", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"oldStopId", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"oldTripId", DbType.String));
 
@@ -275,8 +278,9 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters[7].Value = newEntity.PickupType;
                 command.Parameters[8].Value = newEntity.DropOffType;
                 command.Parameters[9].Value = newEntity.ShapeDistTravelled;
-                command.Parameters[10].Value = stopId;
-                command.Parameters[11].Value = tripId;
+                command.Parameters[10].Value = (int)newEntity.TimepointType;
+                command.Parameters[11].Value = stopId;
+                command.Parameters[12].Value = tripId;
 
                 return command.ExecuteNonQuery() > 0;
             }
@@ -284,7 +288,7 @@ namespace GTFS.DB.SQLite.Collections
 
         public bool Update(string stopId, string tripId, uint stopSequence, StopTime newEntity)
         {
-            string sql = "UPDATE stop_time SET FEED_ID=:feed_id, trip_id=:trip_id, arrival_time=:arrival_time, departure_time=:departure_time, stop_id=:stop_id, stop_sequence=:stop_sequence, stop_headsign=:stop_headsign, pickup_type=:pickup_type, drop_off_type=:drop_off_type, shape_dist_traveled=:shape_dist_traveled WHERE stop_id=:oldStopId AND trip_id=:oldTripId AND stop_sequence=:oldStopSequence;";
+            string sql = "UPDATE stop_time SET FEED_ID=:feed_id, trip_id=:trip_id, arrival_time=:arrival_time, departure_time=:departure_time, stop_id=:stop_id, stop_sequence=:stop_sequence, stop_headsign=:stop_headsign, pickup_type=:pickup_type, drop_off_type=:drop_off_type, shape_dist_traveled=:shape_dist_traveled, timepoint=:timepoint WHERE stop_id=:oldStopId AND trip_id=:oldTripId AND stop_sequence=:oldStopSequence;";
             using (var command = _connection.CreateCommand())
             {
                 command.CommandText = sql;
@@ -298,6 +302,7 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters.Add(new SQLiteParameter(@"pickup_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"drop_off_type", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"shape_dist_traveled", DbType.String));
+                command.Parameters.Add(new SQLiteParameter(@"timepoint", DbType.Int64));
                 command.Parameters.Add(new SQLiteParameter(@"oldStopId", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"oldTripId", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"oldStopSequence", DbType.String));
@@ -312,9 +317,10 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters[7].Value = newEntity.PickupType;
                 command.Parameters[8].Value = newEntity.DropOffType;
                 command.Parameters[9].Value = newEntity.ShapeDistTravelled;
-                command.Parameters[14].Value = stopId;
-                command.Parameters[15].Value = tripId;
-                command.Parameters[16].Value = stopSequence;
+                command.Parameters[10].Value = (int)newEntity.ShapeDistTravelled;
+                command.Parameters[11].Value = stopId;
+                command.Parameters[12].Value = tripId;
+                command.Parameters[13].Value = stopSequence;
 
                 return command.ExecuteNonQuery() > 0;
             }
@@ -417,7 +423,7 @@ namespace GTFS.DB.SQLite.Collections
         /// <returns></returns>
         public IEnumerable<StopTime> GetForStop(string stopId)
         {
-            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled FROM stop_time WHERE FEED_ID = :id AND stop_id = :stop_id";
+            string sql = "SELECT trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled, timepoint FROM stop_time WHERE FEED_ID = :id AND stop_id = :stop_id";
             var parameters = new List<SQLiteParameter>();
             parameters.Add(new SQLiteParameter(@"id", DbType.Int64));
             parameters[0].Value = _id;
