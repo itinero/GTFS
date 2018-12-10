@@ -22,5 +22,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyInformationalVersion("2.1.5-pre02")]
+[assembly: AssemblyInformationalVersion("2.1.5-pre03")]
 [assembly: AssemblyVersion("2.1.5")]

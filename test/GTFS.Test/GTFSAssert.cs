@@ -160,6 +160,7 @@ namespace GTFS.Test
                 Assert.IsNull(expected);
                 return;
             }
+            Assert.AreEqual(actual.Email, expected.Email);
             Assert.AreEqual(actual.FareURL, expected.FareURL);
             Assert.AreEqual(actual.Id, expected.Id);
             Assert.AreEqual(actual.LanguageCode, expected.LanguageCode);
