@@ -1078,7 +1078,7 @@ namespace GTFS
                 case "stop_lat":
                     var lat = this.ParseFieldDouble(header.Name, fieldName, value);
 
-                    if (this._strict && lat.HasValue)
+                    if (this._strict && !lat.HasValue)
                     {
                         throw new GTFSParseException(header.Name, fieldName, value);
                     }
@@ -1088,7 +1088,7 @@ namespace GTFS
                 case "stop_lon":
                     var lon = this.ParseFieldDouble(header.Name, fieldName, value);
 
-                    if (this._strict && lon.HasValue)
+                    if (this._strict && !lon.HasValue)
                     {
                         throw new GTFSParseException(header.Name, fieldName, value);
                     }
