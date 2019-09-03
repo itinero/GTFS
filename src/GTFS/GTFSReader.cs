@@ -1077,10 +1077,22 @@ namespace GTFS
                     break;
                 case "stop_lat":
                     var lat = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && lat.HasValue)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+
                     stop.Latitude = lat.HasValue ? lat.Value : 0d;
                     break;
                 case "stop_lon":
                     var lon = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && lon.HasValue)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+
                     stop.Longitude = lon.HasValue ? lon.Value : 0d;
                     break;
                 case "zone_id":
