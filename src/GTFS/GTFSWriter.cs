@@ -468,7 +468,7 @@ namespace GTFS
             if (file != null)
             {
                 bool initialized = false;
-                var data = new string[12];
+                var data = new string[13];
                 foreach (var entity in entities)
                 {
                     if (!initialized)
@@ -491,6 +491,7 @@ namespace GTFS
                         data[9] = "parent_station";
                         data[10] = "stop_timezone";
                         data[11] = "wheelchair_boarding";
+                        data[12] = "platform_code";
                         file.Write(data);
                         initialized = true;
                     }
@@ -508,6 +509,7 @@ namespace GTFS
                     data[9] = this.WriteFieldString("stops", "parent_station", entity.ParentStation);
                     data[10] = this.WriteFieldString("stops", "stop_timezone", entity.Timezone);
                     data[11] = this.WriteFieldString("stops", "wheelchair_boarding", entity.WheelchairBoarding);
+                    data[12] = this.WriteFieldString("stops", "platform_code", entity.PlatformCode);
                     file.Write(data);
                 }
                 file.Close();
