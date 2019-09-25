@@ -108,6 +108,12 @@ namespace GTFS.Entities
         public string WheelchairBoarding { get; set; }
 
         /// <summary>
+        /// Gets or sets the platform code. It is optional. Do not include the platform terms (e.g. platform) itself. Instead only 'A' or '1'.
+        /// </summary>
+        [FieldName("platform_code")]
+        public string PlatformCode { get; set; }
+
+        /// <summary>
         /// Returns a description of this trip.
         /// </summary>
         /// <returns></returns>
@@ -137,6 +143,7 @@ namespace GTFS.Entities
                 hash = hash * 43 + this.Url.GetHashCodeEmptyWhenNull();
                 hash = hash * 43 + this.WheelchairBoarding.GetHashCodeEmptyWhenNull();
                 hash = hash * 43 + this.Zone.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.PlatformCode.GetHashCodeEmptyWhenNull();
                 return hash;
             }
         }
@@ -160,7 +167,8 @@ namespace GTFS.Entities
                     (this.Timezone ?? string.Empty) == (other.Timezone ?? string.Empty) &&
                     (this.Url ?? string.Empty) == (other.Url ?? string.Empty) &&
                     (this.WheelchairBoarding ?? string.Empty) == (other.WheelchairBoarding ?? string.Empty) &&
-                    (this.Zone ?? string.Empty) == (other.Zone ?? string.Empty);
+                    (this.Zone ?? string.Empty) == (other.Zone ?? string.Empty) &&
+                    (this.PlatformCode ?? string.Empty) == (other.PlatformCode ?? string.Empty);
             }
             return false;
         }

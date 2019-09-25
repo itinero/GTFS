@@ -1113,6 +1113,9 @@ namespace GTFS
                 case " wheelchair_boarding ":
                     stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
                     break;
+                case "platform_code":
+                    stop.PlatformCode = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
             }
         }
 
