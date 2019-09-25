@@ -55,7 +55,7 @@ namespace GTFS
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "shapes"), feed.Shapes);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stops"), feed.Stops);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "stop_times"), feed.StopTimes);
-            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "tranfers"), feed.Transfers);
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "transfers"), feed.Transfers);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "trips"), feed.Trips);
         }
 

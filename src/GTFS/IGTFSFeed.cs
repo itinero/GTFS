@@ -125,7 +125,7 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Gets the collection of tranfers.
+        /// Gets the collection of transfers.
         /// </summary>
         ITransferCollection Transfers
         {
