@@ -943,7 +943,7 @@ namespace GTFS
                     route.ShortName = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_long_name":
-                    route.LongName= this.ParseFieldString(header.Name, fieldName, value);
+                    route.LongName = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_desc":
                     route.Description = this.ParseFieldString(header.Name, fieldName, value);
@@ -1076,10 +1076,24 @@ namespace GTFS
                     stop.Description = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_lat":
-                    stop.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var lat = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && !lat.HasValue)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+
+                    stop.Latitude = lat.HasValue ? lat.Value : 0d;
                     break;
                 case "stop_lon":
-                    stop.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    var lon = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && !lon.HasValue)
+                    {
+                        throw new GTFSParseException(header.Name, fieldName, value);
+                    }
+
+                    stop.Longitude = lon.HasValue ? lon.Value : 0d;
                     break;
                 case "zone_id":
                     stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
@@ -1098,6 +1112,9 @@ namespace GTFS
                     break;
                 case " wheelchair_boarding ":
                     stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "platform_code":
+                    stop.PlatformCode = this.ParseFieldString(header.Name, fieldName, value);
                     break;
             }
         }
