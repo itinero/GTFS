@@ -482,7 +482,7 @@ namespace GTFS
             if (file != null)
             {
                 bool initialized = false;
-                var data = new string[12];
+                var data = new string[13];
                 foreach (var entity in entities)
                 {
                     if (!initialized)
@@ -505,6 +505,7 @@ namespace GTFS
                         data[9] = "parent_station";
                         data[10] = "stop_timezone";
                         data[11] = "wheelchair_boarding";
+                        data[12] = "platform_code";
                         file.Write(data);
                         initialized = true;
                     }
@@ -522,6 +523,7 @@ namespace GTFS
                     data[9] = this.WriteFieldString("stops", "parent_station", entity.ParentStation);
                     data[10] = this.WriteFieldString("stops", "stop_timezone", entity.Timezone);
                     data[11] = this.WriteFieldString("stops", "wheelchair_boarding", entity.WheelchairBoarding);
+                    data[12] = this.WriteFieldString("stops", "platform_code", entity.PlatformCode);
                     file.Write(data);
                 }
                 file.Close();
@@ -749,7 +751,7 @@ namespace GTFS
         {
             if (value.HasValue)
             {
-                if(value.Value)
+                if (value.Value)
                 {
                     return "1";
                 }
@@ -767,7 +769,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldUint(string name, string fieldName, uint? value)
         {
-            if(value.HasValue)
+            if (value.HasValue)
             {
                 return value.Value.ToString();
             }
@@ -858,7 +860,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldLocationType(string name, string fieldName, LocationType? value)
         {
-            if(value.HasValue)
+            if (value.HasValue)
             {
                 switch (value.Value)
                 {
@@ -880,7 +882,7 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldDropOffType(string name, string fieldName, DropOffType? value)
         {
-            if(value.HasValue)
+            if (value.HasValue)
             {
                 switch (value.Value)
                 {

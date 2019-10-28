@@ -141,7 +141,7 @@ namespace GTFS
             {
                 return this.DateTimeReader.Invoke(value);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             { // throw a GFTS parse exception instead.
                 throw new GTFSParseException(name, fieldName, value, ex);
             }
@@ -339,9 +339,9 @@ namespace GTFS
         public virtual IEnumerable<string[]> GetRequiredFileSets()
         {
             return new[]
-		    {
-			    new[] {"calendar", "calendar_dates"}
-		    };
+            {
+                new[] {"calendar", "calendar_dates"}
+            };
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace GTFS
         /// <param name="feed"></param>
         protected virtual void Read(IGTFSSourceFile file, T feed)
         {
-            switch(file.Name.ToLower())
+            switch (file.Name.ToLower())
             {
                 case "agency":
                     this.Read<Agency>(file, feed, this.ParseAgency, feed.Agencies.Add);
@@ -471,14 +471,14 @@ namespace GTFS
 
             // enumerate all lines.
             var enumerator = file.GetEnumerator();
-            if(!enumerator.MoveNext())
+            if (!enumerator.MoveNext())
             { // there is no data, and if there is move to the columns.
                 return;
             }
 
             // read the header.
             var headerColumns = new string[enumerator.Current.Length];
-            for(int idx = 0; idx < headerColumns.Length; idx++)
+            for (int idx = 0; idx < headerColumns.Length; idx++)
             { // 'clean' header columns.
                 headerColumns[idx] = this.CleanFieldValue(enumerator.Current[idx]);
             }
@@ -532,7 +532,7 @@ namespace GTFS
 
             // parse/set all fields.
             Agency agency = new Agency();
-            for(int idx = 0; idx < data.Length; idx++)
+            for (int idx = 0; idx < data.Length; idx++)
             {
                 this.ParseAgencyField(header, agency, header.GetColumn(idx), data[idx]);
             }
@@ -999,7 +999,7 @@ namespace GTFS
                     route.ShortName = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_long_name":
-                    route.LongName= this.ParseFieldString(header.Name, fieldName, value);
+                    route.LongName = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "route_desc":
                     route.Description = this.ParseFieldString(header.Name, fieldName, value);
@@ -1132,26 +1132,24 @@ namespace GTFS
                     stop.Description = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_lat":
-                    var parsedDouble = this.ParseFieldDouble(header.Name, fieldName, value);
-                    if (parsedDouble == null)
+                    var lat = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && !lat.HasValue)
                     {
                         throw new GTFSParseException(header.Name, fieldName, value);
                     }
-                    else
-                    {
-                        stop.Latitude = parsedDouble.Value;
-                    }
+
+                    stop.Latitude = lat.HasValue ? lat.Value : 0d;
                     break;
                 case "stop_lon":
-                    var parseDouble = this.ParseFieldDouble(header.Name, fieldName, value);
-                    if (parseDouble == null)
+                    var lon = this.ParseFieldDouble(header.Name, fieldName, value);
+
+                    if (this._strict && !lon.HasValue)
                     {
                         throw new GTFSParseException(header.Name, fieldName, value);
                     }
-                    else
-                    {
-                        stop.Longitude = parseDouble.Value;
-                    }
+
+                    stop.Longitude = lon.HasValue ? lon.Value : 0d;
                     break;
                 case "zone_id":
                     stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
@@ -1170,6 +1168,9 @@ namespace GTFS
                     break;
                 case "wheelchair_boarding":
                     stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "platform_code":
+                    stop.PlatformCode = this.ParseFieldString(header.Name, fieldName, value);
                     break;
             }
         }
@@ -1444,7 +1445,7 @@ namespace GTFS
             //6 - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.
             //7 - Funicular. Any rail system designed for steep inclines.
 
-            switch(value)
+            switch (value)
             {
                 case "0":
                     return RouteType.Tram.ToExtended();
@@ -1465,7 +1466,7 @@ namespace GTFS
             }
 
             int routeTypeValue;
-            if(!int.TryParse(value, out routeTypeValue))
+            if (!int.TryParse(value, out routeTypeValue))
             {
                 throw new GTFSParseException(name, fieldName, value);
             }
@@ -1720,7 +1721,7 @@ namespace GTFS
                 case "1":
                     return LocationType.Station;
             }
-            if(_strict)
+            if (_strict)
             { // invalid location type.
                 throw new GTFSParseException(name, fieldName, value);
             }
@@ -1766,7 +1767,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual uint? ParseFieldUInt(string name, string fieldName, string value)
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             { // there is no value.
                 return null;
             }
@@ -1775,7 +1776,7 @@ namespace GTFS
             value = this.CleanFieldValue(value);
 
             uint result;
-            if(!uint.TryParse(value, out result))
+            if (!uint.TryParse(value, out result))
             { // parsing failed!
                 throw new GTFSParseException(name, fieldName, value);
             }
@@ -1816,7 +1817,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual double? ParseFieldDouble(string name, string fieldName, string value)
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             { // there is no value.
                 return null;
             }

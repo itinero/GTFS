@@ -12,7 +12,7 @@ namespace GTFS.Entities.Collections
     public class TransferListCollection : ITransferCollection
     {
         /// <summary>
-        /// Holds the tranfers.
+        /// Holds the transfers.
         /// </summary>
         private List<Transfer> _transfers;
 
