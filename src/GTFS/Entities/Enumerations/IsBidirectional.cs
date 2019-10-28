@@ -23,29 +23,17 @@
 namespace GTFS.Entities.Enumerations
 {
     /// <summary>
-    /// The location type identifies whether a stop represents a stop or station.
+    /// Indicates in which direction the pathway can be used:
     /// </summary>
-    public enum LocationType
+    public enum IsBidirectional
     {
         /// <summary>
-        /// A location where passengers board or disembark from a transit vehicle.
+        /// Unidirectional pathway, it can only be used from from_stop_id to to_stop_id..
         /// </summary>
-        Stop = 0,
+        Unidirectional = 0,
         /// <summary>
-        /// A physical structure or area that contains one or more stop.
+        /// Bidirectional pathway, it can be used in the two directions.
         /// </summary>
-        Station = 1,
-        /// <summary>
-        /// A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it can be linked by pathways to both, but the data provider must pick one of them as parent.
-        /// </summary>
-        EntranceExit = 2,
-        /// <summary>
-        /// A location within a station, not matching any other location_type, which can be used to link together pathways define in pathways.txt.
-        /// </summary>
-        GenericNode = 3,
-        /// <summary>
-        /// A specific location on a platform, where passengers can board and/or alight vehicles.
-        /// </summary>
-        BoardingArea = 4
+        Bidirectional = 1,
     }
 }

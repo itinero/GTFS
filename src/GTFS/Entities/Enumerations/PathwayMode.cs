@@ -23,29 +23,38 @@
 namespace GTFS.Entities.Enumerations
 {
     /// <summary>
-    /// The location type identifies whether a stop represents a stop or station.
+    /// Type of pathway between the specified (from_stop_id, to_stop_id) pair
     /// </summary>
-    public enum LocationType
+    public enum PathwayMode
     {
         /// <summary>
-        /// A location where passengers board or disembark from a transit vehicle.
+        /// Walkway
         /// </summary>
-        Stop = 0,
+        Walkway = 1,
         /// <summary>
-        /// A physical structure or area that contains one or more stop.
+        /// Stairs
         /// </summary>
-        Station = 1,
+        Stairs = 2,
         /// <summary>
-        /// A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it can be linked by pathways to both, but the data provider must pick one of them as parent.
+        /// Moving Sidewal, Travelator
         /// </summary>
-        EntranceExit = 2,
+        Travelator = 3,
         /// <summary>
-        /// A location within a station, not matching any other location_type, which can be used to link together pathways define in pathways.txt.
+        /// Escalator
         /// </summary>
-        GenericNode = 3,
+        Escalator = 4,
         /// <summary>
-        /// A specific location on a platform, where passengers can board and/or alight vehicles.
+        /// Elevator
         /// </summary>
-        BoardingArea = 4
+        Elevator = 5,
+        /// <summary>
+        /// fare gate (or payment gate): A pathway that crosses into an area of the station where a proof of payment is required (usually via a physical payment gate).
+        /// </summary>
+        FareGate = 6,
+        /// <summary>
+        /// Indicates a pathway exiting an area where proof-of-payment is required into an area where proof-of-payment is no longer required.
+        /// </summary>
+        ExitGate = 7,
+
     }
 }

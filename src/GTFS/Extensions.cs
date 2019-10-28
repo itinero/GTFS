@@ -120,6 +120,8 @@ namespace GTFS
             feed.StopTimes.AddRange(thisFeed.StopTimes);
             feed.Transfers.AddRange(thisFeed.Transfers);
             feed.Trips.AddRange(thisFeed.Trips);
+            feed.Levels.AddRange(thisFeed.Levels);
+            feed.Pathways.AddRange(thisFeed.Pathways);
         }
 
         /// <summary>
@@ -179,6 +181,14 @@ namespace GTFS
             foreach (var entity in feed.Trips)
             {
                 thisFeed.Trips.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.Levels)
+            {
+                thisFeed.Levels.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.Pathways)
+            {
+                thisFeed.Pathways.AddOrReplace(entity, x => x.Id);
             }
         }
 

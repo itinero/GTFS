@@ -116,6 +116,8 @@ namespace GTFS
             this.StopTimeMap = new FieldMap();
             this.TransferMap = new FieldMap();
             this.TripMap = new FieldMap();
+            this.LevelMap = new FieldMap();
+            this.PathwayMap = new FieldMap();
         }
 
         /// <summary>
@@ -446,6 +448,138 @@ namespace GTFS
                     break;
                 case "frequencies":
                     this.Read<Frequency>(file, feed, this.ParseFrequency, feed.Frequencies.Add);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Gets the pathway fieldmap.
+        /// </summary>
+        public FieldMap PathwayMap { get; private set; }
+
+        /// <summary>
+        /// Parses a pathway row.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Pathway ParsePathway(T feed, GTFSSourceFileHeader header, string[] data)
+        {
+            // check required fields.
+
+            this.CheckRequiredField(header, header.Name, this.PathwayMap, "pathway_id");
+            this.CheckRequiredField(header, header.Name, this.PathwayMap, "from_stop_id");
+            this.CheckRequiredField(header, header.Name, this.PathwayMap, "to_stop_id");
+            this.CheckRequiredField(header, header.Name, this.PathwayMap, "pathway_mode");
+            this.CheckRequiredField(header, header.Name, this.PathwayMap, "is_bidirectional");
+
+            // parse/set all fields.
+            Pathway pathway = new Pathway();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParsePathwayField(header, pathway, header.GetColumn(idx), data[idx]);
+            }
+            return pathway;
+        }
+
+        /// <summary>
+        /// Parses a pathway field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="pathway"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParsePathwayField(GTFSSourceFileHeader header, Pathway pathway, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "pathway_id":
+                    pathway.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "from_stop_id":
+                    pathway.FromStopId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "to_stop_id":
+                    pathway.ToStopId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "pathway_mode":
+                    pathway.PathwayMode = (PathwayMode)this.ParseFieldPathwayMode(header.Name, fieldName, value);
+                    break;
+                case "is_bidirectional":
+                    pathway.IsBidirectional = (IsBidirectional)this.ParseFieldIsBidirectional(header.Name, fieldName, value);
+                    break;
+                case "length":
+                    pathway.Length = this.ParseFieldDouble(header.Name, fieldName, value);
+                    break;
+                case "traversal_time":
+                    pathway.TraversalTime = this.ParseFieldInt(header.Name, fieldName, value);
+                    break;
+                case "stair_count":
+                    pathway.StairCount = this.ParseFieldInt(header.Name, fieldName, value);
+                    break;
+                case "max_slope":
+                    pathway.MaxSlope = this.ParseFieldDouble(header.Name, fieldName, value);
+                    break;
+                case "min_width":
+                    pathway.MinWidth = this.ParseFieldDouble(header.Name, fieldName, value);
+                    break;
+                case "signposted_as":
+                    pathway.SignpostedAs = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "reversed_signposted_as":
+                    pathway.ReversedSignpostedAs = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Gets the level fieldmap.
+        /// </summary>
+        public FieldMap LevelMap { get; private set; }
+
+        /// <summary>
+        /// Parses a level row.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Level ParseLevel(T feed, GTFSSourceFileHeader header, string[] data)
+        {
+            // check required fields.
+
+            this.CheckRequiredField(header, header.Name, this.LevelMap, "level_id");
+            this.CheckRequiredField(header, header.Name, this.LevelMap, "level_index");
+
+            // parse/set all fields.
+            Level level = new Level();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseLevelField(header, level, header.GetColumn(idx), data[idx]);
+            }
+            return level;
+        }
+
+        /// <summary>
+        /// Parses a level field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="level"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseLevelField(GTFSSourceFileHeader header, Level level, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "level_id":
+                    level.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "level_index":
+                    level.Index = (double)this.ParseFieldDouble(header.Name, fieldName, value);
+                    break;
+                case "level_name":
+                    level.Name = this.ParseFieldString(header.Name, fieldName, value);
                     break;
             }
         }
@@ -1169,6 +1303,9 @@ namespace GTFS
                 case "wheelchair_boarding":
                     stop.WheelchairBoarding = this.ParseFieldString(header.Name, fieldName, value);
                     break;
+                case "level_id":
+                    stop.LevelId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
                 case "platform_code":
                     stop.PlatformCode = this.ParseFieldString(header.Name, fieldName, value);
                     break;
@@ -1195,8 +1332,6 @@ namespace GTFS
             this.CheckRequiredField(header, header.Name, this.StopTimeMap, "departure_time");
             this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
             this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_sequence");
-            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
-            this.CheckRequiredField(header, header.Name, this.StopTimeMap, "stop_id");
 
             // parse/set all fields.
             StopTime stopTime = new StopTime();
@@ -1713,6 +1848,9 @@ namespace GTFS
 
             //0 or blank - Stop. A location where passengers board or disembark from a transit vehicle.
             //1 - Station. A physical structure or area that contains one or more stop.
+            //2 - Entrance/Exit.
+            //3 - Generic Node. 
+            //4 - Boarding Area.
 
             switch (value)
             {
@@ -1720,6 +1858,12 @@ namespace GTFS
                     return LocationType.Stop;
                 case "1":
                     return LocationType.Station;
+                case "2":
+                    return LocationType.EntranceExit;
+                case "3":
+                    return LocationType.GenericNode;
+                case "4":
+                    return LocationType.BoardingArea;
             }
             if (_strict)
             { // invalid location type.
@@ -1754,6 +1898,81 @@ namespace GTFS
                     return DirectionType.OneDirection;
                 case "1":
                     return DirectionType.OppositeDirection;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a direction-type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private PathwayMode? ParseFieldPathwayMode(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //1 - walkway
+            //2 - stairs
+            //3 - moving sidewalk/travelator
+            //4 - escalator
+            //5 - elevator
+            //6 - fare gate
+            //7 - exit gate
+
+            switch (value)
+            {
+                case "1":
+                    return PathwayMode.Walkway;
+                case "2":
+                    return PathwayMode.Stairs;
+                case "3":
+                    return PathwayMode.Travelator;
+                case "4":
+                    return PathwayMode.Escalator;
+                case "5":
+                    return PathwayMode.Elevator;
+                case "6":
+                    return PathwayMode.FareGate;
+                case "7":
+                    return PathwayMode.ExitGate;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a direction-type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private IsBidirectional? ParseFieldIsBidirectional(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //0 - Unidirectional pathway, it can only be used from from_stop_id to to_stop_id.
+            //1 - Bidirectional pathway, it can be used in the two directions.
+
+            switch (value)
+            {
+                case "0":
+                    return IsBidirectional.Unidirectional;
+                case "1":
+                    return IsBidirectional.Bidirectional;
             }
             throw new GTFSParseException(name, fieldName, value);
         }

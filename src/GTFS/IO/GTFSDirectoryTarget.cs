@@ -72,6 +72,8 @@ namespace GTFS.IO
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "stop_times"), "stop_times"));
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "transfers"), "transfers"));
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "trips"), "trips"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "levels"), "levels"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "pathways"), "pathways"));
             }
         }
 

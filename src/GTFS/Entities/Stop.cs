@@ -108,6 +108,12 @@ namespace GTFS.Entities
         public string WheelchairBoarding { get; set; }
 
         /// <summary>
+        /// Level of the location. The same level can be used by multiple unlinked stations.
+        /// </summary>
+        [FieldName("level_id")]
+        public string LevelId { get; set; }
+
+        /// <summary>
         /// Gets or sets the platform code. It is optional. Do not include the platform terms (e.g. platform) itself. Instead only 'A' or '1'.
         /// </summary>
         [FieldName("platform_code")]
@@ -151,6 +157,7 @@ namespace GTFS.Entities
                 hash = hash * 43 + this.Url.GetHashCodeEmptyWhenNull();
                 hash = hash * 43 + this.WheelchairBoarding.GetHashCodeEmptyWhenNull();
                 hash = hash * 43 + this.Zone.GetHashCodeEmptyWhenNull();
+                hash = hash * 43 + this.LevelId.GetHashCodeEmptyWhenNull();
                 hash = hash * 43 + this.PlatformCode.GetHashCodeEmptyWhenNull();
                 return hash;
             }
@@ -176,6 +183,7 @@ namespace GTFS.Entities
                     (this.Url ?? string.Empty) == (other.Url ?? string.Empty) &&
                     (this.WheelchairBoarding ?? string.Empty) == (other.WheelchairBoarding ?? string.Empty) &&
                     (this.Zone ?? string.Empty) == (other.Zone ?? string.Empty) &&
+                    (this.LevelId ?? string.Empty) == (other.LevelId ?? string.Empty) &&
                     (this.PlatformCode ?? string.Empty) == (other.PlatformCode ?? string.Empty);
             }
             return false;
@@ -200,8 +208,20 @@ namespace GTFS.Entities
                 ParentStation = other.ParentStation,
                 Timezone = other.Timezone,
                 WheelchairBoarding = other.WheelchairBoarding,
+                LevelId = other.LevelId,
+                PlatformCode = other.PlatformCode,
                 Tag = other.Tag
             };
+        }
+
+        public bool IsTypeStop()
+        {
+            return !this.LocationType.HasValue || this.LocationType.Value == Enumerations.LocationType.Stop;
+        }
+
+        public bool IsTypeStation()
+        {
+            return this.LocationType.HasValue && this.LocationType.Value == Enumerations.LocationType.Station;
         }
     }
 }
