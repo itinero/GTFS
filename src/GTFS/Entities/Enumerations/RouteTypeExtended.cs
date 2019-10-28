@@ -81,6 +81,7 @@ namespace GTFS.Entities.Enumerations
         RailReplacementBusService = 714,
         DemandandResponseBusService = 715,
         AllBusServices = 716,
+        ShareTaxiService = 717,
         TrolleybusService = 800,
         TramService = 900,
         CityTramService = 901,
