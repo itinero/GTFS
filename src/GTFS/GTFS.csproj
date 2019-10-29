@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GTFS</AssemblyName>
-    <PackageId>GTFS</PackageId>
+    <PackageId>WhereIsMyTransport.GTFS</PackageId>
+    <Description>A forked version of the powerful GTFS c# package by itinero.</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
