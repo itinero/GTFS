@@ -19,14 +19,21 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
-  displayName: Restore
+  displayName: Dotnet Restore
   inputs:
     command: 'restore'
     projects: '**/GTFS.csproj'
     feedsToUse: 'select'
 
+- task: DotNetCoreCLI@2
+  displayName: Dotnet Build
+  inputs:
+    command: 'build'
+    projects: '**/GTFS.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
+
 - task: NuGetCommand@2
-  displayName: Pack
+  displayName: Nuget Pack
   inputs:
     command: 'pack'
     packagesToPack: '**/GTFS.csproj'
@@ -34,7 +41,7 @@ steps:
     versionEnvVar: 'BUILD_BUILDNUMBER'
 
 - task: NuGetCommand@2
-  displayName: Push/Publish (to private WhereIsMyTransport nuget feed)
+  displayName: Nuget Push (to private WhereIsMyTransport Stable nuget feed)
   inputs:
     command: 'push'
     vstsFeed: 'myTestFeed'
