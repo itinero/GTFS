@@ -30,7 +30,8 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/GTFS.csproj'
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'BUILD_BUILDNUMBER'
 
 - task: NuGetCommand@2
   displayName: Push/Publish (to private WhereIsMyTransport nuget feed)
