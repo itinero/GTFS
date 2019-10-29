@@ -19,32 +19,31 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
-  displayName: Dotnet Restore
+  displayName: Restore
   inputs:
     command: 'restore'
     projects: '**/GTFS.csproj'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
-  displayName: Dotnet Build
+  displayName: Build
   inputs:
     command: 'build'
     projects: '**/GTFS.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
-- task: NuGetCommand@2
-  displayName: Nuget Pack
+- task: DotNetCoreCLI@2
+  displayName: Pack
   inputs:
     command: 'pack'
     packagesToPack: '**/GTFS.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'BUILD_BUILDNUMBER'
 
-- task: NuGetCommand@2
-  displayName: Nuget Push (to private WhereIsMyTransport Stable nuget feed)
+- task: DotNetCoreCLI@2
+  displayName: Push (to private WhereIsMyTransport Stable nuget feed)
   inputs:
     command: 'push'
-    vstsFeed: 'myTestFeed'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '4ffa6051-3dec-4154-8c4f-5f21b27d2f67'
