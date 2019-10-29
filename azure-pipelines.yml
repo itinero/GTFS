@@ -18,12 +18,12 @@ variables:
 
 steps:
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
     command: 'restore'
-    feedsToUse: Select
-    restoreSolution: '**/*.sln'
+    projects: '**/GTFS.csproj'
+    feedsToUse: 'select'
 
 - task: NuGetCommand@2
   displayName: Pack
