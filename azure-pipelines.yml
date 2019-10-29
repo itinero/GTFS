@@ -15,6 +15,10 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  Major: 2
+  Minor: 0
+  Patch: $[counter('versioncounter', 1)]
+  Version: ${Major}.${Minor}.${Patch}
 
 steps:
 
@@ -38,7 +42,7 @@ steps:
     command: 'pack'
     packagesToPack: '**/GTFS.csproj'
     versioningScheme: 'byEnvVar'
-    versionEnvVar: 'BUILD_BUILDNUMBER'
+    versionEnvVar: 'Version'
 
 - task: DotNetCoreCLI@2
   displayName: Push (to private WhereIsMyTransport Stable nuget feed)
