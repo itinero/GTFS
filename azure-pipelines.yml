@@ -18,38 +18,25 @@ variables:
 
 steps:
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   displayName: Restore
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
+    feedsToUse: Select
+    restoreSolution: '**/*.sln'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: 'build'
-    projects: '**/GTFS.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
-
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   displayName: Pack
   inputs:
     command: 'pack'
     packagesToPack: '**/GTFS.csproj'
     versioningScheme: 'byBuildNumber'
 
-- task: DotNetCoreCLI@2
-  displayName: Push (to private WhereIsMyTransport nuget feed)
+- task: NuGetCommand@2
+  displayName: Push/Publish (to private WhereIsMyTransport nuget feed)
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Stable'
-
-- task: PublishBuildArtifacts@1
-  displayName: Publish
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    vstsFeed: 'myTestFeed'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '4ffa6051-3dec-4154-8c4f-5f21b27d2f67'
