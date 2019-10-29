@@ -62,6 +62,6 @@ namespace GTFS.Entities
         /// <summary>
         /// Returns an empty set of args.
         /// </summary>
-        public static GTFSEntityChangedEventArgs Empty { get { return new GTFSEntityChangedEventArgs(); } }
+        public new static GTFSEntityChangedEventArgs Empty { get { return new GTFSEntityChangedEventArgs(); } }
     }
 }
