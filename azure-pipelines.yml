@@ -18,7 +18,7 @@ variables:
   Major: 2
   Minor: 0
   Patch: $[counter('versioncounter', 1)]
-  Version: ${Major}.${Minor}.${Patch}
+  Version: $(Major).$(Minor).$(Patch)
 
 steps:
 
