@@ -91,12 +91,60 @@ namespace GTFS.Entities
             if (other != null)
             {
                 return (this.EndTime ?? string.Empty) == (other.EndTime ?? string.Empty) &&
-                    this.ExactTimes == other.ExactTimes &&
+                    (this.ExactTimes ?? false) == (other.ExactTimes ?? false) &&
                     (this.HeadwaySecs ?? string.Empty) == (other.HeadwaySecs ?? string.Empty) &&
                     (this.StartTime ?? string.Empty) == (other.StartTime ?? string.Empty) &&
                     (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns a string representing this object.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"{StartTime} - {EndTime} ({HeadwaySecs}){(ExactTimes != null && (bool)ExactTimes ? " - exact times" : "")}";
+        }
+
+        /// <summary>
+        /// Looks for overlapping times in frequencies
+        /// </summary>
+        public bool IsOverlapping(Frequency other)
+        {
+            var startTime = new TimeOfDay()
+            {
+                Hours = int.Parse(StartTime.Split(':')[0]),
+                Minutes = int.Parse(StartTime.Split(':')[1]),
+                Seconds = int.Parse(StartTime.Split(':')[2])
+            };
+            var endTime = new TimeOfDay()
+            {
+                Hours = int.Parse(EndTime.Split(':')[0]),
+                Minutes = int.Parse(EndTime.Split(':')[1]),
+                Seconds = int.Parse(EndTime.Split(':')[2])
+            };
+            var otherStartTime = new TimeOfDay()
+            {
+                Hours = int.Parse(other.StartTime.Split(':')[0]),
+                Minutes = int.Parse(other.StartTime.Split(':')[1]),
+                Seconds = int.Parse(other.StartTime.Split(':')[2])
+            };
+            var otherEndTime = new TimeOfDay()
+            {
+                Hours = int.Parse(other.EndTime.Split(':')[0]),
+                Minutes = int.Parse(other.EndTime.Split(':')[1]),
+                Seconds = int.Parse(other.EndTime.Split(':')[2])
+            };
+
+            if (startTime.TotalSeconds < otherStartTime.TotalSeconds)
+            {
+                return endTime.TotalSeconds > otherStartTime.TotalSeconds;
+            }
+            else
+            {
+                return otherEndTime.TotalSeconds > startTime.TotalSeconds;
+            }
         }
     }
 }

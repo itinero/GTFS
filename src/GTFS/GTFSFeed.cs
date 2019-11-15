@@ -59,6 +59,10 @@ namespace GTFS
             this.Transfers = new TransferListCollection(new List<Transfer>());
             this.Trips = new UniqueEntityListCollection<Trip>(new List<Trip>(),
                 (e, id) => { return e.Id == id; });
+            this.Levels = new UniqueEntityListCollection<Level>(new List<Level>(),
+                (e, id) => { return e.Id == id; });
+            this.Pathways = new UniqueEntityListCollection<Pathway>(new List<Pathway>(),
+                (e, id) => { return e.Id == id; });
         }
 
         /// <summary>
@@ -196,6 +200,24 @@ namespace GTFS
         /// Gets the collection of trips.
         /// </summary>
         public IUniqueEntityCollection<Trip> Trips
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the collection of levels.
+        /// </summary>
+        public IUniqueEntityCollection<Level> Levels
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the collection of pathways.
+        /// </summary>
+        public IUniqueEntityCollection<Pathway> Pathways
         {
             get;
             private set;

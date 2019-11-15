@@ -21,8 +21,10 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace GTFS.IO.CSV
 {
@@ -47,7 +49,7 @@ namespace GTFS.IO.CSV
         /// <param name="stream">The stream to read from.</param>
         public CSVStreamReader(Stream stream)
         {
-            _stream = new StreamReader(stream);
+            _stream = new StreamReader(stream, new UTF8Encoding());
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace GTFS.IO.CSV
         /// <param name="seperator">A custom seperator.</param>
         public CSVStreamReader(Stream stream, char seperator)
         {
-            _stream = new StreamReader(stream);
+            _stream = new StreamReader(stream, new UTF8Encoding());
             _seperator = seperator;
         }
 
@@ -73,7 +75,7 @@ namespace GTFS.IO.CSV
         {
             get
             {
-                if(_current == null)
+                if (_current == null)
                 {
                     throw new InvalidOperationException("No current data available, use MoveNext() to move to the first line or Reset() to reset the reader.");
                 }
@@ -98,7 +100,7 @@ namespace GTFS.IO.CSV
         /// <summary>
         /// Returns the current line.
         /// </summary>
-        object System.Collections.IEnumerator.Current
+        object IEnumerator.Current
         {
             get { return this.Current; }
         }

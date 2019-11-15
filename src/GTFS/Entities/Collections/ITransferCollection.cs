@@ -36,6 +36,12 @@ namespace GTFS.Entities.Collections
         void Add(Transfer transfer);
 
         /// <summary>
+        /// Adds a new transfer.
+        /// </summary>
+        /// <param name="transfer"></param>
+        void AddRange(IEnumerable<Transfer> transfer);
+
+        /// <summary>
         /// Gets all transfers.
         /// </summary>
         /// <returns></returns>

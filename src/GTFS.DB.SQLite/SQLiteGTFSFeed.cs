@@ -65,6 +65,8 @@ namespace GTFS.DB.SQLite
             this.StopTimes = new SQLiteStopTimeCollection(_connection, id);
             this.Transfers = new SQLiteTransferCollection(_connection, id);
             this.Trips = new SQLiteTripCollection(_connection, id);
+            this.Levels = new SQLiteLevelCollection(_connection, id);
+            this.Pathways = new SQLitePathwayCollection(_connection, id);
         }
 
         /// <summary>
@@ -232,6 +234,18 @@ namespace GTFS.DB.SQLite
         /// Gets the collection of trips.
         /// </summary>
         public IUniqueEntityCollection<Trip> Trips
+        {
+            get;
+            private set;
+        }
+
+        public IUniqueEntityCollection<Level> Levels
+        {
+            get;
+            private set;
+        }
+
+        public IUniqueEntityCollection<Pathway> Pathways
         {
             get;
             private set;

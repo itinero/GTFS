@@ -22,6 +22,7 @@
 
 using GTFS.Entities.Collections;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -102,60 +103,27 @@ namespace GTFS
         public static void CopyTo(this IGTFSFeed thisFeed, IGTFSFeed feed)
         {
             var feedInfo = thisFeed.GetFeedInfo();
-            if(feedInfo != null)
+            if (feedInfo != null)
             {
                 feed.SetFeedInfo(feedInfo);
             }
-            foreach(var entity in thisFeed.Agencies)
-            {
-                feed.Agencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.CalendarDates)
-            {
-                feed.CalendarDates.Add(entity);
-            }
-            foreach (var entity in thisFeed.Calendars)
-            {
-                feed.Calendars.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareAttributes)
-            {
-                feed.FareAttributes.Add(entity);
-            }
-            foreach (var entity in thisFeed.FareRules)
-            {
-                feed.FareRules.Add(entity);
-            }
-            foreach (var entity in thisFeed.Frequencies)
-            {
-                feed.Frequencies.Add(entity);
-            }
-            foreach (var entity in thisFeed.Routes)
-            {
-                feed.Routes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Shapes)
-            {
-                feed.Shapes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Stops)
-            {
-                feed.Stops.Add(entity);
-            }
-            foreach (var entity in thisFeed.StopTimes)
-            {
-                feed.StopTimes.Add(entity);
-            }
-            foreach (var entity in thisFeed.Transfers)
-            {
-                feed.Transfers.Add(entity);
-            }
-            foreach (var entity in thisFeed.Trips)
-            {
-                feed.Trips.Add(entity);
-            }
+
+            feed.Agencies.AddRange(thisFeed.Agencies);
+            feed.CalendarDates.AddRange(thisFeed.CalendarDates);
+            feed.Calendars.AddRange(thisFeed.Calendars);
+            feed.FareAttributes.AddRange(thisFeed.FareAttributes);
+            feed.FareRules.AddRange(thisFeed.FareRules);
+            feed.Frequencies.AddRange(thisFeed.Frequencies);
+            feed.Routes.AddRange(thisFeed.Routes);
+            feed.Shapes.AddRange(thisFeed.Shapes);
+            feed.Stops.AddRange(thisFeed.Stops);
+            feed.StopTimes.AddRange(thisFeed.StopTimes);
+            feed.Transfers.AddRange(thisFeed.Transfers);
+            feed.Trips.AddRange(thisFeed.Trips);
+            feed.Levels.AddRange(thisFeed.Levels);
+            feed.Pathways.AddRange(thisFeed.Pathways);
         }
-        
+
         /// <summary>
         /// Merges the content of the given feed with this feed by adding or replacing entities.
         /// </summary>
@@ -214,6 +182,14 @@ namespace GTFS
             {
                 thisFeed.Trips.AddOrReplace(entity, x => x.Id);
             }
+            foreach (var entity in feed.Levels)
+            {
+                thisFeed.Levels.AddOrReplace(entity, x => x.Id);
+            }
+            foreach (var entity in feed.Pathways)
+            {
+                thisFeed.Pathways.AddOrReplace(entity, x => x.Id);
+            }
         }
 
         /// <summary>
@@ -243,17 +219,17 @@ namespace GTFS
         {
             var radius_earth = 6371000;
 
-            var degToRandian = System.Math.PI / 180;
+            var degToRandian = Math.PI / 180;
             var lat1_rad = latitude1 * degToRandian;
             var lon1_rad = longitude1 * degToRandian;
             var lat2_rad = latitude2 * degToRandian;
             var lon2_rad = longitude2 * degToRandian;
             var dLat = (lat2_rad - lat1_rad);
             var dLon = (lon2_rad - lon1_rad);
-            var a = System.Math.Pow(System.Math.Sin(dLat / 2), 2) +
-                System.Math.Cos(lat1_rad) * System.Math.Cos(lat2_rad) *
-                System.Math.Pow(System.Math.Sin(dLon / 2), 2);
-            var c = 2 * System.Math.Atan2(System.Math.Sqrt(a), System.Math.Sqrt(1 - a));
+            var a = Math.Pow(Math.Sin(dLat / 2), 2) +
+                Math.Cos(lat1_rad) * Math.Cos(lat2_rad) *
+                Math.Pow(Math.Sin(dLon / 2), 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             var distance = radius_earth * c;
             return distance;
         }
@@ -339,23 +315,23 @@ namespace GTFS
 
             if (value.Length == 6)
             { // assume # is missing.
-                return Int32.Parse("FF" + value, System.Globalization.NumberStyles.HexNumber,
-                                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse("FF" + value, NumberStyles.HexNumber,
+                                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 7)
             { // assume #rrggbb
-                return Int32.Parse("FF" + value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse("FF" + value.Replace("#", ""), NumberStyles.HexNumber,
+                                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 9)
             {
-                return Int32.Parse(value.Replace("#", ""), System.Globalization.NumberStyles.HexNumber,
-                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse(value.Replace("#", ""), NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture);
             }
             else if (value.Length == 10)
             {
-                return Int32.Parse(value.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber,
-                    System.Globalization.CultureInfo.InvariantCulture);
+                return Int32.Parse(value.Replace("0x", ""), NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture);
             }
             else
             {
@@ -371,6 +347,37 @@ namespace GTFS
             return obj is IConvertible ? ((IConvertible)obj).ToString(CultureInfo.InvariantCulture)
                 : obj is IFormattable ? ((IFormattable)obj).ToString(null, CultureInfo.InvariantCulture)
                 : obj.ToString();
+        }
+
+        /// <summary>
+        /// Splits the given list of entities into groups of size maxGroupCount.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_self"></param>
+        /// <param name="maxGroupCount"></param>
+        /// <returns></returns>
+        public static Dictionary<int, List<T>> SplitIntoGroupsByGroupIdx<T>(this IEnumerable<T> _self, int maxGroupCount = 900)
+        {
+            var dict = new Dictionary<int, List<T>>();
+            int groupIdx = 0;
+            int numElementsInCurrentGroup = 0;
+            foreach (var item in _self)
+            {
+                if (numElementsInCurrentGroup == maxGroupCount)
+                {
+                    groupIdx++;
+                    numElementsInCurrentGroup = 0;
+                }
+
+                if (!dict.ContainsKey(groupIdx))
+                {
+                    dict.Add(groupIdx, new List<T>());
+                }
+                dict[groupIdx].Add(item);
+                numElementsInCurrentGroup++;
+            }
+
+            return dict;
         }
     }
 }

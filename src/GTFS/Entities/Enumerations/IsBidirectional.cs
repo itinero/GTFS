@@ -23,25 +23,17 @@
 namespace GTFS.Entities.Enumerations
 {
     /// <summary>
-    ///  Indicates whether passengers are picked up at a stop as part of the normal schedule or whether a pickup at the stop is not available.
+    /// Indicates in which direction the pathway can be used:
     /// </summary>
-    public enum PickupType
+    public enum IsBidirectional
     {
         /// <summary>
-        /// Regularly scheduled pickup.
+        /// Unidirectional pathway, it can only be used from from_stop_id to to_stop_id..
         /// </summary>
-        Regular = 0,
+        Unidirectional = 0,
         /// <summary>
-        /// No pickup available.
+        /// Bidirectional pathway, it can be used in the two directions.
         /// </summary>
-        NoPickup = 1,
-        /// <summary>
-        /// Must phone agency to arrange pickup.
-        /// </summary>
-        PhoneForPickup = 2,
-        /// <summary>
-        /// Must coordinate with driver to arrange pickup.
-        /// </summary>
-        DriverForPickup = 3
+        Bidirectional = 1,
     }
 }

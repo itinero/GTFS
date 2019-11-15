@@ -20,8 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace GTFS.Entities
 {
+    public delegate void GTFSEntityChangedEventHandler(object sender, GTFSEntityChangedEventArgs e);
+
     /// <summary>
     /// Represents a base-class for all GTFS entities.
     /// </summary>
@@ -32,5 +36,32 @@ namespace GTFS.Entities
         /// </summary>
         /// <remarks>Can be used to attach extra information.</remarks>
         public object Tag { get; set; }
+
+        public event GTFSEntityChangedEventHandler EntityChanged;
+
+        internal void OnEntityChanged()
+        {
+            if (EntityChanged != null)
+            {
+                if (!(this is Calendar) && !(this is CalendarDate))
+                {
+                    throw new NotImplementedException($"Entity change events are only implemented for Calendar and CalendarDate at this time.");
+                }
+                EntityChanged(this, GTFSEntityChangedEventArgs.Empty);
+            }
+        }
+    }
+
+    public class GTFSEntityChangedEventArgs : EventArgs
+    {
+        public GTFSEntityChangedEventArgs() : base()
+        {
+
+        }
+
+        /// <summary>
+        /// Returns an empty set of args.
+        /// </summary>
+        public new static GTFSEntityChangedEventArgs Empty { get { return new GTFSEntityChangedEventArgs(); } }
     }
 }

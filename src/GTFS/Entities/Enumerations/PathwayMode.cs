@@ -23,25 +23,38 @@
 namespace GTFS.Entities.Enumerations
 {
     /// <summary>
-    ///  Indicates whether passengers are picked up at a stop as part of the normal schedule or whether a pickup at the stop is not available.
+    /// Type of pathway between the specified (from_stop_id, to_stop_id) pair
     /// </summary>
-    public enum PickupType
+    public enum PathwayMode
     {
         /// <summary>
-        /// Regularly scheduled pickup.
+        /// Walkway
         /// </summary>
-        Regular = 0,
+        Walkway = 1,
         /// <summary>
-        /// No pickup available.
+        /// Stairs
         /// </summary>
-        NoPickup = 1,
+        Stairs = 2,
         /// <summary>
-        /// Must phone agency to arrange pickup.
+        /// Moving Sidewal, Travelator
         /// </summary>
-        PhoneForPickup = 2,
+        Travelator = 3,
         /// <summary>
-        /// Must coordinate with driver to arrange pickup.
+        /// Escalator
         /// </summary>
-        DriverForPickup = 3
+        Escalator = 4,
+        /// <summary>
+        /// Elevator
+        /// </summary>
+        Elevator = 5,
+        /// <summary>
+        /// fare gate (or payment gate): A pathway that crosses into an area of the station where a proof of payment is required (usually via a physical payment gate).
+        /// </summary>
+        FareGate = 6,
+        /// <summary>
+        /// Indicates a pathway exiting an area where proof-of-payment is required into an area where proof-of-payment is no longer required.
+        /// </summary>
+        ExitGate = 7,
+
     }
 }

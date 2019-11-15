@@ -139,5 +139,21 @@ namespace GTFS
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the collection of levels.
+        /// </summary>
+        IUniqueEntityCollection<Level> Levels
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of pathways.
+        /// </summary>
+        IUniqueEntityCollection<Pathway> Pathways
+        {
+            get;
+        }
     }
 }

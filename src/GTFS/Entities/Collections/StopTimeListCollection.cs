@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +32,7 @@ namespace GTFS.Entities.Collections
     /// </summary>
     public class StopTimeListCollection : IStopTimeCollection
     {
-        private readonly List<StopTime> _entities;
+        private List<StopTime> _entities;
 
         /// <summary>
         /// Creates a unique entity collection based on a list.
@@ -49,6 +50,15 @@ namespace GTFS.Entities.Collections
         public void Add(StopTime entity)
         {
             _entities.Add(entity);
+        }
+
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
+        public void AddRange(IEnumerable<StopTime> entities)
+        {
+            _entities.AddRange(entities);
         }
 
         /// <summary>
@@ -73,6 +83,39 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
+        /// Gets all stop times for the given trips.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StopTime> GetForTrips(IEnumerable<string> tripIds)
+        {
+            return _entities.Where(e =>
+            {
+                return tripIds.Contains(e.TripId);
+            });
+        }
+
+        /// <summary>
+        /// Gets all stop times for the given stop.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<StopTime> GetForStop(string stopId)
+        {
+            return _entities.Where(x =>
+            {
+                return x.StopId == stopId;
+            });
+        }
+
+        /// <summary>
+        /// This doesn't do anything
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveRange(IEnumerable<StopTime> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Removes all stop times for the given trip.
         /// </summary>
         /// <returns></returns>
@@ -85,15 +128,42 @@ namespace GTFS.Entities.Collections
         }
 
         /// <summary>
-        /// Gets all stop times for the given stop.
+        /// This doesn't do anything
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<StopTime> GetForStop(string stopId)
+        public void RemoveForTrips(IEnumerable<string> tripIds)
         {
-            return _entities.Where(x =>
-                {
-                    return x.StopId == stopId;
-                });
+            _entities.RemoveAll(x =>
+            {
+                return tripIds.Contains(x.TripId);
+            });
+        }
+
+        /// <summary>
+        /// Replaces the internal list of stop_times with a new, empty list.
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveAll()
+        {
+            _entities = new List<StopTime>();
+        }
+
+        /// <summary>
+        /// This doesn't do anything - placeholder
+        /// </summary>
+        /// <returns></returns>
+        public bool Update(string stopId, string tripId, StopTime newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This doesn't do anything - placeholder
+        /// </summary>
+        /// <returns></returns>
+        public bool Update(string stopId, string tripId, uint stopSequence, StopTime newEntity)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -148,7 +218,7 @@ namespace GTFS.Entities.Collections
         /// Returns an enumerator that iterates through the entities.
         /// </summary>
         /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _entities.GetEnumerator();
         }

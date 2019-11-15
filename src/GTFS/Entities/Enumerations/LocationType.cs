@@ -30,10 +30,22 @@ namespace GTFS.Entities.Enumerations
         /// <summary>
         /// A location where passengers board or disembark from a transit vehicle.
         /// </summary>
-        Stop,
+        Stop = 0,
         /// <summary>
         /// A physical structure or area that contains one or more stop.
         /// </summary>
-        Station
+        Station = 1,
+        /// <summary>
+        /// A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it can be linked by pathways to both, but the data provider must pick one of them as parent.
+        /// </summary>
+        EntranceExit = 2,
+        /// <summary>
+        /// A location within a station, not matching any other location_type, which can be used to link together pathways define in pathways.txt.
+        /// </summary>
+        GenericNode = 3,
+        /// <summary>
+        /// A specific location on a platform, where passengers can board and/or alight vehicles.
+        /// </summary>
+        BoardingArea = 4
     }
 }

@@ -30,18 +30,18 @@ namespace GTFS.Entities.Enumerations
         /// <summary>
         /// Regularly scheduled drop off.
         /// </summary>
-        Regular,
+        Regular = 0,
         /// <summary>
         /// No drop off available.
         /// </summary>
-        NoPickup,
+        NoPickup = 1,
         /// <summary>
         /// Must phone agency to arrange drop off.
         /// </summary>
-        PhoneForPickup,
+        PhoneForPickup = 2, // TODO: rename this enum to 'PhoneForDropOff'. it is a breaking change though
         /// <summary>
         /// Must coordinate with driver to arrange drop off.
         /// </summary>
-        DriverForPickup
+        DriverForPickup = 3 // TODO: rename this enum to 'DriverForDropOff'. it is a breaking change though
     }
 }

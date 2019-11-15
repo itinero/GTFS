@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>GTFS.CLI</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>GTFS.CLI</PackageId>
@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Itinero" Version="1.2.0" />
-    <PackageReference Include="NetTopologySuite" Version="1.14.0" />
-    <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="1.14.0" />
+    <PackageReference Include="Itinero" Version="1.3.2" />
+    <PackageReference Include="NetTopologySuite" Version="1.15.1" />
+    <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="1.15.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
