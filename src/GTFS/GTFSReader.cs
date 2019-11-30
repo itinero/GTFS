@@ -60,14 +60,8 @@ namespace GTFS
         {
             _strict = strict;
 
-            this.DateTimeReader = (dateString) =>
-            {
-                return DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-            };
-            this.DateTimeWriter = (date) =>
-            {
-                return date.ToString("yyyyMMdd");
-            };
+            this.DateTimeReader = (dateString) => DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            this.DateTimeWriter = (date) => date.ToString("yyyyMMdd");
             this.TimeOfDayReader = (timeOfDayString) =>
             {
                 if (string.IsNullOrWhiteSpace(timeOfDayString))
@@ -81,7 +75,7 @@ namespace GTFS
                 }
                 else if (!(timeOfDayString.Length == 8 || timeOfDayString.Length == 7))
                 {
-                    throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString));
+                    throw new ArgumentException($"Invalid timeOfDayString: {timeOfDayString}");
                 }
 
                 var timeOfDay = new TimeOfDay();
@@ -1600,8 +1594,7 @@ namespace GTFS
                     return RouteType.Funicular.ToExtended();
             }
 
-            int routeTypeValue;
-            if (!int.TryParse(value, out routeTypeValue))
+            if (!int.TryParse(value, out var routeTypeValue))
             {
                 throw new GTFSParseException(name, fieldName, value);
             }
