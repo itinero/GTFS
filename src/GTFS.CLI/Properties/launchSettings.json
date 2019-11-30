@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "GTFS.CLI": {
-      "commandName": "Project",
-      "commandLineArgs": "--read-feed C:\\work\\data\\gtfs\\tec --add-shapes routerdb=C:\\work\\data\\routing\\belgium-transit.routerdb --write-feed C:\\work\\data\\gtfs\\tec-shapes"
-    }
-  }
-}
