@@ -14,8 +14,4 @@
     <PackageVersion>3.0.0</PackageVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
-  </ItemGroup>
-  
 </Project>
