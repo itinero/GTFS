@@ -4,6 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GTFS</AssemblyName>
     <PackageId>GTFS</PackageId>
+    <Title>GTFS</Title>
+    <Authors>Itinero and contributors</Authors>
+    <Description>GTFS read/write library.</Description>
+    <PackageProjectUrl>https://github.com/OsmSharp/GTFS</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.github.com/OsmSharp/GTFS/master/icon.bmp</PackageIconUrl>
+    <PackageTags>routing,GTFS,transit</PackageTags>
+    <PackageVersion>3.0.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
