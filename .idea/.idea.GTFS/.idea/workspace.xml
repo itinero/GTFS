@@ -2,24 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9e6a99d-f30a-4668-9e05-7db2da910b25" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GTFS.sln" beforeDir="false" afterPath="$PROJECT_DIR$/GTFS.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/DB/Memory/GTFSFeedDB.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/DB/Memory/GTFSFeedDB.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Collections/TransferListCollection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Collections/TransferListCollection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/Exceptions/GTFSExceptionBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Exceptions/GTFSExceptionBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/GTFS.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/GTFS.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/GTFSReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/GTFSReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/IO/GTFSDirectorySource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/IO/GTFSDirectorySource.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GTFS/IO/GTFSDirectoryTarget.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SharedAssemblyVersion.cs" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,11 +22,9 @@
     <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSWriterExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeedExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeed.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSReaderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSFeed.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSDirectoryTarget.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" root0="FORCE_HIGHLIGHTING" />
@@ -53,7 +38,6 @@
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/CSV/CSVStreamWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/Compression/GTFSArchiveSource.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" root0="FORCE_HIGHLIGHTING" />
@@ -91,6 +75,7 @@
         <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" />
         <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/LICENSE" />
       </list>
     </option>
   </component>
@@ -102,6 +87,7 @@
     <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/LICENSE" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -170,7 +156,7 @@
       <updated>1575102802562</updated>
       <workItem from="1575102808150" duration="5771000" />
       <workItem from="1575281325773" duration="2238000" />
-      <workItem from="1575283852351" duration="322000" />
+      <workItem from="1575283852351" duration="916000" />
     </task>
     <servers />
   </component>

@@ -3,6 +3,7 @@
   <component name="ContentModelStore">
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="GTFS.sln" t="IncludeFlat" />
+      <e p="LICENSE" t="Include" />
       <e p="README.md" t="Include" />
       <e p="Solution Items" t="Include" />
       <e p="packages" t="ExcludeRecursive" />

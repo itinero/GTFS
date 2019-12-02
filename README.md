@@ -3,9 +3,9 @@ GTFS Feed Parser
 
 .NET standard implementation of a General Transit Feed Specification (GTFS) feed parser. (see https://developers.google.com/transit/gtfs/reference)
 
-![Build status](http://build.osmsharp.com/app/rest/builds/buildType:(id:Itinero_Gtfs)/statusIcon)
+![Build status](https://build.anyways.eu/app/rest/builds/buildType:(id:Itinero_GtfsDevelop)/statusIcon)
 [![Visit our website](https://img.shields.io/badge/website-itinero.tech-020031.svg) ](http://www.itinero.tech/)
-[![MIT licensed](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://github.com/itinero/GTFS/blob/develop/LICENSE)
+[![MIT licensed](https://img.shields.io/:license-mit-blue.svg)](https://github.com/itinero/GTFS/blob/develop/LICENSE)
 
 [![NuGet](https://img.shields.io/nuget/v/GTFS.svg?style=flat)](http://www.nuget.org/packages/GTFS)  
 
