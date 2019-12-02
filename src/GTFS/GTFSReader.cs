@@ -60,7 +60,8 @@ namespace GTFS
         {
             _strict = strict;
 
-            this.DateTimeReader = (dateString) => DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            this.DateTimeReader = (dateString) =>
+                DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
             this.DateTimeWriter = (date) => date.ToString("yyyyMMdd");
             this.TimeOfDayReader = (timeOfDayString) =>
             {
@@ -86,15 +87,13 @@ namespace GTFS
                     timeOfDay.Seconds = timeOfDayString.FastParse(6, 2);
                     return timeOfDay;
                 }
+
                 timeOfDay.Hours = timeOfDayString.FastParse(0, 1);
                 timeOfDay.Minutes = timeOfDayString.FastParse(2, 2);
                 timeOfDay.Seconds = timeOfDayString.FastParse(5, 2);
                 return timeOfDay;
             };
-            this.TimeOfDayWriter = (timeOfDay) =>
-            {
-                throw new NotImplementedException();
-            };
+            this.TimeOfDayWriter = (timeOfDay) => { throw new NotImplementedException(); };
 
             // initialize maps.
             this.AgencyMap = new FieldMap();
@@ -138,7 +137,8 @@ namespace GTFS
                 return this.DateTimeReader.Invoke(value);
             }
             catch (Exception ex)
-            { // throw a GFTS parse exception instead.
+            {
+                // throw a GFTS parse exception instead.
                 throw new GTFSParseException(name, fieldName, value, ex);
             }
         }
@@ -164,7 +164,8 @@ namespace GTFS
                 return this.TimeOfDayReader.Invoke(value);
             }
             catch (Exception ex)
-            { // throw a GFTS parse exception instead.
+            {
+                // throw a GFTS parse exception instead.
                 return new TimeOfDay()
                 {
                     Hours = 0,
@@ -228,17 +229,21 @@ namespace GTFS
                 foreach (var file in source)
                 {
                     if (!readFiles.Contains(file.Name))
-                    { // file has not been read yet!
+                    {
+                        // file has not been read yet!
                         HashSet<string> dependencies = null;
                         if (!dependencyTree.TryGetValue(file.Name, out dependencies))
-                        { // there is no entry in the dependency tree, file is independant.
+                        {
+                            // there is no entry in the dependency tree, file is independant.
                             selectedFile = file;
                             break;
                         }
                         else
-                        { // file depends on other file, check if they have been read already.
+                        {
+                            // file depends on other file, check if they have been read already.
                             if (dependencies.All(x => readFiles.Contains(x)))
-                            { // all dependencies have been read.
+                            {
+                                // all dependencies have been read.
                                 selectedFile = file;
                                 break;
                             }
@@ -249,13 +254,15 @@ namespace GTFS
                 // check if there is a next file.
                 if (selectedFile == null)
                 {
-                    throw new Exception("Could not select a next file based on the current dependency tree and the current file list.");
+                    throw new Exception(
+                        "Could not select a next file based on the current dependency tree and the current file list.");
                 }
 
                 // read the file.
                 this.Read(selectedFile, feed);
                 readFiles.Add(selectedFile.Name);
             }
+
             return feed;
         }
 
@@ -308,13 +315,15 @@ namespace GTFS
             {
                 string fileToRead = filesToRead[idx];
                 if (!readFiles.Contains(fileToRead))
-                { // files can be in the list more than once.
+                {
+                    // files can be in the list more than once.
 
                     // read the file.
                     this.Read(source.First(x => x.Name.Equals(fileToRead)), feed);
                     readFiles.Add(fileToRead);
                 }
             }
+
             return feed;
         }
 
@@ -324,7 +333,7 @@ namespace GTFS
         /// <returns></returns>
         public virtual IEnumerable<string> GetRequiredFiles()
         {
-            return new[] { "agency", "stops", "routes", "trips", "stop_times" };
+            return new[] {"agency", "stops", "routes", "trips", "stop_times"};
         }
 
         /// <summary>
@@ -474,6 +483,7 @@ namespace GTFS
             {
                 this.ParsePathwayField(header, pathway, header.GetColumn(idx), data[idx]);
             }
+
             return pathway;
         }
 
@@ -484,7 +494,8 @@ namespace GTFS
         /// <param name="pathway"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParsePathwayField(GTFSSourceFileHeader header, Pathway pathway, string fieldName, string value)
+        protected virtual void ParsePathwayField(GTFSSourceFileHeader header, Pathway pathway, string fieldName,
+            string value)
         {
             switch (fieldName)
             {
@@ -498,10 +509,11 @@ namespace GTFS
                     pathway.ToStopId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "pathway_mode":
-                    pathway.PathwayMode = (PathwayMode)this.ParseFieldPathwayMode(header.Name, fieldName, value);
+                    pathway.PathwayMode = (PathwayMode) this.ParseFieldPathwayMode(header.Name, fieldName, value);
                     break;
                 case "is_bidirectional":
-                    pathway.IsBidirectional = (IsBidirectional)this.ParseFieldIsBidirectional(header.Name, fieldName, value);
+                    pathway.IsBidirectional =
+                        (IsBidirectional) this.ParseFieldIsBidirectional(header.Name, fieldName, value);
                     break;
                 case "length":
                     pathway.Length = this.ParseFieldDouble(header.Name, fieldName, value);
@@ -552,6 +564,7 @@ namespace GTFS
             {
                 this.ParseLevelField(header, level, header.GetColumn(idx), data[idx]);
             }
+
             return level;
         }
 
@@ -570,7 +583,7 @@ namespace GTFS
                     level.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "level_index":
-                    level.Index = (double)this.ParseFieldDouble(header.Name, fieldName, value);
+                    level.Index = (double) this.ParseFieldDouble(header.Name, fieldName, value);
                     break;
                 case "level_name":
                     level.Name = this.ParseFieldString(header.Name, fieldName, value);
@@ -591,7 +604,8 @@ namespace GTFS
         /// <param name="feed"></param>
         /// <param name="parser"></param>
         /// <param name="addDelegate"></param>
-        private void Read<TEntity>(IGTFSSourceFile file, T feed, EntityParseDelegate<TEntity> parser, EntityAddDelegate<TEntity> addDelegate)
+        private void Read<TEntity>(IGTFSSourceFile file, T feed, EntityParseDelegate<TEntity> parser,
+            EntityAddDelegate<TEntity> addDelegate)
             where TEntity : GTFSEntity
         {
             // set line preprocessor if any.
@@ -600,16 +614,19 @@ namespace GTFS
             // enumerate all lines.
             var enumerator = file.GetEnumerator();
             if (!enumerator.MoveNext())
-            { // there is no data, and if there is move to the columns.
+            {
+                // there is no data, and if there is move to the columns.
                 return;
             }
 
             // read the header.
             var headerColumns = new string[enumerator.Current.Length];
             for (int idx = 0; idx < headerColumns.Length; idx++)
-            { // 'clean' header columns.
+            {
+                // 'clean' header columns.
                 headerColumns[idx] = this.CleanFieldValue(enumerator.Current[idx]);
             }
+
             var header = new GTFSSourceFileHeader(file.Name, headerColumns);
 
             // read fields and keep them sorted.
@@ -621,6 +638,7 @@ namespace GTFS
                     var entity = parser.Invoke(feed, header, enumerator.Current);
                     entities.Add(entity);
                 }
+
                 entities.Sort();
                 foreach (var entity in entities)
                 {
@@ -664,6 +682,7 @@ namespace GTFS
             {
                 this.ParseAgencyField(header, agency, header.GetColumn(idx), data[idx]);
             }
+
             return agency;
         }
 
@@ -674,7 +693,8 @@ namespace GTFS
         /// <param name="agency"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseAgencyField(GTFSSourceFileHeader header, Agency agency, string fieldName, string value)
+        protected virtual void ParseAgencyField(GTFSSourceFileHeader header, Agency agency, string fieldName,
+            string value)
         {
             switch (fieldName)
             {
@@ -734,6 +754,7 @@ namespace GTFS
             {
                 this.ParseCalendarField(feed, header, calendar, header.GetColumn(idx), data[idx]);
             }
+
             return calendar;
         }
 
@@ -745,7 +766,8 @@ namespace GTFS
         /// <param name="calendar"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseCalendarField(T feed, GTFSSourceFileHeader header, Calendar calendar, string fieldName, string value)
+        protected virtual void ParseCalendarField(T feed, GTFSSourceFileHeader header, Calendar calendar,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -774,10 +796,12 @@ namespace GTFS
                     calendar.Sunday = this.ParseFieldBool(header.Name, fieldName, value).Value;
                     break;
                 case "start_date":
-                    calendar.StartDate = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
+                    calendar.StartDate = this.ReadDateTime(header.Name, fieldName,
+                        this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "end_date":
-                    calendar.EndDate = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
+                    calendar.EndDate = this.ReadDateTime(header.Name, fieldName,
+                        this.ParseFieldString(header.Name, fieldName, value));
                     break;
             }
         }
@@ -807,6 +831,7 @@ namespace GTFS
             {
                 this.ParseCalendarDateField(feed, header, calendarDate, header.GetColumn(idx), data[idx]);
             }
+
             return calendarDate;
         }
 
@@ -818,7 +843,8 @@ namespace GTFS
         /// <param name="calendarDate"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseCalendarDateField(T feed, GTFSSourceFileHeader header, CalendarDate calendarDate, string fieldName, string value)
+        protected virtual void ParseCalendarDateField(T feed, GTFSSourceFileHeader header, CalendarDate calendarDate,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -826,7 +852,8 @@ namespace GTFS
                     calendarDate.ServiceId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "date":
-                    calendarDate.Date = this.ReadDateTime(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
+                    calendarDate.Date = this.ReadDateTime(header.Name, fieldName,
+                        this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "exception_type":
                     calendarDate.ExceptionType = this.ParseFieldExceptionType(header.Name, fieldName, value);
@@ -861,6 +888,7 @@ namespace GTFS
             {
                 this.ParseFareAttributeField(feed, header, fareAttribute, header.GetColumn(idx), data[idx]);
             }
+
             return fareAttribute;
         }
 
@@ -872,7 +900,8 @@ namespace GTFS
         /// <param name="fareAttribute"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFareAttributeField(T feed, GTFSSourceFileHeader header, FareAttribute fareAttribute, string fieldName, string value)
+        protected virtual void ParseFareAttributeField(T feed, GTFSSourceFileHeader header, FareAttribute fareAttribute,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -923,6 +952,7 @@ namespace GTFS
             {
                 this.ParseFareRuleField(feed, header, fareRule, header.GetColumn(idx), data[idx]);
             }
+
             return fareRule;
         }
 
@@ -934,7 +964,8 @@ namespace GTFS
         /// <param name="fareRule"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFareRuleField(T feed, GTFSSourceFileHeader header, FareRule fareRule, string fieldName, string value)
+        protected virtual void ParseFareRuleField(T feed, GTFSSourceFileHeader header, FareRule fareRule,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -981,10 +1012,12 @@ namespace GTFS
             {
                 this.ParseFeedInfoField(feed, header, feedInfo, header.GetColumn(idx), data[idx]);
             }
+
             return feedInfo;
         }
 
-        private void ParseFeedInfoField(T feed, GTFSSourceFileHeader header, FeedInfo feedInfo, string fieldName, string value)
+        private void ParseFeedInfoField(T feed, GTFSSourceFileHeader header, FeedInfo feedInfo, string fieldName,
+            string value)
         {
             this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_name");
             this.CheckRequiredField(header, header.Name, this.FrequencyMap, "feed_publisher_url");
@@ -1038,6 +1071,7 @@ namespace GTFS
             {
                 this.ParseFrequencyField(feed, header, frequency, header.GetColumn(idx), data[idx]);
             }
+
             return frequency;
         }
 
@@ -1054,7 +1088,8 @@ namespace GTFS
         /// <param name="frequency"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseFrequencyField(T feed, GTFSSourceFileHeader header, Frequency frequency, string fieldName, string value)
+        protected virtual void ParseFrequencyField(T feed, GTFSSourceFileHeader header, Frequency frequency,
+            string fieldName, string value)
         {
             this.CheckRequiredField(header, header.Name, this.FrequencyMap, "trip_id");
             this.CheckRequiredField(header, header.Name, this.FrequencyMap, "start_time");
@@ -1102,6 +1137,7 @@ namespace GTFS
             {
                 this.ParseRouteField(feed, header, route, header.GetColumn(idx), data[idx]);
             }
+
             return route;
         }
 
@@ -1113,7 +1149,8 @@ namespace GTFS
         /// <param name="route"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseRouteField(T feed, GTFSSourceFileHeader header, Route route, string fieldName, string value)
+        protected virtual void ParseRouteField(T feed, GTFSSourceFileHeader header, Route route, string fieldName,
+            string value)
         {
             switch (fieldName)
             {
@@ -1173,6 +1210,7 @@ namespace GTFS
             {
                 this.ParseShapeField(feed, header, shape, header.GetColumn(idx), data[idx]);
             }
+
             return shape;
         }
 
@@ -1184,7 +1222,8 @@ namespace GTFS
         /// <param name="shape"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseShapeField(T feed, GTFSSourceFileHeader header, Shape shape, string fieldName, string value)
+        protected virtual void ParseShapeField(T feed, GTFSSourceFileHeader header, Shape shape, string fieldName,
+            string value)
         {
             switch (fieldName)
             {
@@ -1232,6 +1271,7 @@ namespace GTFS
             {
                 this.ParseStopField(feed, header, stop, header.GetColumn(idx), data[idx]);
             }
+
             return stop;
         }
 
@@ -1243,7 +1283,8 @@ namespace GTFS
         /// <param name="stop"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseStopField(T feed, GTFSSourceFileHeader header, Stop stop, string fieldName, string value)
+        protected virtual void ParseStopField(T feed, GTFSSourceFileHeader header, Stop stop, string fieldName,
+            string value)
         {
             switch (fieldName.Trim())
             {
@@ -1333,6 +1374,7 @@ namespace GTFS
             {
                 this.ParseStopTimeField(feed, header, stopTime, header.GetColumn(idx), data[idx]);
             }
+
             return stopTime;
         }
 
@@ -1344,7 +1386,8 @@ namespace GTFS
         /// <param name="stopTime"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseStopTimeField(T feed, GTFSSourceFileHeader header, StopTime stopTime, string fieldName, string value)
+        protected virtual void ParseStopTimeField(T feed, GTFSSourceFileHeader header, StopTime stopTime,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -1352,10 +1395,12 @@ namespace GTFS
                     stopTime.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "arrival_time":
-                    stopTime.ArrivalTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
+                    stopTime.ArrivalTime = this.ReadTimeOfDay(header.Name, fieldName,
+                        this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "departure_time":
-                    stopTime.DepartureTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
+                    stopTime.DepartureTime = this.ReadTimeOfDay(header.Name, fieldName,
+                        this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "stop_id":
                     stopTime.StopId = this.ParseFieldString(header.Name, fieldName, value);
@@ -1406,6 +1451,7 @@ namespace GTFS
             {
                 this.ParseTransferField(feed, header, transfer, header.GetColumn(idx), data[idx]);
             }
+
             return transfer;
         }
 
@@ -1417,7 +1463,8 @@ namespace GTFS
         /// <param name="transfer"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseTransferField(T feed, GTFSSourceFileHeader header, Transfer transfer, string fieldName, string value)
+        protected virtual void ParseTransferField(T feed, GTFSSourceFileHeader header, Transfer transfer,
+            string fieldName, string value)
         {
             switch (fieldName)
             {
@@ -1461,6 +1508,7 @@ namespace GTFS
             {
                 this.ParseTripField(feed, header, trip, header.GetColumn(idx), data[idx]);
             }
+
             return trip;
         }
 
@@ -1472,7 +1520,8 @@ namespace GTFS
         /// <param name="trip"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        protected virtual void ParseTripField(T feed, GTFSSourceFileHeader header, Trip trip, string fieldName, string value)
+        protected virtual void ParseTripField(T feed, GTFSSourceFileHeader header, Trip trip, string fieldName,
+            string value)
         {
             switch (fieldName)
             {
@@ -1513,10 +1562,12 @@ namespace GTFS
         /// <param name="name"></param>
         /// <param name="fieldMap"></param>
         /// <param name="column"></param>
-        protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, FieldMap fieldMap, string column)
+        protected virtual void CheckRequiredField(GTFSSourceFileHeader header, string name, FieldMap fieldMap,
+            string column)
         {
             if (_strict)
-            { // do not check the requeted fields stuff when not strict.
+            {
+                // do not check the requeted fields stuff when not strict.
                 string actual = fieldMap.GetActual(column);
                 if (!header.HasColumn(actual))
                 {
@@ -1551,7 +1602,8 @@ namespace GTFS
                 return value.ToArgbInt();
             }
             catch (Exception ex)
-            {// hmm, some unknow exception, field not in correct format, give inner exception as a clue.
+            {
+                // hmm, some unknow exception, field not in correct format, give inner exception as a clue.
                 throw new GTFSParseException(name, fieldName, value, ex);
             }
         }
@@ -1598,9 +1650,10 @@ namespace GTFS
             {
                 throw new GTFSParseException(name, fieldName, value);
             }
+
             try
             {
-                return (RouteTypeExtended)routeTypeValue;
+                return (RouteTypeExtended) routeTypeValue;
             }
             catch
             {
@@ -1630,6 +1683,7 @@ namespace GTFS
                 case "2":
                     return ExceptionType.Removed;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1655,6 +1709,7 @@ namespace GTFS
                 case "1":
                     return PaymentMethodType.BeforeBoarding;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1687,6 +1742,7 @@ namespace GTFS
                 case "3":
                     return TransferType.NotPossible;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1700,7 +1756,8 @@ namespace GTFS
         private WheelchairAccessibilityType? ParseFieldAccessibilityType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1720,6 +1777,7 @@ namespace GTFS
                 case "2":
                     return WheelchairAccessibilityType.NoAccessibility;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1733,7 +1791,8 @@ namespace GTFS
         private DropOffType? ParseFieldDropOffType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1756,6 +1815,7 @@ namespace GTFS
                 case "3":
                     return DropOffType.DriverForPickup;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1766,7 +1826,8 @@ namespace GTFS
         private TimePointType ParseFieldTimepointType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return TimePointType.None;
             }
 
@@ -1783,6 +1844,7 @@ namespace GTFS
                 case "1":
                     return TimePointType.Exact;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1796,7 +1858,8 @@ namespace GTFS
         private PickupType? ParseFieldPickupType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1819,6 +1882,7 @@ namespace GTFS
                 case "3":
                     return PickupType.DriverForPickup;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1832,7 +1896,8 @@ namespace GTFS
         private LocationType? ParseFieldLocationType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1858,10 +1923,13 @@ namespace GTFS
                 case "4":
                     return LocationType.BoardingArea;
             }
+
             if (_strict)
-            { // invalid location type.
+            {
+                // invalid location type.
                 throw new GTFSParseException(name, fieldName, value);
             }
+
             return null;
         }
 
@@ -1875,7 +1943,8 @@ namespace GTFS
         private DirectionType? ParseFieldDirectionType(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1892,6 +1961,7 @@ namespace GTFS
                 case "1":
                     return DirectionType.OppositeDirection;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1905,7 +1975,8 @@ namespace GTFS
         private PathwayMode? ParseFieldPathwayMode(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1937,6 +2008,7 @@ namespace GTFS
                 case "7":
                     return PathwayMode.ExitGate;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1950,7 +2022,8 @@ namespace GTFS
         private IsBidirectional? ParseFieldIsBidirectional(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1967,6 +2040,7 @@ namespace GTFS
                 case "1":
                     return IsBidirectional.Bidirectional;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -1980,7 +2054,8 @@ namespace GTFS
         protected virtual uint? ParseFieldUInt(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -1989,9 +2064,11 @@ namespace GTFS
 
             uint result;
             if (!uint.TryParse(value, out result))
-            { // parsing failed!
+            {
+                // parsing failed!
                 throw new GTFSParseException(name, fieldName, value);
             }
+
             return result;
         }
 
@@ -2005,7 +2082,8 @@ namespace GTFS
         protected virtual int? ParseFieldInt(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -2014,9 +2092,11 @@ namespace GTFS
 
             int result;
             if (!int.TryParse(value, out result))
-            { // parsing failed!
+            {
+                // parsing failed!
                 throw new GTFSParseException(name, fieldName, value);
             }
+
             return result;
         }
 
@@ -2030,7 +2110,8 @@ namespace GTFS
         protected virtual double? ParseFieldDouble(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -2042,14 +2123,19 @@ namespace GTFS
             {
                 return null;
             }
-            if (!double.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
-            { // parsing failed!
+
+            if (!double.TryParse(value, System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture, out result))
+            {
+                // parsing failed!
                 if (_strict)
                 {
                     throw new GTFSParseException(name, fieldName, value);
                 }
+
                 return null;
             }
+
             return result;
         }
 
@@ -2063,7 +2149,8 @@ namespace GTFS
         private bool? ParseFieldBool(string name, string fieldName, string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // there is no value.
+            {
+                // there is no value.
                 return null;
             }
 
@@ -2077,6 +2164,7 @@ namespace GTFS
                 case "1":
                     return true;
             }
+
             throw new GTFSParseException(name, fieldName, value);
         }
 
@@ -2088,68 +2176,27 @@ namespace GTFS
         protected virtual string CleanFieldValue(string value)
         {
             if (!_strict)
-            { // no cleaning when strict!
+            {
+                // no cleaning when strict!
                 value = value.Trim();
                 if (value != null && value.Length > 0)
-                { // test some stuff.
+                {
+                    // test some stuff.
                     if (value.Length >= 2)
-                    { // test for quotes
+                    {
+                        // test for quotes
                         if (value[0] == '"' &&
                             value[value.Length - 1] == '"')
-                        { // quotes on both ends.
+                        {
+                            // quotes on both ends.
                             return value.Substring(1, value.Length - 2);
                         }
                     }
                 }
             }
+
             return value;
         }
     }
 
-    /// <summary>
-    /// Contains extension methods for the GTFS reader.
-    /// </summary>
-    public static class GTFSReaderExtensions
-    {
-        /// <summary>
-        /// Reads a GTFS feed from the given source.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="reader"></param>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static T Read<T>(this GTFSReader<T> reader, IEnumerable<IGTFSSourceFile> source)
-            where T : IGTFSFeed, new()
-        {
-            return reader.Read(new T(), source);
-        }
-
-        /// <summary>
-        /// Reads a GTFS feed from the given source.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="reader"></param>
-        /// <param name="source"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static T Read<T>(this GTFSReader<T> reader, IEnumerable<IGTFSSourceFile> source, IGTFSSourceFile file)
-            where T : IGTFSFeed, new()
-        {
-            return reader.Read(new T(), source, file);
-        }
-
-        /// <summary>
-        /// Reads a GTFS feed directly into a GTFS feed db.
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="db"></param>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static int Read(this GTFSReader<IGTFSFeed> reader, IGTFSFeedDB db, IEnumerable<IGTFSSourceFile> source)
-        {
-            int newFeed = db.AddFeed();
-            reader.Read(db.GetFeed(newFeed), source);
-            return newFeed;
-        }
-    }
 }

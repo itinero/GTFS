@@ -14,4 +14,8 @@
     <PackageVersion>3.0.0-pre001</PackageVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
 </Project>

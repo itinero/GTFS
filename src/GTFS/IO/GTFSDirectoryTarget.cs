@@ -23,7 +23,6 @@
 using System.Collections.Generic;
 using System.IO;
 
-#if !PCL
 namespace GTFS.IO
 {
     /// <summary>
@@ -31,15 +30,8 @@ namespace GTFS.IO
     /// </summary>
     public class GTFSDirectoryTarget : IEnumerable<IGTFSTargetFile>
     {
-        /// <summary>
-        /// Holds the directory info.
-        /// </summary>
-        private DirectoryInfo _directory;
-
-        /// <summary>
-        /// Holds the target files.
-        /// </summary>
-        private List<IGTFSTargetFile> _targets;
+        private readonly DirectoryInfo _directory;
+        private readonly List<IGTFSTargetFile> _targets;
 
         /// <summary>
         /// Creates a new GTFS directory target.
@@ -108,4 +100,3 @@ namespace GTFS.IO
         }
     }
 }
-#endif

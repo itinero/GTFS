@@ -86,7 +86,9 @@
           <e p="GTFS.csproj" t="IncludeRecursive" />
           <e p="GTFSFeed.cs" t="Include" />
           <e p="GTFSReader.cs" t="Include" />
+          <e p="GTFSReaderExtensions.cs" t="Include" />
           <e p="GTFSWriter.cs" t="Include" />
+          <e p="GTFSWriterExtensions.cs" t="Include" />
           <e p="IGTFSFeed.cs" t="Include" />
           <e p="IGTFSFeedExtensions.cs" t="Include" />
           <e p="IO" t="Include">
@@ -96,6 +98,9 @@
               <e p="CSVStreamWriter.cs" t="Include" />
               <e p="ICSVReader.cs" t="Include" />
               <e p="ICSVWriter.cs" t="Include" />
+            </e>
+            <e p="Compression" t="Include">
+              <e p="GTFSArchiveSource.cs" t="Include" />
             </e>
             <e p="GTFSDirectorySource.cs" t="Include" />
             <e p="GTFSDirectoryTarget.cs" t="Include" />
@@ -213,6 +218,7 @@
             <e p="AssemblyInfo.cs" t="Include" />
           </e>
           <e p="bin" t="ExcludeRecursive" />
+          <e p="gtfs1.zip" t="Include" />
           <e p="obj" t="ExcludeRecursive">
             <e p="Debug" t="Include">
               <e p="netcoreapp2.2" t="Include">
