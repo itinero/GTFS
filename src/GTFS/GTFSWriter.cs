@@ -82,35 +82,34 @@ namespace GTFS
         /// <param name="levels"></param>
         protected virtual void Write(IGTFSTargetFile levelsFile, IEnumerable<Level> levels)
         {
-            if (levelsFile != null)
+            if (levelsFile == null) return;
+            
+            bool initialized = false;
+            var data = new string[3];
+            foreach (var level in levels)
             {
-                bool initialized = false;
-                var data = new string[3];
-                foreach (var level in levels)
+                if (!initialized)
                 {
-                    if (!initialized)
+                    if (levelsFile.Exists)
                     {
-                        if (levelsFile.Exists)
-                        {
-                            levelsFile.Clear();
-                        }
-
-                        // write headers.
-                        data[0] = "level_id";
-                        data[1] = "level_index";
-                        data[2] = "level_name";
-                        levelsFile.Write(data);
-                        initialized = true;
+                        levelsFile.Clear();
                     }
 
-                    // write level details.
-                    data[0] = this.WriteFieldString("level", "level_id", level.Id);
-                    data[1] = this.WriteFieldDouble("level", "level_index", level.Index);
-                    data[2] = this.WriteFieldString("level", "level_name", level.Name, true);
+                    // write headers.
+                    data[0] = "level_id";
+                    data[1] = "level_index";
+                    data[2] = "level_name";
                     levelsFile.Write(data);
+                    initialized = true;
                 }
-                levelsFile.Close();
+
+                // write level details.
+                data[0] = this.WriteFieldString("level", "level_id", level.Id);
+                data[1] = this.WriteFieldDouble("level", "level_index", level.Index);
+                data[2] = this.WriteFieldString("level", "level_name", level.Name, true);
+                levelsFile.Write(data);
             }
+            levelsFile.Close();
         }
 
         /// <summary>
@@ -120,53 +119,52 @@ namespace GTFS
         /// <param name="pathways"></param>
         protected virtual void Write(IGTFSTargetFile pathwaysFile, IEnumerable<Pathway> pathways)
         {
-            if (pathwaysFile != null)
+            if (pathwaysFile == null) return;
+            
+            bool initialized = false;
+            var data = new string[12];
+            foreach (var pathway in pathways)
             {
-                bool initialized = false;
-                var data = new string[12];
-                foreach (var pathway in pathways)
+                if (!initialized)
                 {
-                    if (!initialized)
+                    if (pathwaysFile.Exists)
                     {
-                        if (pathwaysFile.Exists)
-                        {
-                            pathwaysFile.Clear();
-                        }
-
-                        // write headers.
-                        data[0] = "pathway_id";
-                        data[1] = "from_stop_id";
-                        data[2] = "to_stop_id";
-                        data[3] = "pathway_mode";
-                        data[4] = "is_bidirectional";
-                        data[5] = "length";
-                        data[6] = "traversal_time";
-                        data[7] = "stair_count";
-                        data[8] = "max_slope";
-                        data[9] = "min_width";
-                        data[10] = "signposted_as";
-                        data[11] = "reversed_signposted_as";
-                        pathwaysFile.Write(data);
-                        initialized = true;
+                        pathwaysFile.Clear();
                     }
 
-                    // write pathway details.
-                    data[0] = this.WriteFieldString("pathway", "pathway_id", pathway.Id);
-                    data[1] = this.WriteFieldString("pathway", "from_stop_id", pathway.FromStopId);
-                    data[2] = this.WriteFieldString("pathway", "to_stop_id", pathway.ToStopId);
-                    data[3] = this.WriteFieldPathwayMode("pathway", "pathway_mode", pathway.PathwayMode);
-                    data[4] = this.WriteFieldIsBidirectional("pathway", "is_bidirectional", pathway.IsBidirectional);
-                    data[5] = this.WriteFieldDouble("pathway", "length", pathway.Length);
-                    data[6] = this.WriteFieldInt("pathway", "traversal_time", pathway.TraversalTime);
-                    data[7] = this.WriteFieldInt("pathway", "stair_count", pathway.StairCount);
-                    data[8] = this.WriteFieldDouble("pathway", "max_slope", pathway.MaxSlope);
-                    data[9] = this.WriteFieldDouble("pathway", "min_width", pathway.MinWidth);
-                    data[10] = this.WriteFieldString("pathway", "signposted_as", pathway.SignpostedAs);
-                    data[11] = this.WriteFieldString("pathway", "reversed_signposted_as", pathway.ReversedSignpostedAs);
+                    // write headers.
+                    data[0] = "pathway_id";
+                    data[1] = "from_stop_id";
+                    data[2] = "to_stop_id";
+                    data[3] = "pathway_mode";
+                    data[4] = "is_bidirectional";
+                    data[5] = "length";
+                    data[6] = "traversal_time";
+                    data[7] = "stair_count";
+                    data[8] = "max_slope";
+                    data[9] = "min_width";
+                    data[10] = "signposted_as";
+                    data[11] = "reversed_signposted_as";
                     pathwaysFile.Write(data);
+                    initialized = true;
                 }
-                pathwaysFile.Close();
+
+                // write pathway details.
+                data[0] = this.WriteFieldString("pathway", "pathway_id", pathway.Id);
+                data[1] = this.WriteFieldString("pathway", "from_stop_id", pathway.FromStopId);
+                data[2] = this.WriteFieldString("pathway", "to_stop_id", pathway.ToStopId);
+                data[3] = this.WriteFieldPathwayMode("pathway", "pathway_mode", pathway.PathwayMode);
+                data[4] = this.WriteFieldIsBidirectional("pathway", "is_bidirectional", pathway.IsBidirectional);
+                data[5] = this.WriteFieldDouble("pathway", "length", pathway.Length);
+                data[6] = this.WriteFieldInt("pathway", "traversal_time", pathway.TraversalTime);
+                data[7] = this.WriteFieldInt("pathway", "stair_count", pathway.StairCount);
+                data[8] = this.WriteFieldDouble("pathway", "max_slope", pathway.MaxSlope);
+                data[9] = this.WriteFieldDouble("pathway", "min_width", pathway.MinWidth);
+                data[10] = this.WriteFieldString("pathway", "signposted_as", pathway.SignpostedAs);
+                data[11] = this.WriteFieldString("pathway", "reversed_signposted_as", pathway.ReversedSignpostedAs);
+                pathwaysFile.Write(data);
             }
+            pathwaysFile.Close();
         }
 
         /// <summary>

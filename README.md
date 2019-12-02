@@ -1,7 +1,7 @@
 GTFS Feed Parser
 ================
 
-.Net/Mono implementation of a General Transit Feed Specification (GTFS) feed parser. (see https://developers.google.com/transit/gtfs/reference)
+.NET standard implementation of a General Transit Feed Specification (GTFS) feed parser. (see https://developers.google.com/transit/gtfs/reference)
 
 ![Build status](http://build.osmsharp.com/app/rest/builds/buildType:(id:Itinero_Gtfs)/statusIcon)
 [![Visit our website](https://img.shields.io/badge/website-itinero.tech-020031.svg) ](http://www.itinero.tech/)
@@ -9,20 +9,19 @@ GTFS Feed Parser
 
 [![NuGet](https://img.shields.io/nuget/v/GTFS.svg?style=flat)](http://www.nuget.org/packages/GTFS)  
 
-The implementation is deliberate kept very flexible and customizable because many GTFS feeds out there all have their specific little perks.
+### Getting started
 
-### A short example
 ```
 // create the reader.
 var reader = new GTFSReader<GTFSFeed>();
+var feed = reader.Read("/path/to/feed");
 
-// execute the reader.
-using (
-  var sources = new GTFSDirectorySource(new DirectoryInfo("path/to/feed/directory")))
-{
-  var feed = reader.Read(sources);
-  ...
-}
+// read archive.
+feed = reader.Read("/path/to/archive.zip");
+
+// write feed to folder.
+var writer = new GTFSWriter<GTFSFeed>();
+writer.Write(feed, "/path/to/output");
 ```
 
 ### Install GTFS

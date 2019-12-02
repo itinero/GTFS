@@ -37,7 +37,10 @@ namespace GTFS.DB.Memory
         /// </summary>
         private List<IGTFSFeed> _feeds = new List<IGTFSFeed>();
 
-        public string ConnectionString => throw new NotImplementedException();
+        /// <summary>
+        /// Gets the connection string.
+        /// </summary>
+        public string ConnectionString => string.Empty;
 
         /// <summary>
         /// Adds a new empty feed to this db.
@@ -94,66 +97,123 @@ namespace GTFS.DB.Memory
             return _feeds[id];
         }
 
+        /// <summary>
+        /// Returns true if the given table exists.
+        /// </summary>
+        /// <param name="tableName">The table name.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool TableExists(string tableName)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Returns true if the given column in the given table exists.
+        /// </summary>
+        /// <param name="tableName">The table name.</param>
+        /// <param name="columnName">The column name.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool ColumnExists(string tableName, string columnName)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets the full data source.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public string GetFullDataSource()
         {
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Sort all tables.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortAllTables()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sorts routes.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortRoutes()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sort trips.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortTrips()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sorts stops.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortStops()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sorts stop times.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortStopTimes()
         {
             throw new NotImplementedException();
         }
-
+        
+        /// <summary>
+        /// Sorts frequencies.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortFrequencies()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sorts calendars.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortCalendars()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sorts calendar dates.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortCalendarDates()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sort shapes.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void SortShapes()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets or sets tag.
+        /// </summary>
         public object Tag { get; set; }
     }
 }

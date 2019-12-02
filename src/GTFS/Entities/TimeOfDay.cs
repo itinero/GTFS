@@ -78,11 +78,21 @@ namespace GTFS.Entities
             };
         }
 
+        /// <summary>
+        /// Returns the time of day for the given date.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns></returns>
         public static TimeOfDay FromDateTime(DateTime date)
         {
             return FromTimeSpan(date.TimeOfDay);
         }
 
+        /// <summary>
+        /// Returns the time of day for the given timespan.
+        /// </summary>
+        /// <param name="ts">The timespan.</param>
+        /// <returns></returns>
         public static TimeOfDay FromTimeSpan(TimeSpan ts)
         {
             return FromTotalSeconds(Convert.ToInt32(ts.TotalSeconds));
@@ -130,36 +140,67 @@ namespace GTFS.Entities
             }
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator >(TimeOfDay a, TimeOfDay b)
         {
             return a.TotalSeconds > b.TotalSeconds;
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator <(TimeOfDay a, TimeOfDay b)
         {
             return a.TotalSeconds < b.TotalSeconds;
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator >=(TimeOfDay a, TimeOfDay b)
         {
             return a.TotalSeconds >= b.TotalSeconds;
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator <=(TimeOfDay a, TimeOfDay b)
         {
             return a.TotalSeconds <= b.TotalSeconds;
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator ==(TimeOfDay a, TimeOfDay b)
         {
-            if (object.ReferenceEquals(a, null) || object.ReferenceEquals(b, null))
-            {
-                return object.ReferenceEquals(a, null) && object.ReferenceEquals(b, null);
-            }
-
             return a.TotalSeconds == b.TotalSeconds;
         }
 
+        /// <summary>
+        /// Compares two time of days.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator !=(TimeOfDay a, TimeOfDay b)
         {
             return !(a == b);
@@ -185,9 +226,8 @@ namespace GTFS.Entities
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj is TimeOfDay)
+            if (obj is TimeOfDay other)
             {
-                var other = (TimeOfDay)obj;
                 return this.Hours == other.Hours &&
                     this.Minutes == other.Minutes &&
                     this.Seconds == other.Seconds;

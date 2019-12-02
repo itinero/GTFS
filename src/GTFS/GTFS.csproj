@@ -4,20 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GTFS</AssemblyName>
     <PackageId>GTFS</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <Title>GTFS</Title>
+    <Authors>Itinero and contributors</Authors>
+    <Description>GTFS read/write library.</Description>
+    <PackageProjectUrl>https://github.com/OsmSharp/GTFS</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.github.com/OsmSharp/GTFS/master/icon.bmp</PackageIconUrl>
+    <PackageTags>routing,GTFS,transit</PackageTags>
+    <PackageVersion>3.0.0-pre001</PackageVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
-    <Compile Include="..\..\SharedAssemblyVersion.cs" />
-  </ItemGroup>
-
   <PropertyGroup>
-    <DefineConstants>TRACE;NETSTANDARD13;NETFX_CORE;DOTNET_CORE</DefineConstants>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 </Project>
