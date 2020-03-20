@@ -1064,6 +1064,18 @@ namespace GTFS
         /// <returns></returns>
         private string WriteFieldTransferType(string name, string fieldName, TransferType value)
         {
+            switch (value)
+            {
+                case TransferType.Recommended:
+                    return "0";
+                case TransferType.TimedTransfer:
+                    return "1";
+                case TransferType.MinimumTime:
+                    return "2";
+                case TransferType.NotPossible:
+                    return "3";
+            }
+
             return string.Empty;
         }
 
