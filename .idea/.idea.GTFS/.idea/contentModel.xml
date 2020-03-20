@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p=".git/info/exclude" t="IncludeRecursive" />
       <e p="GTFS.sln" t="IncludeFlat" />
       <e p="LICENSE" t="Include" />
       <e p="README.md" t="Include" />
@@ -147,6 +148,7 @@
           <e p="DirectorySourceTest.cs" t="Include" />
           <e p="Entities" t="Include">
             <e p="CalendarTests.cs" t="Include" />
+            <e p="RouteTypeTests.cs" t="Include" />
           </e>
           <e p="Exceptions" t="Include">
             <e p="GTFSExceptionsTests.cs" t="Include" />

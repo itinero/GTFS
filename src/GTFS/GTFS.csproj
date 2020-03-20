@@ -11,7 +11,7 @@
     <PackageLicenseUrl>https://raw.github.com/OsmSharp/GTFS/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://raw.github.com/OsmSharp/GTFS/master/icon.bmp</PackageIconUrl>
     <PackageTags>routing,GTFS,transit</PackageTags>
-    <PackageVersion>3.0.0-pre001</PackageVersion>
+    <PackageVersion>3.0.0-pre002</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>

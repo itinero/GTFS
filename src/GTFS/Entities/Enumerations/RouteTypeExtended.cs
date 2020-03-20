@@ -540,4 +540,73 @@ namespace GTFS.Entities.Enumerations
         /// </summary>
         HorsedrawnCarriage = 1702
     }
+
+    /// <summary>
+    /// Contains extension methods for the extended route type.
+    /// </summary>
+    public static class RouteTypeExtendedExtensions
+    {
+        /// <summary>
+        /// Tries to convert the given extended type to a route type.
+        /// </summary>
+        /// <param name="extendedType">The extended route type.</param>
+        /// <param name="routeType">The route type, if any.</param>
+        /// <returns>True if a route type exists for the extended type, false otherwise.</returns>
+        public static bool TryToRouteType(this RouteTypeExtended extendedType, out RouteType routeType)
+        {
+            var et = (int) extendedType;
+            if (et >= 100 && et < 200)
+            {
+                routeType = RouteType.Rail;
+                return true;
+            }
+
+            if (et >= 200 && et < 300)
+            {
+                routeType = RouteType.Bus;
+                return true;
+            }
+
+            if (et >= 300 && et < 400)
+            {
+                routeType = RouteType.Rail;
+                return true;
+            }
+
+            if (et >= 400 && et < 700)
+            {
+                routeType = RouteType.SubwayMetro;
+                return true;
+            }
+
+            if (et >= 700 && et < 900)
+            { // trolley bus we consider to be a bus service.
+                routeType = RouteType.Bus;
+                return true;
+            }
+
+            if (et >= 900 && et < 1000)
+            {
+                routeType = RouteType.Tram;
+                return true;
+            }
+
+            if (extendedType == RouteTypeExtended.FunicularService ||
+                extendedType == RouteTypeExtended.FunicularServiceDefault)
+            {
+                routeType = RouteType.Funicular;
+                return true;
+            }
+
+            if (extendedType == RouteTypeExtended.WaterTransportService ||
+                extendedType == RouteTypeExtended.FerryService)
+            {
+                routeType = RouteType.Ferry;
+                return true;
+            }
+
+            routeType = default;
+            return false;
+        }
+    }
 }

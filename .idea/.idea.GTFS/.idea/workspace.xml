@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9e6a99d-f30a-4668-9e05-7db2da910b25" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GTFS.sln" beforeDir="false" afterPath="$PROJECT_DIR$/GTFS.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SharedAssemblyVersion.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +20,7 @@
     <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/GTFSFeedTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeedExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeed.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" root0="FORCE_HIGHLIGHTING" />
@@ -29,17 +28,20 @@
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSDirectoryTarget.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/DB/IGTFSFeedDB.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Extensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/DB/Memory/GTFSFeedDB.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/IGTFSSourceFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Exceptions/GTFSExceptionBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSDirectorySource.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSTargetFileStream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Entities/CalendarTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/IO/CSV/CSVStreamWriter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" root0="FORCE_HIGHLIGHTING" />
@@ -58,7 +60,6 @@
         <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" />
         <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/TransferListCollection.cs" />
         <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" />
-        <option value="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" />
         <option value="$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" />
         <option value="$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" />
         <option value="$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" />
@@ -74,8 +75,10 @@
         <option value="$PROJECT_DIR$/src/GTFS/GTFSWriterExtensions.cs" />
         <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" />
         <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/LICENSE" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" />
       </list>
     </option>
   </component>
@@ -156,7 +159,9 @@
       <updated>1575102802562</updated>
       <workItem from="1575102808150" duration="5771000" />
       <workItem from="1575281325773" duration="2238000" />
-      <workItem from="1575283852351" duration="916000" />
+      <workItem from="1575283852351" duration="1272000" />
+      <workItem from="1580225313107" duration="1422000" />
+      <workItem from="1584697839413" duration="1295000" />
     </task>
     <servers />
   </component>
@@ -185,6 +190,19 @@
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs</url>
+          <line>52</line>
+          <properties documentPath="$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" initialLine="52">
+            <startOffsets>
+              <option value="2400" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2474" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
