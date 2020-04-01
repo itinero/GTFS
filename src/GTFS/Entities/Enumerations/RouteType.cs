@@ -58,7 +58,15 @@ namespace GTFS.Entities.Enumerations
         /// <summary>
         /// Any rail system designed for steep inclines.
         /// </summary>
-        Funicular
+        Funicular,
+        /// <summary>
+        /// Trolleybus. Electric buses that draw power from overhead wires using poles. 
+        /// </summary>
+        Trolleybus = 11,
+        /// <summary>
+        /// Monorail. Railway in which the track consists of a single rail or a beam.
+        /// </summary>
+        Monorail = 12,
     }
 
     /// <summary>
@@ -80,8 +88,10 @@ namespace GTFS.Entities.Enumerations
             //5 - Cable Car - ?
             //6 - Gondola, Suspended cable car - 1300
             //7 - Funicular - 1400
+            //11 - Trolleybus - 800
+            //12 - Monorail - 405
 
-            switch(routeType)
+            switch (routeType)
             {
                 case RouteType.Bus:
                     return RouteTypeExtended.BusService;
@@ -99,6 +109,10 @@ namespace GTFS.Entities.Enumerations
                     return RouteTypeExtended.TelecabinService;
                 case RouteType.Funicular:
                     return RouteTypeExtended.FunicularService;
+                case RouteType.Trolleybus:
+                    return RouteTypeExtended.TrolleybusService;
+                case RouteType.Monorail:
+                    return RouteTypeExtended.Monorail;
             }
             throw new System.Exception("Cannot convert route type.");
         }
