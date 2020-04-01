@@ -200,7 +200,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("agency", "agency_id", agency.Id);
                     data[1] = this.WriteFieldString("agency", "agency_name", agency.Name, true);
                     data[2] = this.WriteFieldString("agency", "agency_url", agency.URL);
@@ -243,7 +243,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("calendar_dates", "service_id", entity.ServiceId);
                     data[1] = this.WriteFieldDate("calendar_dates", "date", entity.Date);
                     data[2] = this.WriteFieldExceptionType("calendar_dates", "exception_type", entity.ExceptionType);
@@ -288,7 +288,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("calendar", "service_id", entity.ServiceId);
                     data[1] = this.WriteFieldBool("calendar", "monday", entity.Monday);
                     data[2] = this.WriteFieldBool("calendar", "tuesday", entity.Tuesday);
@@ -337,7 +337,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("fare_attributes", "fare_id", entity.FareId);
                     data[1] = this.WriteFieldString("fare_attributes", "price", entity.Price);
                     data[2] = this.WriteFieldString("fare_attributes", "currency_type", entity.CurrencyType);
@@ -381,7 +381,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("fare_rules", "fare_id", entity.FareId);
                     data[1] = this.WriteFieldString("fare_rules", "route_id", entity.RouteId);
                     data[2] = this.WriteFieldString("fare_rules", "origin_id", entity.OriginId);
@@ -422,7 +422,7 @@ namespace GTFS
                     initialized = true;
                 }
 
-                // write agency details.
+                // write details.
                 data[0] = this.WriteFieldString("feed_info", "feed_publisher_name", entity.PublisherName, true);
                 data[1] = this.WriteFieldString("feed_info", "feed_publisher_url", entity.PublisherUrl, true);
                 data[2] = this.WriteFieldString("feed_info", "feed_lang", entity.Lang);
@@ -464,7 +464,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("frequency", "trip_id", entity.TripId);
                     data[1] = this.WriteFieldString("frequency", "start_time", entity.StartTime);
                     data[2] = this.WriteFieldString("frequency", "end_time", entity.EndTime);
@@ -510,7 +510,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("routes", "route_id", entity.Id);
                     data[1] = this.WriteFieldString("routes", "agency_id", entity.AgencyId);
                     data[2] = this.WriteFieldString("routes", "route_short_name", entity.ShortName, true);
@@ -556,7 +556,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("shapes", "shape_id", entity.Id);
                     data[1] = this.WriteFieldDouble("shapes", "shape_pt_lat", entity.Latitude);
                     data[2] = this.WriteFieldDouble("shapes", "shape_pt_lon", entity.Longitude);
@@ -607,7 +607,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("stops", "stop_id", entity.Id);
                     data[1] = this.WriteFieldString("stops", "stop_code", entity.Code);
                     data[2] = this.WriteFieldString("stops", "stop_name", entity.Name, true);
@@ -663,7 +663,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("stop_times", "trip_id", entity.TripId);
                     data[1] = this.WriteFieldTimeOfDay("stop_times", "arrival_time", entity.ArrivalTime);
                     data[2] = this.WriteFieldTimeOfDay("stop_times", "departure_time", entity.DepartureTime);
@@ -709,7 +709,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("transfers", "from_stop_id", entity.FromStopId);
                     data[1] = this.WriteFieldString("transfers", "to_stop_id", entity.ToStopId);
                     data[2] = this.WriteFieldTransferType("transfers", "transfer_type", entity.TransferType);
@@ -754,7 +754,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("trips", "trip_id", entity.Id);
                     data[1] = this.WriteFieldString("trips", "route_id", entity.RouteId);
                     data[2] = this.WriteFieldString("trips", "service_id", entity.ServiceId);
