@@ -68,7 +68,7 @@ namespace GTFS
         /// <summary>
         /// Holds the feedinfo.
         /// </summary>
-        private FeedInfo _feedInfo;
+        protected FeedInfo _feedInfo;
 
         /// <summary>
         /// Sets the feed info.

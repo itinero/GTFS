@@ -1625,6 +1625,8 @@ namespace GTFS
             //5 - Cable car. Used for street-level cable cars where the cable runs beneath the car.
             //6 - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.
             //7 - Funicular. Any rail system designed for steep inclines.
+            //11 - Trolleybus. Electric buses that draw power from overhead wires using poles. 
+            //12 - Monorail. Railway in which the track consists of a single rail or a beam.
 
             switch (value)
             {
@@ -1644,6 +1646,10 @@ namespace GTFS
                     return RouteType.Gondola.ToExtended();
                 case "7":
                     return RouteType.Funicular.ToExtended();
+                case "11":
+                    return RouteType.Trolleybus.ToExtended();
+                case "12":
+                    return RouteType.Gondola.ToExtended();
             }
 
             if (!int.TryParse(value, out var routeTypeValue))
