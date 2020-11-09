@@ -24,6 +24,11 @@ using System;
 
 namespace GTFS.Entities
 {
+    /// <summary>
+    /// Event handler delegate.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public delegate void GTFSEntityChangedEventHandler(object sender, GTFSEntityChangedEventArgs e);
 
     /// <summary>
@@ -37,6 +42,9 @@ namespace GTFS.Entities
         /// <remarks>Can be used to attach extra information.</remarks>
         public object Tag { get; set; }
 
+        /// <summary>
+        /// Entity changed event.
+        /// </summary>
         public event GTFSEntityChangedEventHandler EntityChanged;
 
         internal void OnEntityChanged()
@@ -52,16 +60,14 @@ namespace GTFS.Entities
         }
     }
 
+    /// <summary>
+    /// Event arguments.
+    /// </summary>
     public class GTFSEntityChangedEventArgs : EventArgs
     {
-        public GTFSEntityChangedEventArgs() : base()
-        {
-
-        }
-
         /// <summary>
         /// Returns an empty set of args.
         /// </summary>
-        public new static GTFSEntityChangedEventArgs Empty { get { return new GTFSEntityChangedEventArgs(); } }
+        public new static GTFSEntityChangedEventArgs Empty => new GTFSEntityChangedEventArgs();
     }
 }

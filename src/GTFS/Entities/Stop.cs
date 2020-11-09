@@ -214,11 +214,19 @@ namespace GTFS.Entities
             };
         }
 
+        /// <summary>
+        /// Returns true the location type is stop.
+        /// </summary>
+        /// <returns></returns>
         public bool IsTypeStop()
         {
             return !this.LocationType.HasValue || this.LocationType.Value == Enumerations.LocationType.Stop;
         }
 
+        /// <summary>
+        /// Returns true if the location type is station.
+        /// </summary>
+        /// <returns></returns>
         public bool IsTypeStation()
         {
             return this.LocationType.HasValue && this.LocationType.Value == Enumerations.LocationType.Station;

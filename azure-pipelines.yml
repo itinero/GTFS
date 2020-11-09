@@ -15,9 +15,10 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  Major: 2
+  Major: 3
   Minor: 0
-  Patch: $[counter('versioncounter', 1)]
+  MajorMinor: $(Major).$(Minor)
+  Patch: $[counter(variables['MajorMinor'], 1)]
   Version: $(Major).$(Minor).$(Patch)
 
 steps:

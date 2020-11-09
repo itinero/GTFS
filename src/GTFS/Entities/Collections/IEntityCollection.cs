@@ -85,7 +85,6 @@ namespace GTFS.Entities.Collections
         /// <summary>
         /// Removes all entities
         /// </summary>
-        /// <param name="entityId"></param>
         /// <returns></returns>
         void RemoveAll();
     }

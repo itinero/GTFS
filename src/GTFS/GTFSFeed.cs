@@ -38,37 +38,37 @@ namespace GTFS
         {
             _feedInfo = new FeedInfo();
             this.Agencies = new UniqueEntityListCollection<Agency>(new List<Agency>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.CalendarDates = new EntityListCollection<CalendarDate>(new List<CalendarDate>(),
-                (e, id) => { return e.ServiceId == id; });
+                (e, id) => e.ServiceId == id);
             this.Calendars = new EntityListCollection<Calendar>(new List<Calendar>(),
-                (e, id) => { return e.ServiceId == id; });
+                (e, id) => e.ServiceId == id);
             this.FareAttributes = new EntityListCollection<FareAttribute>(new List<FareAttribute>(),
-                (e, id) => { return e.FareId == id; });
+                (e, id) => e.FareId == id);
             this.FareRules = new UniqueEntityListCollection<FareRule>(new List<FareRule>(),
-                (e, id) => { return e.FareId == id; });
+                (e, id) => e.FareId == id);
             this.Frequencies = new EntityListCollection<Frequency>(new List<Frequency>(),
-                (e, id) => { return e.TripId == id; });
+                (e, id) => e.TripId == id);
             this.Routes = new UniqueEntityListCollection<Route>(new List<Route>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.Shapes = new EntityListCollection<Shape>(new List<Shape>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.Stops = new UniqueEntityListCollection<Stop>(new List<Stop>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.StopTimes = new StopTimeListCollection(new List<StopTime>());
             this.Transfers = new TransferListCollection(new List<Transfer>());
             this.Trips = new UniqueEntityListCollection<Trip>(new List<Trip>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.Levels = new UniqueEntityListCollection<Level>(new List<Level>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
             this.Pathways = new UniqueEntityListCollection<Pathway>(new List<Pathway>(),
-                (e, id) => { return e.Id == id; });
+                (e, id) => e.Id == id);
         }
 
         /// <summary>
         /// Holds the feedinfo.
         /// </summary>
-        private FeedInfo _feedInfo;
+        protected FeedInfo _feedInfo;
 
         /// <summary>
         /// Sets the feed info.

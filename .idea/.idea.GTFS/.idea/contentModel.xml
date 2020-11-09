@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p=".git/info/exclude" t="IncludeRecursive" />
+      <e p="GTFS.sln" t="IncludeFlat" />
+      <e p="LICENSE" t="Include" />
+      <e p="README.md" t="Include" />
+      <e p="Solution Items" t="Include" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="src" t="Include">
+        <e p="GTFS" t="IncludeRecursive">
+          <e p="Attributes" t="Include">
+            <e p="FieldNameAttribute.cs" t="Include" />
+            <e p="FileNameAttribute.cs" t="Include" />
+            <e p="RequiredAttribute.cs" t="Include" />
+          </e>
+          <e p="DB" t="Include">
+            <e p="IGTFSFeedDB.cs" t="Include" />
+            <e p="Memory" t="Include">
+              <e p="GTFSFeedDB.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Entities" t="Include">
+            <e p="Agency.cs" t="Include" />
+            <e p="Calendar.cs" t="Include" />
+            <e p="CalendarDate.cs" t="Include" />
+            <e p="CalendarExtensions.cs" t="Include" />
+            <e p="Collections" t="Include">
+              <e p="EntityListCollection.cs" t="Include" />
+              <e p="IEntityCollection.cs" t="Include" />
+              <e p="IStopTimeCollection.cs" t="Include" />
+              <e p="ITransferCollection.cs" t="Include" />
+              <e p="IUniqueEntityCollection.cs" t="Include" />
+              <e p="StopTimeListCollection.cs" t="Include" />
+              <e p="TransferListCollection.cs" t="Include" />
+              <e p="UniqueEntityListCollection.cs" t="Include" />
+            </e>
+            <e p="Enumerations" t="Include">
+              <e p="BikesAllowed.cs" t="Include" />
+              <e p="DirectionType.cs" t="Include" />
+              <e p="DropOffType.cs" t="Include" />
+              <e p="ExceptionType.cs" t="Include" />
+              <e p="IsBidirectional.cs" t="Include" />
+              <e p="LocationType.cs" t="Include" />
+              <e p="PathwayMode.cs" t="Include" />
+              <e p="PaymentMethodType.cs" t="Include" />
+              <e p="PickupType.cs" t="Include" />
+              <e p="RouteType.cs" t="Include" />
+              <e p="RouteTypeExtended.cs" t="Include" />
+              <e p="TimePointType.cs" t="Include" />
+              <e p="TransferType.cs" t="Include" />
+              <e p="WheelchairBoardingType.cs" t="Include" />
+            </e>
+            <e p="Extensions.cs" t="Include" />
+            <e p="FareAttribute.cs" t="Include" />
+            <e p="FareRule.cs" t="Include" />
+            <e p="FeedInfo.cs" t="Include" />
+            <e p="Frequency.cs" t="Include" />
+            <e p="GTFSEntity.cs" t="Include" />
+            <e p="Level.cs" t="Include" />
+            <e p="Pathway.cs" t="Include" />
+            <e p="Route.cs" t="Include" />
+            <e p="Shape.cs" t="Include" />
+            <e p="Stop.cs" t="Include" />
+            <e p="StopTime.cs" t="Include" />
+            <e p="TimeOfDay.cs" t="Include" />
+            <e p="Transfer.cs" t="Include" />
+            <e p="Trip.cs" t="Include" />
+          </e>
+          <e p="Exceptions" t="Include">
+            <e p="GTFSExceptionBase.cs" t="Include" />
+            <e p="GTFSIntegrityException.cs" t="Include" />
+            <e p="GTFSParseException.cs" t="Include" />
+            <e p="GTFSRequiredFieldMissingException.cs" t="Include" />
+            <e p="GTFSRequiredFileMissingException.cs" t="Include" />
+            <e p="GTFSRequiredFileSetMissingException.cs" t="Include" />
+          </e>
+          <e p="Extensions.cs" t="Include" />
+          <e p="Fields" t="Include">
+            <e p="FieldMapping.cs" t="Include" />
+          </e>
+          <e p="Filters" t="Include">
+            <e p="GTFSFeedFilter.cs" t="Include" />
+            <e p="GTFSFeedRoutesFilter.cs" t="Include" />
+            <e p="GTFSFeedStopsFilter.cs" t="Include" />
+          </e>
+          <e p="GTFS.csproj" t="IncludeRecursive" />
+          <e p="GTFSFeed.cs" t="Include" />
+          <e p="GTFSReader.cs" t="Include" />
+          <e p="GTFSReaderExtensions.cs" t="Include" />
+          <e p="GTFSWriter.cs" t="Include" />
+          <e p="GTFSWriterExtensions.cs" t="Include" />
+          <e p="IGTFSFeed.cs" t="Include" />
+          <e p="IGTFSFeedExtensions.cs" t="Include" />
+          <e p="IO" t="Include">
+            <e p="CSV" t="Include">
+              <e p="CSVLineEnumerableReader.cs" t="Include" />
+              <e p="CSVStreamReader.cs" t="Include" />
+              <e p="CSVStreamWriter.cs" t="Include" />
+              <e p="ICSVReader.cs" t="Include" />
+              <e p="ICSVWriter.cs" t="Include" />
+            </e>
+            <e p="Compression" t="Include">
+              <e p="GTFSArchiveSource.cs" t="Include" />
+            </e>
+            <e p="GTFSDirectorySource.cs" t="Include" />
+            <e p="GTFSDirectoryTarget.cs" t="Include" />
+            <e p="GTFSSourceFileHeader.cs" t="Include" />
+            <e p="GTFSSourceFileLines.cs" t="Include" />
+            <e p="GTFSSourceFileStream.cs" t="Include" />
+            <e p="GTFSTargetFileStream.cs" t="Include" />
+            <e p="IGTFSSourceFile.cs" t="Include" />
+            <e p="IGTFSTargetFile.cs" t="Include" />
+          </e>
+          <e p="Logging" t="Include">
+            <e p="Logger.cs" t="Include" />
+            <e p="TraceEventType.cs" t="Include" />
+          </e>
+          <e p="Properties" t="Include">
+            <e p="AssemblyInfo.cs" t="Include" />
+          </e>
+          <e p="StopsToShape" t="Include">
+            <e p="StopAtShape.cs" t="Include" />
+            <e p="StopAtShapesFinder.cs" t="Include" />
+          </e>
+          <e p="Validation" t="Include">
+            <e p="GTFSFeedValidation.cs" t="Include" />
+          </e>
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netstandard2.0" t="Include">
+                <e p="GTFS.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="test" t="Include">
+        <e p="GTFS.Test" t="IncludeRecursive">
+          <e p="DB" t="Include">
+            <e p="GTFSFeedDBTests.cs" t="Include" />
+            <e p="Memory" t="Include">
+              <e p="GTFSFeedDBTests.cs" t="Include" />
+            </e>
+          </e>
+          <e p="DirectorySourceTest.cs" t="Include" />
+          <e p="Entities" t="Include">
+            <e p="CalendarTests.cs" t="Include" />
+            <e p="RouteTypeTests.cs" t="Include" />
+          </e>
+          <e p="Exceptions" t="Include">
+            <e p="GTFSExceptionsTests.cs" t="Include" />
+          </e>
+          <e p="FeedInfoEqualityComparer.cs" t="Include" />
+          <e p="FileNotDisposedTest.cs" t="Include" />
+          <e p="Filters" t="Include">
+            <e p="GTFSFeedStopsFilterTests.cs" t="Include" />
+          </e>
+          <e p="GTFS.Test.csproj" t="IncludeRecursive" />
+          <e p="GTFSAssert.cs" t="Include" />
+          <e p="GTFSFeedTests.cs" t="Include" />
+          <e p="ParseAgenciesTests.cs" t="Include" />
+          <e p="ParseEntitiesTests.cs" t="Include" />
+          <e p="ParseFeedTests.cs" t="Include" />
+          <e p="ParseRoutesTests.cs" t="Include" />
+          <e p="Properties" t="Include">
+            <e p="AssemblyInfo.cs" t="Include" />
+          </e>
+          <e p="StopsToShape" t="Include">
+            <e p="StopAtShapesFinderTests.cs" t="Include" />
+          </e>
+          <e p="Validation" t="Include">
+            <e p="GTFSFeedValidationTests.cs" t="Include" />
+          </e>
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="folder-feed" t="Include">
+            <e p="agency.txt" t="Include" />
+            <e p="calendar.txt" t="Include" />
+            <e p="routes.txt" t="Include" />
+            <e p="stop_times.txt" t="Include" />
+            <e p="stops.txt" t="Include" />
+            <e p="trips.txt" t="Include" />
+          </e>
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp2.2" t="Include">
+                <e p="GTFS.Test.AssemblyInfo.cs" t="Include" />
+                <e p="GTFS.Test.Program.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="other-feed" t="Include">
+            <e p="agencies_no_id.txt" t="Include" />
+            <e p="agencies_with_id.txt" t="Include" />
+            <e p="agency_no_id.txt" t="Include" />
+            <e p="agency_with_email.txt" t="Include" />
+            <e p="agency_with_id.txt" t="Include" />
+            <e p="routes.no_desc.txt" t="Include" />
+          </e>
+          <e p="sample-feed" t="Include">
+            <e p="agency.txt" t="Include" />
+            <e p="calendar.txt" t="Include" />
+            <e p="calendar_dates.txt" t="Include" />
+            <e p="fare_attributes.txt" t="Include" />
+            <e p="fare_rules.txt" t="Include" />
+            <e p="frequencies.txt" t="Include" />
+            <e p="routes.txt" t="Include" />
+            <e p="shapes.txt" t="Include" />
+            <e p="stop_times.txt" t="Include" />
+            <e p="stops.txt" t="Include" />
+            <e p="transfers.txt" t="Include" />
+            <e p="trips.txt" t="Include" />
+          </e>
+        </e>
+        <e p="GTFS.Test.Functional" t="IncludeRecursive">
+          <e p="GTFS.Test.Functional.csproj" t="IncludeRecursive" />
+          <e p="Program.cs" t="Include" />
+          <e p="Properties" t="Include">
+            <e p="AssemblyInfo.cs" t="Include" />
+          </e>
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="gtfs1.zip" t="Include" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp2.2" t="Include">
+                <e p="GTFS.Test.Functional.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+      </e>
+    </e>
+    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_GTFS.909460292.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.11.0/build/netcoreapp1.0/NUnit3.TestAdapter.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.11.0/build/netcoreapp1.0/NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.11.0/build/netcoreapp1.0/nunit.engine.netstandard.dll" t="Include" />
+  </component>
+</project>

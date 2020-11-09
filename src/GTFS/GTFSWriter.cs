@@ -82,35 +82,34 @@ namespace GTFS
         /// <param name="levels"></param>
         protected virtual void Write(IGTFSTargetFile levelsFile, IEnumerable<Level> levels)
         {
-            if (levelsFile != null)
+            if (levelsFile == null) return;
+            
+            bool initialized = false;
+            var data = new string[3];
+            foreach (var level in levels)
             {
-                bool initialized = false;
-                var data = new string[3];
-                foreach (var level in levels)
+                if (!initialized)
                 {
-                    if (!initialized)
+                    if (levelsFile.Exists)
                     {
-                        if (levelsFile.Exists)
-                        {
-                            levelsFile.Clear();
-                        }
-
-                        // write headers.
-                        data[0] = "level_id";
-                        data[1] = "level_index";
-                        data[2] = "level_name";
-                        levelsFile.Write(data);
-                        initialized = true;
+                        levelsFile.Clear();
                     }
 
-                    // write level details.
-                    data[0] = this.WriteFieldString("level", "level_id", level.Id);
-                    data[1] = this.WriteFieldDouble("level", "level_index", level.Index);
-                    data[2] = this.WriteFieldString("level", "level_name", level.Name, true);
+                    // write headers.
+                    data[0] = "level_id";
+                    data[1] = "level_index";
+                    data[2] = "level_name";
                     levelsFile.Write(data);
+                    initialized = true;
                 }
-                levelsFile.Close();
+
+                // write level details.
+                data[0] = this.WriteFieldString("level", "level_id", level.Id);
+                data[1] = this.WriteFieldDouble("level", "level_index", level.Index);
+                data[2] = this.WriteFieldString("level", "level_name", level.Name, true);
+                levelsFile.Write(data);
             }
+            levelsFile.Close();
         }
 
         /// <summary>
@@ -120,53 +119,52 @@ namespace GTFS
         /// <param name="pathways"></param>
         protected virtual void Write(IGTFSTargetFile pathwaysFile, IEnumerable<Pathway> pathways)
         {
-            if (pathwaysFile != null)
+            if (pathwaysFile == null) return;
+            
+            bool initialized = false;
+            var data = new string[12];
+            foreach (var pathway in pathways)
             {
-                bool initialized = false;
-                var data = new string[12];
-                foreach (var pathway in pathways)
+                if (!initialized)
                 {
-                    if (!initialized)
+                    if (pathwaysFile.Exists)
                     {
-                        if (pathwaysFile.Exists)
-                        {
-                            pathwaysFile.Clear();
-                        }
-
-                        // write headers.
-                        data[0] = "pathway_id";
-                        data[1] = "from_stop_id";
-                        data[2] = "to_stop_id";
-                        data[3] = "pathway_mode";
-                        data[4] = "is_bidirectional";
-                        data[5] = "length";
-                        data[6] = "traversal_time";
-                        data[7] = "stair_count";
-                        data[8] = "max_slope";
-                        data[9] = "min_width";
-                        data[10] = "signposted_as";
-                        data[11] = "reversed_signposted_as";
-                        pathwaysFile.Write(data);
-                        initialized = true;
+                        pathwaysFile.Clear();
                     }
 
-                    // write pathway details.
-                    data[0] = this.WriteFieldString("pathway", "pathway_id", pathway.Id);
-                    data[1] = this.WriteFieldString("pathway", "from_stop_id", pathway.FromStopId);
-                    data[2] = this.WriteFieldString("pathway", "to_stop_id", pathway.ToStopId);
-                    data[3] = this.WriteFieldPathwayMode("pathway", "pathway_mode", pathway.PathwayMode);
-                    data[4] = this.WriteFieldIsBidirectional("pathway", "is_bidirectional", pathway.IsBidirectional);
-                    data[5] = this.WriteFieldDouble("pathway", "length", pathway.Length);
-                    data[6] = this.WriteFieldInt("pathway", "traversal_time", pathway.TraversalTime);
-                    data[7] = this.WriteFieldInt("pathway", "stair_count", pathway.StairCount);
-                    data[8] = this.WriteFieldDouble("pathway", "max_slope", pathway.MaxSlope);
-                    data[9] = this.WriteFieldDouble("pathway", "min_width", pathway.MinWidth);
-                    data[10] = this.WriteFieldString("pathway", "signposted_as", pathway.SignpostedAs);
-                    data[11] = this.WriteFieldString("pathway", "reversed_signposted_as", pathway.ReversedSignpostedAs);
+                    // write headers.
+                    data[0] = "pathway_id";
+                    data[1] = "from_stop_id";
+                    data[2] = "to_stop_id";
+                    data[3] = "pathway_mode";
+                    data[4] = "is_bidirectional";
+                    data[5] = "length";
+                    data[6] = "traversal_time";
+                    data[7] = "stair_count";
+                    data[8] = "max_slope";
+                    data[9] = "min_width";
+                    data[10] = "signposted_as";
+                    data[11] = "reversed_signposted_as";
                     pathwaysFile.Write(data);
+                    initialized = true;
                 }
-                pathwaysFile.Close();
+
+                // write pathway details.
+                data[0] = this.WriteFieldString("pathway", "pathway_id", pathway.Id);
+                data[1] = this.WriteFieldString("pathway", "from_stop_id", pathway.FromStopId);
+                data[2] = this.WriteFieldString("pathway", "to_stop_id", pathway.ToStopId);
+                data[3] = this.WriteFieldPathwayMode("pathway", "pathway_mode", pathway.PathwayMode);
+                data[4] = this.WriteFieldIsBidirectional("pathway", "is_bidirectional", pathway.IsBidirectional);
+                data[5] = this.WriteFieldDouble("pathway", "length", pathway.Length);
+                data[6] = this.WriteFieldInt("pathway", "traversal_time", pathway.TraversalTime);
+                data[7] = this.WriteFieldInt("pathway", "stair_count", pathway.StairCount);
+                data[8] = this.WriteFieldDouble("pathway", "max_slope", pathway.MaxSlope);
+                data[9] = this.WriteFieldDouble("pathway", "min_width", pathway.MinWidth);
+                data[10] = this.WriteFieldString("pathway", "signposted_as", pathway.SignpostedAs);
+                data[11] = this.WriteFieldString("pathway", "reversed_signposted_as", pathway.ReversedSignpostedAs);
+                pathwaysFile.Write(data);
             }
+            pathwaysFile.Close();
         }
 
         /// <summary>
@@ -202,7 +200,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("agency", "agency_id", agency.Id);
                     data[1] = this.WriteFieldString("agency", "agency_name", agency.Name, true);
                     data[2] = this.WriteFieldString("agency", "agency_url", agency.URL);
@@ -245,7 +243,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("calendar_dates", "service_id", entity.ServiceId);
                     data[1] = this.WriteFieldDate("calendar_dates", "date", entity.Date);
                     data[2] = this.WriteFieldExceptionType("calendar_dates", "exception_type", entity.ExceptionType);
@@ -290,7 +288,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("calendar", "service_id", entity.ServiceId);
                     data[1] = this.WriteFieldBool("calendar", "monday", entity.Monday);
                     data[2] = this.WriteFieldBool("calendar", "tuesday", entity.Tuesday);
@@ -339,7 +337,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("fare_attributes", "fare_id", entity.FareId);
                     data[1] = this.WriteFieldString("fare_attributes", "price", entity.Price);
                     data[2] = this.WriteFieldString("fare_attributes", "currency_type", entity.CurrencyType);
@@ -383,7 +381,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("fare_rules", "fare_id", entity.FareId);
                     data[1] = this.WriteFieldString("fare_rules", "route_id", entity.RouteId);
                     data[2] = this.WriteFieldString("fare_rules", "origin_id", entity.OriginId);
@@ -424,7 +422,7 @@ namespace GTFS
                     initialized = true;
                 }
 
-                // write agency details.
+                // write details.
                 data[0] = this.WriteFieldString("feed_info", "feed_publisher_name", entity.PublisherName, true);
                 data[1] = this.WriteFieldString("feed_info", "feed_publisher_url", entity.PublisherUrl, true);
                 data[2] = this.WriteFieldString("feed_info", "feed_lang", entity.Lang);
@@ -466,7 +464,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("frequency", "trip_id", entity.TripId);
                     data[1] = this.WriteFieldString("frequency", "start_time", entity.StartTime);
                     data[2] = this.WriteFieldString("frequency", "end_time", entity.EndTime);
@@ -512,7 +510,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("routes", "route_id", entity.Id);
                     data[1] = this.WriteFieldString("routes", "agency_id", entity.AgencyId);
                     data[2] = this.WriteFieldString("routes", "route_short_name", entity.ShortName, true);
@@ -558,7 +556,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("shapes", "shape_id", entity.Id);
                     data[1] = this.WriteFieldDouble("shapes", "shape_pt_lat", entity.Latitude);
                     data[2] = this.WriteFieldDouble("shapes", "shape_pt_lon", entity.Longitude);
@@ -609,7 +607,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("stops", "stop_id", entity.Id);
                     data[1] = this.WriteFieldString("stops", "stop_code", entity.Code);
                     data[2] = this.WriteFieldString("stops", "stop_name", entity.Name, true);
@@ -665,7 +663,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("stop_times", "trip_id", entity.TripId);
                     data[1] = this.WriteFieldTimeOfDay("stop_times", "arrival_time", entity.ArrivalTime);
                     data[2] = this.WriteFieldTimeOfDay("stop_times", "departure_time", entity.DepartureTime);
@@ -711,7 +709,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("transfers", "from_stop_id", entity.FromStopId);
                     data[1] = this.WriteFieldString("transfers", "to_stop_id", entity.ToStopId);
                     data[2] = this.WriteFieldTransferType("transfers", "transfer_type", entity.TransferType);
@@ -756,7 +754,7 @@ namespace GTFS
                         initialized = true;
                     }
 
-                    // write agency details.
+                    // write details.
                     data[0] = this.WriteFieldString("trips", "trip_id", entity.Id);
                     data[1] = this.WriteFieldString("trips", "route_id", entity.RouteId);
                     data[2] = this.WriteFieldString("trips", "service_id", entity.ServiceId);
@@ -813,7 +811,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldExceptionType(string name, string fieldName, ExceptionType value)
+        protected string WriteFieldExceptionType(string name, string fieldName, ExceptionType value)
         {
             //A value of 1 indicates that service has been added for the specified date.
             //A value of 2 indicates that service has been removed for the specified date.
@@ -835,7 +833,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        private string WriteFieldDate(string name, string fieldName, DateTime dateTime)
+        protected string WriteFieldDate(string name, string fieldName, DateTime dateTime)
         {
             return dateTime.ToString("yyyyMMdd");
         }
@@ -847,7 +845,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldBool(string name, string fieldName, bool? value)
+        protected string WriteFieldBool(string name, string fieldName, bool? value)
         {
             if (value.HasValue)
             {
@@ -867,7 +865,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldUint(string name, string fieldName, uint? value)
+        protected string WriteFieldUint(string name, string fieldName, uint? value)
         {
             if (value.HasValue)
             {
@@ -883,7 +881,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldPaymentMethod(string name, string fieldName, PaymentMethodType value)
+        protected string WriteFieldPaymentMethod(string name, string fieldName, PaymentMethodType value)
         {
             //0 - Fare is paid on board.
             //1 - Fare must be paid before boarding.
@@ -905,7 +903,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldColor(string name, string fieldName, int? value)
+        protected string WriteFieldColor(string name, string fieldName, int? value)
         {
             return value.ToHexColorString();
         }
@@ -926,7 +924,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldDouble(string name, string fieldName, double? value)
+        protected string WriteFieldDouble(string name, string fieldName, double? value)
         {
             if (value.HasValue)
             {
@@ -942,7 +940,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldInt(string name, string fieldName, int? value)
+        protected string WriteFieldInt(string name, string fieldName, int? value)
         {
             if (value.HasValue)
             {
@@ -958,7 +956,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldLocationType(string name, string fieldName, LocationType? value)
+        protected string WriteFieldLocationType(string name, string fieldName, LocationType? value)
         {
             if (value.HasValue)
             {
@@ -980,7 +978,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldDropOffType(string name, string fieldName, DropOffType? value)
+        protected string WriteFieldDropOffType(string name, string fieldName, DropOffType? value)
         {
             if (value.HasValue)
             {
@@ -1003,7 +1001,7 @@ namespace GTFS
         /// Writes the timepoint value.
         /// </summary>
         /// <returns></returns>
-        private string WriteFieldTimepointType(string name, string fieldName, TimePointType value)
+        protected string WriteFieldTimepointType(string name, string fieldName, TimePointType value)
         {
             switch (value)
             {
@@ -1022,7 +1020,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldPickupType(string name, string fieldName, PickupType? value)
+        protected string WriteFieldPickupType(string name, string fieldName, PickupType? value)
         {
             if (value.HasValue)
             {
@@ -1045,7 +1043,7 @@ namespace GTFS
         /// Writes a timeofday.
         /// </summary>
         /// <returns></returns>
-        private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
+        protected string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
         {
             if (!value.HasValue)
             {
@@ -1064,8 +1062,20 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldTransferType(string name, string fieldName, TransferType value)
+        protected string WriteFieldTransferType(string name, string fieldName, TransferType value)
         {
+            switch (value)
+            {
+                case TransferType.Recommended:
+                    return "0";
+                case TransferType.TimedTransfer:
+                    return "1";
+                case TransferType.MinimumTime:
+                    return "2";
+                case TransferType.NotPossible:
+                    return "3";
+            }
+
             return string.Empty;
         }
 
@@ -1076,7 +1086,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldAccessibilityType(string name, string fieldName, WheelchairAccessibilityType? value)
+        protected string WriteFieldAccessibilityType(string name, string fieldName, WheelchairAccessibilityType? value)
         {
             if (value.HasValue)
             {
@@ -1104,7 +1114,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldIsBidirectional(string name, string fieldName, IsBidirectional? value)
+        protected string WriteFieldIsBidirectional(string name, string fieldName, IsBidirectional? value)
         {
             if (value.HasValue)
             {
@@ -1129,7 +1139,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldPathwayMode(string name, string fieldName, PathwayMode? value)
+        protected string WriteFieldPathwayMode(string name, string fieldName, PathwayMode? value)
         {
             if (value.HasValue)
             {
@@ -1169,7 +1179,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldDirectionType(string name, string fieldName, DirectionType? value)
+        protected string WriteFieldDirectionType(string name, string fieldName, DirectionType? value)
         {
             if (value.HasValue)
             {

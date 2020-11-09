@@ -98,6 +98,11 @@ namespace GTFS.Entities.Collections
             return _entities[idx];
         }
 
+        /// <summary>
+        /// Gets all ids.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<string> GetIds()
         {
             throw new NotImplementedException();

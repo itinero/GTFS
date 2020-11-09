@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-#if !PCL
 namespace GTFS.IO
 {
     /// <summary>
@@ -33,61 +32,20 @@ namespace GTFS.IO
     /// </summary>
     public class GTFSDirectorySource : IEnumerable<IGTFSSourceFile>, IDisposable
     {
-        /// <summary>
-        /// Holds the directory.
-        /// </summary>
-        private DirectoryInfo _directory;
-
-        /// <summary>
-        /// Holds a custom seperator.
-        /// </summary>
-        private char? _customSeperator;
-
-        /// <summary>
-        /// Holds the source files.
-        /// </summary>
+        private readonly DirectoryInfo _directory;
+        
+        private char? _customSeparator;
         private List<IGTFSSourceFile> _sourceFiles;
-
+        
         /// <summary>
         /// Creates a new GTFS directory source.
         /// </summary>
         /// <param name="path">The path to the directory contain all GTFS-files.</param>
-        public GTFSDirectorySource(string path)
-            : this(new DirectoryInfo(path))
+        /// <param name="separator">A custom separator.</param>
+        public GTFSDirectorySource(string path, char? separator = null)
         {
-
-        }
-
-        /// <summary>
-        /// Creates a new GTFS directory source.
-        /// </summary>
-        /// <param name="directory">The directory contain all GTFS-files.</param>
-        public GTFSDirectorySource(DirectoryInfo directory)
-        {
-            _directory = directory;
-            _customSeperator = null;
-        }
-
-        /// <summary>
-        /// Creates a new GTFS directory source.
-        /// </summary>
-        /// <param name="path">The path to the directory contain all GTFS-files.</param>
-        /// <param name="seperator">A custom seperator.</param>
-        public GTFSDirectorySource(string path, char seperator)
-            : this(new DirectoryInfo(path), seperator)
-        {
-
-        }
-
-        /// <summary>
-        /// Creates a new GTFS directory source.
-        /// </summary>
-        /// <param name="directory">The directory contain all GTFS-files.</param>
-        /// <param name="seperator">A custom seperator.</param>
-        public GTFSDirectorySource(DirectoryInfo directory, char seperator)
-        {
-            _directory = directory;
-            _customSeperator = seperator;
+            _directory  =new DirectoryInfo(path);
+            _customSeparator = separator;
         }
 
         /// <summary>
@@ -111,8 +69,8 @@ namespace GTFS.IO
             {
                 var nameWithoutExtension = Path.GetFileNameWithoutExtension(file.Name);
 
-                _sourceFiles.Add(_customSeperator.HasValue
-                        ? new GTFSSourceFileStream(File.OpenRead(file.FullName), nameWithoutExtension, _customSeperator.Value)
+                _sourceFiles.Add(_customSeparator.HasValue
+                        ? new GTFSSourceFileStream(File.OpenRead(file.FullName), nameWithoutExtension, _customSeparator.Value)
                         : new GTFSSourceFileStream(File.OpenRead(file.FullName), nameWithoutExtension));
             }
         }
@@ -138,7 +96,7 @@ namespace GTFS.IO
         }
 
         /// <summary>
-        /// Diposes of all native resources associated with this source.
+        /// Disposes of all native resources associated with this source.
         /// </summary>
         public void Dispose()
         {
@@ -152,4 +110,3 @@ namespace GTFS.IO
         }
     }
 }
-#endif

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f9e6a99d-f30a-4668-9e05-7db2da910b25" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GTFS/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/TransferListCollection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSWriter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/GTFSFeedTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeedExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IGTFSFeed.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSFeed.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSDirectoryTarget.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/DB/IGTFSFeedDB.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Extensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/DB/Memory/GTFSFeedDB.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/IGTFSSourceFile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Exceptions/GTFSExceptionBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSDirectorySource.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/GTFSTargetFileStream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Entities/CalendarTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Properties/AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/IO/CSV/CSVStreamWriter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/GTFSReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/test/GTFS.Test/Properties/AssemblyInfo.cs" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/Properties/AssemblyInfo.cs" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test/GTFS.Test.csproj" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFSFeed.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFSWriter.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFS.csproj" />
+        <option value="$PROJECT_DIR$/src/GTFS/DB/IGTFSFeedDB.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/DB/Memory/GTFSFeedDB.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/IEntityCollection.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/TransferListCollection.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Collections/UniqueEntityListCollection.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/GTFSEntity.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Stop.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/TimeOfDay.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Exceptions/GTFSExceptionBase.cs" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFSArchiveSource.cs" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test/FileNotDisposedTest.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/IO/GTFSDirectoryTarget.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/IO/GTFSDirectorySource.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/IO/Compression/GTFSArchiveTarget.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFSReader.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/IO/Compression/GTFSArchiveSource.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFSReaderExtensions.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/GTFSWriterExtensions.cs" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test.Functional/Program.cs" />
+        <option value="$PROJECT_DIR$/LICENSE" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" />
+        <option value="$PROJECT_DIR$/src/GTFS/Entities/Enumerations/RouteTypeExtended.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1UKQRoTRo4Aubs52ZxAqLBoHwlq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/LICENSE" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected=".NET Project.test\GTFS.Test.Functional">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="PROJECT_TFM" value="" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test\GTFS.Test.Functional" type="DotNetProject" factoryName=".NET Project" temporary="true">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/test/GTFS.Test.Functional/bin/Debug/netcoreapp2.2/GTFS.Test.Functional.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/GTFS.Test.Functional/bin/Debug/netcoreapp2.2" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/test/GTFS.Test.Functional/GTFS.Test.Functional.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.2" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue=".NET Project.test\GTFS.Test.Functional" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f9e6a99d-f30a-4668-9e05-7db2da910b25" name="Default Changelist" comment="" />
+      <created>1575102802562</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575102802562</updated>
+      <workItem from="1575102808150" duration="5771000" />
+      <workItem from="1575281325773" duration="2238000" />
+      <workItem from="1575283852351" duration="1272000" />
+      <workItem from="1580225313107" duration="1422000" />
+      <workItem from="1584697839413" duration="1295000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs</url>
+          <line>52</line>
+          <properties documentPath="$PROJECT_DIR$/test/GTFS.Test/Entities/RouteTypeTests.cs" initialLine="52">
+            <startOffsets>
+              <option value="2400" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2474" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

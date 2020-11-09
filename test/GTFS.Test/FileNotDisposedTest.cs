@@ -48,7 +48,7 @@ namespace GTFS.Test
 
             try
             {
-                var gtfsDirectorySource = new GTFSDirectorySource(directoryInfo);
+                var gtfsDirectorySource = new GTFSDirectorySource(directoryInfo.FullName);
                 var reader = new GTFSReader<GTFSFeed>();
                 reader.Read(gtfsDirectorySource);
             }
@@ -78,7 +78,7 @@ namespace GTFS.Test
 
             try
             {
-                using (var gtfsDirectorySource = new GTFSDirectorySource(directoryInfo))
+                using (var gtfsDirectorySource = new GTFSDirectorySource(directoryInfo.FullName))
                 {
                     var reader = new GTFSReader<GTFSFeed>();
                     reader.Read(gtfsDirectorySource);

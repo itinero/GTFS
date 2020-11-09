@@ -4,21 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GTFS</AssemblyName>
     <PackageId>WhereIsMyTransport.GTFS</PackageId>
+    <Title>WhereIsMyTransport.GTFS</Title>
+    <Authors>Itinero and contributors</Authors>
     <Description>A forked version of the powerful GTFS c# package by itinero.</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <PackageProjectUrl>https://github.com/WhereIsMyTransport/GTFS</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.github.com/WhereIsMyTransport/GTFS/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.github.com/WhereIsMyTransport/GTFS/master/icon.bmp</PackageIconUrl>
+    <PackageTags>routing,GTFS,transit</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
-    <Compile Include="..\..\SharedAssemblyVersion.cs" />
-  </ItemGroup>
-
   <PropertyGroup>
-    <DefineConstants>TRACE;NETSTANDARD13;NETFX_CORE;DOTNET_CORE</DefineConstants>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 </Project>
