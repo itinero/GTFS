@@ -86,6 +86,22 @@ namespace GTFS.Entities
         public DropOffType? DropOffType { get; set; }
 
         /// <summary>
+        /// Indicates whether a rider can board the transit vehicle at any point along the vehicle’s travel path. The path is described by shapes.txt, from this stop_time to the next stop_time in the trip’s stop_sequence.
+        /// 
+        /// The continuous pickup behavior indicated in stop_times.txt overrides any behavior defined in routes.txt.
+        /// </summary>
+        [FieldName("continuous_pickup")]
+        public ContinuousPickup? ContinuousPickup { get; set; }
+
+        /// <summary>
+        /// Indicates whether a rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by shapes.txt, from this stop_time to the next stop_time in the trip’s stop_sequence.
+        /// 
+        /// The continuous drop-off behavior indicated in stop_times.txt overrides any behavior defined in routes.txt.
+        /// </summary>
+        [FieldName("continuous_drop_off")]
+        public ContinuousDropOff? ContinuousDropOff { get; set; }
+
+        /// <summary>
         /// Gets or sets a distance from the first shape point.
         /// </summary>
         [FieldName("shape_dist_traveled")]
@@ -139,6 +155,8 @@ namespace GTFS.Entities
                 hash = hash * 59 + this.StopId.GetHashCodeEmptyWhenNull();
                 hash = hash * 59 + this.StopSequence.GetHashCode();
                 hash = hash * 59 + this.TripId.GetHashCodeEmptyWhenNull();
+                hash = hash * 59 + this.ContinuousPickup.GetHashCode();
+                hash = hash * 59 + this.ContinuousDropOff.GetHashCode();
                 hash = hash * 59 + this.TimepointType.GetHashCode();
                 return hash;
             }
@@ -154,13 +172,15 @@ namespace GTFS.Entities
             {
                 return this.ArrivalTime.Equals(other.ArrivalTime) &&
                     this.DepartureTime.Equals(other.DepartureTime) &&
-                    this.DropOffType== other.DropOffType &&
+                    this.DropOffType == other.DropOffType &&
                     this.PickupType == other.PickupType &&
                     (this.ShapeDistTravelled ?? 0) == (other.ShapeDistTravelled ?? 0) &&
                     (this.StopHeadsign ?? string.Empty) == (other.StopHeadsign ?? string.Empty) &&
                     (this.StopId ?? string.Empty) == (other.StopId ?? string.Empty) &&
                     this.StopSequence == other.StopSequence &&
                     (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty) &&
+                    this.ContinuousPickup == other.ContinuousPickup &&
+                    this.ContinuousDropOff == other.ContinuousDropOff &&
                     this.TimepointType == other.TimepointType;
             }
             return false;
@@ -183,6 +203,8 @@ namespace GTFS.Entities
                 StopSequence = other.StopSequence,
                 Tag = other.Tag,
                 TripId = other.TripId,
+                ContinuousPickup = other.ContinuousPickup,
+                ContinuousDropOff = other.ContinuousDropOff,
                 TimepointType = other.TimepointType
             };
         }

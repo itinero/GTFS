@@ -479,21 +479,21 @@ namespace GTFS
         /// <summary>
         /// Writes the routes.
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="routesFile"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Route> entities)
+        protected virtual void Write(IGTFSTargetFile routesFile, IEnumerable<Route> entities)
         {
-            if (file != null)
+            if (routesFile != null)
             {
                 bool initialized = false;
-                var data = new string[9];
+                var data = new string[11];
                 foreach (var entity in entities)
                 {
                     if (!initialized)
                     {
-                        if (file.Exists)
+                        if (routesFile.Exists)
                         {
-                            file.Clear();
+                            routesFile.Clear();
                         }
 
                         // write headers.
@@ -506,7 +506,9 @@ namespace GTFS
                         data[6] = "route_url";
                         data[7] = "route_color";
                         data[8] = "route_text_color";
-                        file.Write(data);
+                        data[9] = "continuous_pickup";
+                        data[10] = "continuous_drop_off";
+                        routesFile.Write(data);
                         initialized = true;
                     }
 
@@ -520,9 +522,11 @@ namespace GTFS
                     data[6] = this.WriteFieldString("routes", "route_url", entity.Url);
                     data[7] = this.WriteFieldColor("routes", "route_color", entity.Color);
                     data[8] = this.WriteFieldColor("routes", "route_text_color", entity.TextColor);
-                    file.Write(data);
+                    data[9] = this.WriteFieldContinuousPickup("routes", "continuous_pickup", entity.ContinuousPickup);
+                    data[10] = this.WriteFieldContinuousDropOff("routes", "continuous_drop_off", entity.ContinuousDropOff);
+                    routesFile.Write(data);
                 }
-                file.Close();
+                routesFile.Close();
             }
         }
 
@@ -631,21 +635,21 @@ namespace GTFS
         /// <summary>
         /// Writes the stop times.
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="stopTimesFile"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<StopTime> entities)
+        protected virtual void Write(IGTFSTargetFile stopTimesFile, IEnumerable<StopTime> entities)
         {
-            if (file != null)
+            if (stopTimesFile != null)
             {
                 bool initialized = false;
-                var data = new string[10];
+                var data = new string[12];
                 foreach (var entity in entities)
                 {
                     if (!initialized)
                     {
-                        if (file.Exists)
+                        if (stopTimesFile.Exists)
                         {
-                            file.Clear();
+                            stopTimesFile.Clear();
                         }
 
                         // write headers.
@@ -659,7 +663,9 @@ namespace GTFS
                         data[7] = "drop_off_type";
                         data[8] = "shape_dist_traveled";
                         data[9] = "timepoint";
-                        file.Write(data);
+                        data[10] = "continuous_pickup";
+                        data[11] = "continuous_drop_off";
+                        stopTimesFile.Write(data);
                         initialized = true;
                     }
 
@@ -674,9 +680,11 @@ namespace GTFS
                     data[7] = this.WriteFieldDropOffType("stop_times", "drop_off_type", entity.DropOffType);
                     data[8] = this.WriteFieldDouble("stop_times", "shape_dist_traveled", entity.ShapeDistTravelled);
                     data[9] = this.WriteFieldTimepointType("stop_times", "timepoint", entity.TimepointType);
-                    file.Write(data);
+                    data[10] = this.WriteFieldContinuousPickup("stop_times", "continuous_pickup", entity.ContinuousPickup);
+                    data[11] = this.WriteFieldContinuousDropOff("stop_times", "continuous_drop_off", entity.ContinuousDropOff);
+                    stopTimesFile.Write(data);
                 }
-                file.Close();
+                stopTimesFile.Close();
             }
         }
 
@@ -1033,6 +1041,58 @@ namespace GTFS
                     case PickupType.PhoneForPickup:
                         return "2";
                     case PickupType.DriverForPickup:
+                        return "3";
+                }
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Writes the continuous_pickup type.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected string WriteFieldContinuousPickup(string name, string fieldName, ContinuousPickup? value)
+        {
+            if (value.HasValue)
+            {
+                switch (value.Value)
+                {
+                    case ContinuousPickup.ContinuousStoppingPickup:
+                        return "0";
+                    case ContinuousPickup.None:
+                        return "1";
+                    case ContinuousPickup.PhoneForPickup:
+                        return "2";
+                    case ContinuousPickup.DriverForPickup:
+                        return "3";
+                }
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Writes the continuous_drop_off type.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected string WriteFieldContinuousDropOff(string name, string fieldName, ContinuousDropOff? value)
+        {
+            if (value.HasValue)
+            {
+                switch (value.Value)
+                {
+                    case ContinuousDropOff.ContinuousStoppingDropOff:
+                        return "0";
+                    case ContinuousDropOff.None:
+                        return "1";
+                    case ContinuousDropOff.PhoneForDropOff:
+                        return "2";
+                    case ContinuousDropOff.DriverForDropOff:
                         return "3";
                 }
             }

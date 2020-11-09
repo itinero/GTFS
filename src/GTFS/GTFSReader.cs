@@ -1184,6 +1184,12 @@ namespace GTFS
                 case "route_text_color":
                     route.TextColor = this.ParseFieldColor(header.Name, fieldName, value);
                     break;
+                case "continuous_pickup":
+                    route.ContinuousPickup = this.ParseFieldContinuousPickup(header.Name, fieldName, value);
+                    break;
+                case "continuous_drop_off":
+                    route.ContinuousDropOff = this.ParseFieldContinuousDropOff(header.Name, fieldName, value);
+                    break;
             }
         }
 
@@ -1419,6 +1425,12 @@ namespace GTFS
                     break;
                 case "drop_off_type":
                     stopTime.DropOffType = this.ParseFieldDropOffType(header.Name, fieldName, value);
+                    break;
+                case "continuous_pickup":
+                    stopTime.ContinuousPickup = this.ParseFieldContinuousPickup(header.Name, fieldName, value);
+                    break;
+                case "continuous_drop_off":
+                    stopTime.ContinuousDropOff = this.ParseFieldContinuousDropOff(header.Name, fieldName, value);
                     break;
                 case "shape_dist_traveled":
                     stopTime.ShapeDistTravelled = this.ParseFieldDouble(header.Name, fieldName, value);
@@ -1890,6 +1902,82 @@ namespace GTFS
                     return PickupType.PhoneForPickup;
                 case "3":
                     return PickupType.DriverForPickup;
+            }
+
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a continuous_pickup field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private ContinuousPickup? ParseFieldContinuousPickup(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //0 - Continuous stopping pickup.
+            //1 or empty - No continuous stopping pickup.
+            //2 - Must phone an agency to arrange continuous stopping pickup.
+            //3 - Must coordinate with a driver to arrange continuous stopping pickup.
+
+            switch (value)
+            {
+                case "0":
+                    return ContinuousPickup.ContinuousStoppingPickup;
+                case "1":
+                    return ContinuousPickup.None;
+                case "2":
+                    return ContinuousPickup.PhoneForPickup;
+                case "3":
+                    return ContinuousPickup.DriverForPickup;
+            }
+
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
+        /// Parses a continuous_drop_off field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private ContinuousDropOff? ParseFieldContinuousDropOff(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //0 - Continuous stopping drop-off.
+            //1 or empty - No continuous stopping drop-off.
+            //2 - Must phone an agency to arrange continuous stopping drop-off.
+            //3 - Must coordinate with a driver to arrange continuous stopping drop-off.
+
+            switch (value)
+            {
+                case "0":
+                    return ContinuousDropOff.ContinuousStoppingDropOff;
+                case "1":
+                    return ContinuousDropOff.None;
+                case "2":
+                    return ContinuousDropOff.PhoneForDropOff;
+                case "3":
+                    return ContinuousDropOff.DriverForDropOff;
             }
 
             throw new GTFSParseException(name, fieldName, value);

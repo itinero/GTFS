@@ -92,6 +92,22 @@ namespace GTFS.Entities
         public int? TextColor { get; set; }
 
         /// <summary>
+        /// Indicates whether a rider can board the transit vehicle anywhere along the vehicle’s travel path. The path is described by shapes.txt on every trip of the route.
+        /// 
+        /// The default continuous pickup behavior defined in routes.txt can be overridden in stop_times.txt.
+        /// </summary>
+        [FieldName("continuous_pickup")]
+        public ContinuousPickup? ContinuousPickup { get; set; }
+
+        /// <summary>
+        /// Indicates whether a rider can alight the transit vehicle anywhere along the vehicle’s travel path. The path is described by shapes.txt on every trip of the route.
+        /// 
+        /// The default continuous drop-off behavior defined in routes.txt can be overridden in stop_times.txt.
+        /// </summary>
+        [FieldName("continuous_drop_off")]
+        public ContinuousDropOff? ContinuousDropOff { get; set; }
+
+        /// <summary>
         /// Serves as a hash function.
         /// </summary>
         /// <returns></returns>
@@ -109,6 +125,8 @@ namespace GTFS.Entities
                 hash = hash * 43 + (this.TextColor ?? -1).GetHashCode();
                 hash = hash * 43 + this.Type.GetHashCode();
                 hash = hash * 43 + (this.Url ?? string.Empty).GetHashCode();
+                hash = hash * 43 + this.ContinuousPickup.GetHashCode();
+                hash = hash * 43 + this.ContinuousDropOff.GetHashCode();
                 return hash;
             }
         }
@@ -129,7 +147,9 @@ namespace GTFS.Entities
                     (this.ShortName ?? string.Empty) == (other.ShortName ?? string.Empty) &&
                     (this.TextColor ?? -1) == (other.TextColor ?? -1) &&
                     this.Type == other.Type &&
-                    (this.Url ?? string.Empty) == (other.Url ?? string.Empty);
+                    (this.Url ?? string.Empty) == (other.Url ?? string.Empty) &&
+                    this.ContinuousPickup == other.ContinuousPickup &&
+                    this.ContinuousDropOff == other.ContinuousDropOff;
             }
             return false;
         }
@@ -170,7 +190,9 @@ namespace GTFS.Entities
                 Tag = route.Tag,
                 TextColor = route.TextColor,
                 Type = route.Type,
-                Url = route.Url
+                Url = route.Url,
+                ContinuousPickup = route.ContinuousPickup,
+                ContinuousDropOff = route.ContinuousDropOff
             };
         }
     }
