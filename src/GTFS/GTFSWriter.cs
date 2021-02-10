@@ -44,6 +44,7 @@ namespace GTFS
         public void Write(T feed, IEnumerable<IGTFSTargetFile> target)
         {
             // order files by id
+            var attributionsToWrite = feed.Attributions.OrderBy(x => x.Id).ToList();
             var agenciesToWrite = feed.Agencies.OrderBy(x => x.Id).ToList();
             var calendarDatesToWrite = feed.CalendarDates.OrderBy(x => x.ServiceId).OrderBy(y => y.ExceptionType).OrderBy(z => z.Date).ToList();
             var calendarsToWrite = feed.Calendars.OrderBy(x => x.ServiceId).ToList();
@@ -58,6 +59,7 @@ namespace GTFS
             var pathwaysToWrite = feed.Pathways.OrderBy(x => x.Id).ToList();
 
             // write files on-by-one.
+            this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "attributions"), attributionsToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "agency"), agenciesToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar_dates"), calendarDatesToWrite);
             this.Write(target.FirstOrDefault<IGTFSTargetFile>((x) => x.Name == "calendar"), calendarsToWrite);
@@ -165,6 +167,60 @@ namespace GTFS
                 pathwaysFile.Write(data);
             }
             pathwaysFile.Close();
+        }
+
+        /// <summary>
+        /// Writes all attributions to the given attributions file.
+        /// </summary>
+        /// <param name="attributionsFile"></param>
+        /// <param name="attributions"></param>
+        protected virtual void Write(IGTFSTargetFile attributionsFile, IEnumerable<Attribution> attributions)
+        {
+            if (attributionsFile != null)
+            {
+                bool initialized = false;
+                var data = new string[11];
+                foreach (var attribution in attributions)
+                {
+                    if (!initialized)
+                    {
+                        if (attributionsFile.Exists)
+                        {
+                            attributionsFile.Clear();
+                        }
+
+                        // write headers.
+                        data[0] = "attribution_id";
+                        data[1] = "agency_id";
+                        data[2] = "route_id";
+                        data[3] = "trip_id";
+                        data[4] = "organization_name";
+                        data[5] = "is_producer";
+                        data[6] = "is_operator";
+                        data[7] = "is_authority";
+                        data[8] = "attribution_url";
+                        data[9] = "attribution_email";
+                        data[10] = "attribution_phone";
+                        attributionsFile.Write(data);
+                        initialized = true;
+                    }
+
+                    // write details.
+                    data[0] = this.WriteFieldString("attribution", "attribution_id", attribution.Id);
+                    data[1] = this.WriteFieldString("attribution", "agency_id", attribution.AgencyId);
+                    data[2] = this.WriteFieldString("attribution", "route_id", attribution.RouteId);
+                    data[3] = this.WriteFieldString("attribution", "trip_id", attribution.TripId);
+                    data[4] = this.WriteFieldString("attribution", "organisation_name", attribution.OrganisationName, true);
+                    data[5] = this.WriteFieldBool("attribution", "is_producer", attribution.IsProducer);
+                    data[6] = this.WriteFieldBool("attribution", "is_operator", attribution.IsOperator);
+                    data[7] = this.WriteFieldBool("attribution", "is_authority", attribution.IsAuthority);
+                    data[8] = this.WriteFieldString("attribution", "attribution_url", attribution.URL, true);
+                    data[9] = this.WriteFieldString("attribution", "attribution_email", attribution.Email);
+                    data[10] = this.WriteFieldString("attribution", "attribution_phone", attribution.Phone);
+                    attributionsFile.Write(data);
+                }
+                attributionsFile.Close();
+            }
         }
 
         /// <summary>

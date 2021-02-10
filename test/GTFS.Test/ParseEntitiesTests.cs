@@ -46,6 +46,8 @@ namespace GTFS.Test
         {
             var source = new List<IGTFSSourceFile>();
             source.Add(new GTFSSourceFileStream(
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.attributions.txt"), "attributions"));
+            source.Add(new GTFSSourceFileStream(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.agency.txt"), "agency"));
             source.Add(new GTFSSourceFileStream(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.calendar.txt"), "calendar"));
@@ -70,6 +72,63 @@ namespace GTFS.Test
             source.Add(new GTFSSourceFileStream(
                 Assembly.GetExecutingAssembly().GetManifestResourceStream("GTFS.Test.sample_feed.transfers.txt"), "transfers"));
             return source;
+        }
+
+        /// <summary>
+        /// Tests parsing attributions.
+        /// </summary>
+        [Test]
+        public void ParseAttributions()
+        {
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>();
+
+            // build the source
+            var source = this.BuildSource();
+
+            // execute the reader.
+            var feed = reader.Read(source, source.First(x => x.Name.Equals("attributions")));
+
+            // test result.
+            Assert.IsNotNull(feed.Attributions);
+            var attributions = new List<Attribution>(feed.Attributions);
+            Assert.AreEqual(3, attributions.Count);
+
+            Assert.AreEqual("attr_1", attributions[0].Id);
+            Assert.AreEqual("DTA", attributions[0].AgencyId);
+            Assert.AreEqual("", attributions[0].RouteId);
+            Assert.AreEqual("", attributions[0].TripId);
+            Assert.AreEqual(null, attributions[0].IsAuthority);
+            Assert.AreEqual(false, attributions[0].IsOperator);
+            Assert.AreEqual(true, attributions[0].IsProducer);
+            Assert.AreEqual("Transit Feed Solutions USA", attributions[0].OrganisationName);
+            Assert.AreEqual("+0123456789", attributions[0].Phone);
+            Assert.AreEqual("sub.domain.com", attributions[0].URL);
+            Assert.AreEqual("ff@ff.com", attributions[0].Email);
+
+            Assert.AreEqual("attr_2", attributions[1].Id);
+            Assert.AreEqual("", attributions[1].AgencyId);
+            Assert.AreEqual("AB", attributions[1].RouteId);
+            Assert.AreEqual("", attributions[1].TripId);
+            Assert.AreEqual(null, attributions[1].IsAuthority);
+            Assert.AreEqual(true, attributions[1].IsOperator);
+            Assert.AreEqual(false, attributions[1].IsProducer);
+            Assert.AreEqual("Transit Bus Operations USA", attributions[1].OrganisationName);
+            Assert.AreEqual("", attributions[1].Phone);
+            Assert.AreEqual(null, attributions[1].URL);
+            Assert.AreEqual("", attributions[1].Email);
+
+            Assert.AreEqual("attr_3", attributions[2].Id);
+            Assert.AreEqual("", attributions[2].AgencyId);
+            Assert.AreEqual("", attributions[2].RouteId);
+            Assert.AreEqual("AB1", attributions[2].TripId);
+            Assert.AreEqual(true, attributions[2].IsAuthority);
+            Assert.AreEqual(null, attributions[2].IsOperator);
+            Assert.AreEqual(false, attributions[2].IsProducer);
+            Assert.AreEqual("Transit Bus Operations USA", attributions[2].OrganisationName);
+            Assert.AreEqual("", attributions[2].Phone);
+            Assert.AreEqual(null, attributions[2].URL);
+            Assert.AreEqual("", attributions[2].Email);
         }
 
         /// <summary>

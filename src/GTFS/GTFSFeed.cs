@@ -37,6 +37,8 @@ namespace GTFS
         public GTFSFeed()
         {
             _feedInfo = new FeedInfo();
+            this.Attributions = new UniqueEntityListCollection<Attribution>(new List<Attribution>(),
+                (e, id) => e.Id == id);
             this.Agencies = new UniqueEntityListCollection<Agency>(new List<Agency>(),
                 (e, id) => e.Id == id);
             this.CalendarDates = new EntityListCollection<CalendarDate>(new List<CalendarDate>(),
@@ -98,7 +100,16 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Gets the collection of .
+        /// Gets the collection of attributions.
+        /// </summary>
+        public IUniqueEntityCollection<Attribution> Attributions
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the collection of agencies.
         /// </summary>
         public IUniqueEntityCollection<Agency> Agencies
         {

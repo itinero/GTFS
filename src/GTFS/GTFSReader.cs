@@ -96,6 +96,7 @@ namespace GTFS
             this.TimeOfDayWriter = (timeOfDay) => { throw new NotImplementedException(); };
 
             // initialize maps.
+            this.AttributionMap = new FieldMap();
             this.AgencyMap = new FieldMap();
             this.CalendarDateMap = new FieldMap();
             this.CalendarMap = new FieldMap();
@@ -413,6 +414,9 @@ namespace GTFS
         {
             switch (file.Name.ToLower())
             {
+                case "attributions":
+                    this.Read<Attribution>(file, feed, this.ParseAttribution, feed.Attributions.Add);
+                    break;
                 case "agency":
                     this.Read<Agency>(file, feed, this.ParseAgency, feed.Agencies.Add);
                     break;
@@ -592,12 +596,7 @@ namespace GTFS
         }
 
         /// <summary>
-        /// Gets the agency fieldmap.
-        /// </summary>
-        public FieldMap AgencyMap { get; private set; }
-
-        /// <summary>
-        /// Reads the agency file.
+        /// Reads the GTFS file.
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="file"></param>
@@ -654,6 +653,92 @@ namespace GTFS
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the attribution fieldmap.
+        /// </summary>
+        public FieldMap AttributionMap { get; private set; }
+
+        /// <summary>
+        /// Parses an attribution row.
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Attribution ParseAttribution(T feed, GTFSSourceFileHeader header, string[] data)
+        {
+            // check required fields.
+
+            this.CheckRequiredField(header, header.Name, this.AttributionMap, "attribution_name");
+
+            // if we already have another attribution, then the attribution_id is required
+            if (feed.Attributions.Any())
+            {
+                CheckRequiredField(header, header.Name, AttributionMap, "attribution_id");
+            }
+
+            // parse/set all fields.
+            var attribution = new Attribution();
+            for (int idx = 0; idx < data.Length; idx++)
+            {
+                this.ParseAttributionField(header, attribution, header.GetColumn(idx), data[idx]);
+            }
+
+            return attribution;
+        }
+
+        /// <summary>
+        /// Parses an attribution field.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="attribution"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected virtual void ParseAttributionField(GTFSSourceFileHeader header, Attribution attribution, string fieldName, string value)
+        {
+            switch (fieldName)
+            {
+                case "attribution_id":
+                    attribution.Id = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "agency_id":
+                    attribution.AgencyId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "route_id":
+                    attribution.RouteId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "trip_id":
+                    attribution.TripId = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "organization_name":
+                    attribution.OrganisationName = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "is_producer":
+                    attribution.IsProducer = this.ParseFieldBool(header.Name, fieldName, value);
+                    break;
+                case "is_operator":
+                    attribution.IsOperator = this.ParseFieldBool(header.Name, fieldName, value);
+                    break;
+                case "is_authority":
+                    attribution.IsAuthority = this.ParseFieldBool(header.Name, fieldName, value);
+                    break;
+                case "attribution_url":
+                    attribution.URL = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "attribution_email":
+                    attribution.Email = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "attribution_phone":
+                    attribution.Phone = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Gets the agency fieldmap.
+        /// </summary>
+        public FieldMap AgencyMap { get; private set; }
 
         /// <summary>
         /// Parses an agency row.

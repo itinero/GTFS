@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="sample-feed\*.txt;other-feed\*.txt" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <None Remove="sample-feed\attributions.txt" />
     <None Update="folder-feed\*.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

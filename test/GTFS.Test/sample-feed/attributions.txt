@@ -1,0 +1,4 @@
+﻿attribution_id,is_producer,is_operator,is_authority,organization_name,agency_id,route_id,trip_id,attribution_phone,attribution_email,attribution_url
+attr_1,1,0,,Transit Feed Solutions USA,DTA,,,+0123456789,ff@ff.com,sub.domain.com
+attr_2,0,1,,Transit Bus Operations USA,,AB,,,
+attr_3,0,,1,Transit Bus Operations USA,,,AB1,,

@@ -47,6 +47,14 @@ namespace GTFS
         /// <summary>
         /// Gets the collection of agencies.
         /// </summary>
+        IUniqueEntityCollection<Attribution> Attributions
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of agencies.
+        /// </summary>
         IUniqueEntityCollection<Agency> Agencies
         {
             get;
