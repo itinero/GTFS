@@ -101,7 +101,7 @@ namespace GTFS.Test
             Assert.AreEqual(null, attributions[0].IsAuthority);
             Assert.AreEqual(false, attributions[0].IsOperator);
             Assert.AreEqual(true, attributions[0].IsProducer);
-            Assert.AreEqual("Transit Feed Solutions USA", attributions[0].OrganisationName);
+            Assert.AreEqual("Transit Feed Solutions USA", attributions[0].OrganizationName);
             Assert.AreEqual("+0123456789", attributions[0].Phone);
             Assert.AreEqual("sub.domain.com", attributions[0].URL);
             Assert.AreEqual("ff@ff.com", attributions[0].Email);
@@ -113,7 +113,7 @@ namespace GTFS.Test
             Assert.AreEqual(null, attributions[1].IsAuthority);
             Assert.AreEqual(true, attributions[1].IsOperator);
             Assert.AreEqual(false, attributions[1].IsProducer);
-            Assert.AreEqual("Transit Bus Operations USA", attributions[1].OrganisationName);
+            Assert.AreEqual("Transit Bus Operations USA", attributions[1].OrganizationName);
             Assert.AreEqual("", attributions[1].Phone);
             Assert.AreEqual(null, attributions[1].URL);
             Assert.AreEqual("", attributions[1].Email);
@@ -125,7 +125,7 @@ namespace GTFS.Test
             Assert.AreEqual(true, attributions[2].IsAuthority);
             Assert.AreEqual(null, attributions[2].IsOperator);
             Assert.AreEqual(false, attributions[2].IsProducer);
-            Assert.AreEqual("Transit Bus Operations USA", attributions[2].OrganisationName);
+            Assert.AreEqual("Transit Bus Operations USA", attributions[2].OrganizationName);
             Assert.AreEqual("", attributions[2].Phone);
             Assert.AreEqual(null, attributions[2].URL);
             Assert.AreEqual("", attributions[2].Email);

@@ -712,7 +712,7 @@ namespace GTFS
                     attribution.TripId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "organization_name":
-                    attribution.OrganisationName = this.ParseFieldString(header.Name, fieldName, value);
+                    attribution.OrganizationName = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "is_producer":
                     attribution.IsProducer = this.ParseFieldBool(header.Name, fieldName, value);

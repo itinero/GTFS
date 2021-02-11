@@ -59,7 +59,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("organization_name")]
-        public string OrganisationName { get; set; }
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// The role of the organization is producer. At least one of the fields, either is_producer, is_operator, or is_authority, must be set at 1.
@@ -103,7 +103,7 @@ namespace GTFS.Entities
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("[{0}] {1}", this.Id, this.OrganisationName);
+            return string.Format("[{0}] {1}", this.Id, this.OrganizationName);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace GTFS.Entities
                 hash = hash * 89 + this.AgencyId.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + this.RouteId.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + this.TripId.GetHashCodeEmptyWhenNull();
-                hash = hash * 89 + this.OrganisationName.GetHashCodeEmptyWhenNull();
+                hash = hash * 89 + this.OrganizationName.GetHashCodeEmptyWhenNull();
                 hash = hash * 89 + (this.IsProducer ?? false).GetHashCode();
                 hash = hash * 89 + (this.IsOperator ?? false).GetHashCode();
                 hash = hash * 89 + (this.IsAuthority ?? false).GetHashCode();
@@ -142,7 +142,7 @@ namespace GTFS.Entities
                     (this.AgencyId ?? string.Empty) == (other.AgencyId ?? string.Empty) &&
                     (this.RouteId ?? string.Empty) == (other.RouteId ?? string.Empty) &&
                     (this.TripId ?? string.Empty) == (other.TripId ?? string.Empty) &&
-                    (this.OrganisationName ?? string.Empty) == (other.OrganisationName ?? string.Empty) &&
+                    (this.OrganizationName ?? string.Empty) == (other.OrganizationName ?? string.Empty) &&
                     (this.IsProducer ?? false) == (other.IsProducer ?? false) &&
                     (this.IsOperator ?? false) == (other.IsOperator ?? false) &&
                     (this.IsAuthority ?? false) == (other.IsAuthority ?? false) &&

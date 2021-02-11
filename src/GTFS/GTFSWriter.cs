@@ -210,7 +210,7 @@ namespace GTFS
                     data[1] = this.WriteFieldString("attribution", "agency_id", attribution.AgencyId);
                     data[2] = this.WriteFieldString("attribution", "route_id", attribution.RouteId);
                     data[3] = this.WriteFieldString("attribution", "trip_id", attribution.TripId);
-                    data[4] = this.WriteFieldString("attribution", "organisation_name", attribution.OrganisationName, true);
+                    data[4] = this.WriteFieldString("attribution", "organization_name", attribution.OrganizationName, true);
                     data[5] = this.WriteFieldBool("attribution", "is_producer", attribution.IsProducer);
                     data[6] = this.WriteFieldBool("attribution", "is_operator", attribution.IsOperator);
                     data[7] = this.WriteFieldBool("attribution", "is_authority", attribution.IsAuthority);

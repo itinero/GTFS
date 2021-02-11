@@ -40,7 +40,7 @@ namespace GTFS.Test.Entities
             Assert.AreEqual(attribution.AgencyId, null);
             Assert.AreEqual(attribution.RouteId, null);
             Assert.AreEqual(attribution.TripId, null);
-            Assert.AreEqual(attribution.OrganisationName, null);
+            Assert.AreEqual(attribution.OrganizationName, null);
             Assert.AreEqual(attribution.IsProducer, null);
             Assert.AreEqual(attribution.IsOperator, null);
             Assert.AreEqual(attribution.IsAuthority, null);
@@ -54,7 +54,7 @@ namespace GTFS.Test.Entities
         {
             var attribution = new Attribution() 
             { 
-                OrganisationName = "org",
+                OrganizationName = "org",
                 IsProducer = true,
                 IsOperator = false,
                 Email = "hi@hi.com"
@@ -64,7 +64,7 @@ namespace GTFS.Test.Entities
             Assert.AreEqual(attribution.AgencyId, null);
             Assert.AreEqual(attribution.RouteId, null);
             Assert.AreEqual(attribution.TripId, null);
-            Assert.AreEqual(attribution.OrganisationName, "org");
+            Assert.AreEqual(attribution.OrganizationName, "org");
             Assert.AreEqual(attribution.IsProducer, true);
             Assert.AreEqual(attribution.IsOperator, false);
             Assert.AreEqual(attribution.IsAuthority, null);
