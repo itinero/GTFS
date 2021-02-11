@@ -52,6 +52,7 @@ namespace GTFS.IO
             {
                 // write files on-by-one.
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "agency"),"agency"));
+                _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "attributions"), "attributions"));
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "calendar_dates"), "calendar_dates"));
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "calendar"), "calendar"));
                 _targets.Add(new GTFSTargetFileStream(this.OpenWrite(_directory.FullName, "fare_attributes"), "fare_attributes"));
