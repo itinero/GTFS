@@ -670,7 +670,7 @@ namespace GTFS
         {
             // check required fields.
 
-            this.CheckRequiredField(header, header.Name, this.AttributionMap, "attribution_name");
+            this.CheckRequiredField(header, header.Name, this.AttributionMap, "organization_name");
 
             // if we already have another attribution, then the attribution_id is required
             if (feed.Attributions.Any())
