@@ -82,7 +82,7 @@ namespace GTFS
         /// </summary>
         /// <param name="levelsFile"></param>
         /// <param name="levels"></param>
-        protected virtual void Write(IGTFSTargetFile levelsFile, IEnumerable<Level> levels)
+        public virtual void Write(IGTFSTargetFile levelsFile, IEnumerable<Level> levels)
         {
             if (levelsFile == null) return;
             
@@ -119,7 +119,7 @@ namespace GTFS
         /// </summary>
         /// <param name="pathwaysFile"></param>
         /// <param name="pathways"></param>
-        protected virtual void Write(IGTFSTargetFile pathwaysFile, IEnumerable<Pathway> pathways)
+        public virtual void Write(IGTFSTargetFile pathwaysFile, IEnumerable<Pathway> pathways)
         {
             if (pathwaysFile == null) return;
             
@@ -174,7 +174,7 @@ namespace GTFS
         /// </summary>
         /// <param name="attributionsFile"></param>
         /// <param name="attributions"></param>
-        protected virtual void Write(IGTFSTargetFile attributionsFile, IEnumerable<Attribution> attributions)
+        public virtual void Write(IGTFSTargetFile attributionsFile, IEnumerable<Attribution> attributions)
         {
             if (attributionsFile != null)
             {
@@ -228,7 +228,7 @@ namespace GTFS
         /// </summary>
         /// <param name="agenciesFile"></param>
         /// <param name="agencies"></param>
-        protected virtual void Write(IGTFSTargetFile agenciesFile, IEnumerable<Agency> agencies)
+        public virtual void Write(IGTFSTargetFile agenciesFile, IEnumerable<Agency> agencies)
         {
             if (agenciesFile != null)
             {
@@ -276,7 +276,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<CalendarDate> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<CalendarDate> entities)
         {
             if (file != null)
             {
@@ -314,7 +314,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Calendar> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Calendar> entities)
         {
             if (file != null)
             {
@@ -366,7 +366,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<FareAttribute> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<FareAttribute> entities)
         {
             if (file != null)
             {
@@ -412,7 +412,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<FareRule> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<FareRule> entities)
         {
             if (file != null)
             {
@@ -454,7 +454,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entity"></param>
-        protected virtual void Write(IGTFSTargetFile file, FeedInfo entity)
+        public virtual void Write(IGTFSTargetFile file, FeedInfo entity)
         {
             if (file != null)
             {
@@ -495,7 +495,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Frequency> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Frequency> entities)
         {
             if (file != null)
             {
@@ -537,7 +537,7 @@ namespace GTFS
         /// </summary>
         /// <param name="routesFile"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile routesFile, IEnumerable<Route> entities)
+        public virtual void Write(IGTFSTargetFile routesFile, IEnumerable<Route> entities)
         {
             if (routesFile != null)
             {
@@ -591,7 +591,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Shape> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Shape> entities)
         {
             if (file != null)
             {
@@ -633,7 +633,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Stop> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Stop> entities)
         {
             if (file != null)
             {
@@ -693,7 +693,7 @@ namespace GTFS
         /// </summary>
         /// <param name="stopTimesFile"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile stopTimesFile, IEnumerable<StopTime> entities)
+        public virtual void Write(IGTFSTargetFile stopTimesFile, IEnumerable<StopTime> entities)
         {
             if (stopTimesFile != null)
             {
@@ -749,7 +749,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Transfer> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Transfer> entities)
         {
             if (file != null)
             {
@@ -789,7 +789,7 @@ namespace GTFS
         /// </summary>
         /// <param name="file"></param>
         /// <param name="entities"></param>
-        protected virtual void Write(IGTFSTargetFile file, IEnumerable<Trip> entities)
+        public virtual void Write(IGTFSTargetFile file, IEnumerable<Trip> entities)
         {
             if (file != null)
             {
@@ -841,7 +841,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected virtual string WriteFieldString(string name, string fieldName, string value)
+        public virtual string WriteFieldString(string name, string fieldName, string value)
         {
             var quote = !string.IsNullOrWhiteSpace(value) && value.Contains(",");
             return this.WriteFieldString(name, fieldName, value, quote);
@@ -855,7 +855,7 @@ namespace GTFS
         /// <param name="value"></param>
         /// <param name="quote"></param>
         /// <returns></returns>
-        protected virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
+        public virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
         {
             if (quote)
             { // quotes.
@@ -875,7 +875,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldExceptionType(string name, string fieldName, ExceptionType value)
+        public string WriteFieldExceptionType(string name, string fieldName, ExceptionType value)
         {
             //A value of 1 indicates that service has been added for the specified date.
             //A value of 2 indicates that service has been removed for the specified date.
@@ -897,7 +897,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        protected string WriteFieldDate(string name, string fieldName, DateTime dateTime)
+        public string WriteFieldDate(string name, string fieldName, DateTime dateTime)
         {
             return dateTime.ToString("yyyyMMdd");
         }
@@ -909,7 +909,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldBool(string name, string fieldName, bool? value)
+        public string WriteFieldBool(string name, string fieldName, bool? value)
         {
             if (value.HasValue)
             {
@@ -929,7 +929,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldUint(string name, string fieldName, uint? value)
+        public string WriteFieldUint(string name, string fieldName, uint? value)
         {
             if (value.HasValue)
             {
@@ -945,7 +945,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldPaymentMethod(string name, string fieldName, PaymentMethodType value)
+        public string WriteFieldPaymentMethod(string name, string fieldName, PaymentMethodType value)
         {
             //0 - Fare is paid on board.
             //1 - Fare must be paid before boarding.
@@ -967,7 +967,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldColor(string name, string fieldName, int? value)
+        public string WriteFieldColor(string name, string fieldName, int? value)
         {
             return value.ToHexColorString();
         }
@@ -988,7 +988,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldDouble(string name, string fieldName, double? value)
+        public string WriteFieldDouble(string name, string fieldName, double? value)
         {
             if (value.HasValue)
             {
@@ -1004,7 +1004,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldInt(string name, string fieldName, int? value)
+        public string WriteFieldInt(string name, string fieldName, int? value)
         {
             if (value.HasValue)
             {
@@ -1020,7 +1020,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldLocationType(string name, string fieldName, LocationType? value)
+        public string WriteFieldLocationType(string name, string fieldName, LocationType? value)
         {
             if (value.HasValue)
             {
@@ -1042,7 +1042,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldDropOffType(string name, string fieldName, DropOffType? value)
+        public string WriteFieldDropOffType(string name, string fieldName, DropOffType? value)
         {
             if (value.HasValue)
             {
@@ -1065,7 +1065,7 @@ namespace GTFS
         /// Writes the timepoint value.
         /// </summary>
         /// <returns></returns>
-        protected string WriteFieldTimepointType(string name, string fieldName, TimePointType value)
+        public string WriteFieldTimepointType(string name, string fieldName, TimePointType value)
         {
             switch (value)
             {
@@ -1084,7 +1084,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldPickupType(string name, string fieldName, PickupType? value)
+        public string WriteFieldPickupType(string name, string fieldName, PickupType? value)
         {
             if (value.HasValue)
             {
@@ -1110,7 +1110,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldContinuousPickup(string name, string fieldName, ContinuousPickup? value)
+        public string WriteFieldContinuousPickup(string name, string fieldName, ContinuousPickup? value)
         {
             if (value.HasValue)
             {
@@ -1136,7 +1136,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldContinuousDropOff(string name, string fieldName, ContinuousDropOff? value)
+        public string WriteFieldContinuousDropOff(string name, string fieldName, ContinuousDropOff? value)
         {
             if (value.HasValue)
             {
@@ -1159,7 +1159,7 @@ namespace GTFS
         /// Writes a timeofday.
         /// </summary>
         /// <returns></returns>
-        protected string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
+        public string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
         {
             if (!value.HasValue)
             {
@@ -1178,7 +1178,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldTransferType(string name, string fieldName, TransferType value)
+        public string WriteFieldTransferType(string name, string fieldName, TransferType value)
         {
             switch (value)
             {
@@ -1202,7 +1202,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldAccessibilityType(string name, string fieldName, WheelchairAccessibilityType? value)
+        public string WriteFieldAccessibilityType(string name, string fieldName, WheelchairAccessibilityType? value)
         {
             if (value.HasValue)
             {
@@ -1230,7 +1230,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldIsBidirectional(string name, string fieldName, IsBidirectional? value)
+        public string WriteFieldIsBidirectional(string name, string fieldName, IsBidirectional? value)
         {
             if (value.HasValue)
             {
@@ -1255,7 +1255,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldPathwayMode(string name, string fieldName, PathwayMode? value)
+        public string WriteFieldPathwayMode(string name, string fieldName, PathwayMode? value)
         {
             if (value.HasValue)
             {
@@ -1295,7 +1295,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected string WriteFieldDirectionType(string name, string fieldName, DirectionType? value)
+        public string WriteFieldDirectionType(string name, string fieldName, DirectionType? value)
         {
             if (value.HasValue)
             {
