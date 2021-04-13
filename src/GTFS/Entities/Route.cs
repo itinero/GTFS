@@ -71,7 +71,7 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("route_type")]
-        public RouteTypeExtended Type { get; set; }
+        public RouteType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the URL of a web page about that particular route. This should be different from the agency_url. The value must be a fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped.

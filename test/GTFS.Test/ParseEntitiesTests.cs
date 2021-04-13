@@ -189,7 +189,7 @@ namespace GTFS.Test
             Assert.AreEqual("10", routes[idx].ShortName);
             Assert.AreEqual("Airport - Bullfrog", routes[idx].LongName);
             Assert.AreEqual(string.Empty, routes[idx].Description);
-            Assert.AreEqual(RouteTypeExtended.BusService, routes[idx].Type);
+            Assert.AreEqual(RouteType.BusService, routes[idx].Type);
             Assert.AreEqual(-3932017, routes[idx].Color);
             Assert.AreEqual(null, routes[idx].TextColor);
 
@@ -200,7 +200,7 @@ namespace GTFS.Test
             Assert.AreEqual("20", routes[idx].ShortName);
             Assert.AreEqual("Bullfrog - Furnace Creek Resort", routes[idx].LongName);
             Assert.AreEqual(string.Empty, routes[idx].Description);
-            Assert.AreEqual(RouteTypeExtended.BusService, routes[idx].Type);
+            Assert.AreEqual(RouteType.BusService, routes[idx].Type);
             Assert.AreEqual(-1, routes[idx].Color);
             Assert.AreEqual(null, routes[idx].TextColor);
 
@@ -211,7 +211,7 @@ namespace GTFS.Test
             Assert.AreEqual("30", routes[idx].ShortName);
             Assert.AreEqual("Stagecoach - Airport Shuttle", routes[idx].LongName);
             Assert.AreEqual(string.Empty, routes[idx].Description);
-            Assert.AreEqual(RouteTypeExtended.BusService, routes[idx].Type);
+            Assert.AreEqual(RouteType.BusService, routes[idx].Type);
             Assert.AreEqual(null, routes[idx].Color);
             Assert.AreEqual(null, routes[idx].TextColor);
 
@@ -222,7 +222,7 @@ namespace GTFS.Test
             Assert.AreEqual("40", routes[idx].ShortName);
             Assert.AreEqual("City", routes[idx].LongName);
             Assert.AreEqual(string.Empty, routes[idx].Description);
-            Assert.AreEqual(RouteTypeExtended.BusService, routes[idx].Type);
+            Assert.AreEqual(RouteType.BusService, routes[idx].Type);
             Assert.AreEqual(null, routes[idx].Color);
             Assert.AreEqual(null, routes[idx].TextColor);
 
@@ -233,7 +233,7 @@ namespace GTFS.Test
             Assert.AreEqual("50", routes[idx].ShortName);
             Assert.AreEqual("Airport - Amargosa Valley", routes[idx].LongName);
             Assert.AreEqual(string.Empty, routes[idx].Description);
-            Assert.AreEqual(RouteTypeExtended.BusService, routes[idx].Type);
+            Assert.AreEqual(RouteType.BusService, routes[idx].Type);
             Assert.AreEqual(null, routes[idx].Color);
             Assert.AreEqual(null, routes[idx].TextColor);
         }

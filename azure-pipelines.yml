@@ -18,7 +18,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  Major: 3
+  Major: 4
   Minor: 0
   MajorMinor: $(Major).$(Minor)
   Patch: $[counter(variables['MajorMinor'], 1)]

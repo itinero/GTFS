@@ -32,27 +32,27 @@ namespace GTFS.Test.Entities
     public class RouteTypeTests
     {
         [Test]
-        public void TestTryToRouteType()
+        public void TryToStandard()
         {
-            Assert.True(RouteTypeExtended.BusService.TryToRouteType(out var routeType));
+            Assert.True(RouteType.BusService.TryToStandard(out var routeType));
             Assert.AreEqual(RouteType.Bus, routeType);
-            Assert.True(RouteTypeExtended.TrolleybusService.TryToRouteType(out routeType));
+            Assert.True(RouteType.TrolleybusService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.Bus, routeType);
-            Assert.True(RouteTypeExtended.CoachService.TryToRouteType(out routeType));
+            Assert.True(RouteType.CoachService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.Bus, routeType);
             
             
-            Assert.True(RouteTypeExtended.FerryService.TryToRouteType(out routeType));
+            Assert.True(RouteType.FerryService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.Ferry, routeType);
             
-            Assert.True(RouteTypeExtended.TouristRailwayService.TryToRouteType(out routeType));
+            Assert.True(RouteType.TouristRailwayService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.Rail, routeType);
-            Assert.True(RouteTypeExtended.HighSpeedRailService.TryToRouteType(out routeType));
+            Assert.True(RouteType.HighSpeedRailService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.Rail, routeType);
             
-            Assert.True(RouteTypeExtended.MetroService.TryToRouteType(out routeType));
+            Assert.True(RouteType.MetroService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.SubwayMetro, routeType);
-            Assert.True(RouteTypeExtended.UrbanRailwayService.TryToRouteType(out routeType));
+            Assert.True(RouteType.UrbanRailwayService.TryToStandard(out routeType));
             Assert.AreEqual(RouteType.SubwayMetro, routeType);
         }
     }

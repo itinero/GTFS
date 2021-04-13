@@ -1712,7 +1712,7 @@ namespace GTFS
         /// Parses a route-type field.
         /// </summary>
         /// <returns></returns>
-        protected virtual RouteTypeExtended ParseFieldRouteType(string name, string fieldName, string value)
+        protected virtual RouteType ParseFieldRouteType(string name, string fieldName, string value)
         {
             // clean first.
             value = this.CleanFieldValue(value);
@@ -1756,15 +1756,7 @@ namespace GTFS
             {
                 throw new GTFSParseException(name, fieldName, value);
             }
-
-            try
-            {
-                return (RouteTypeExtended) routeTypeValue;
-            }
-            catch
-            {
-                throw new GTFSParseException(name, fieldName, value);
-            }
+            throw new GTFSParseException(name, fieldName, value);
         }
 
         /// <summary>
