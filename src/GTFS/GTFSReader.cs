@@ -1717,41 +1717,6 @@ namespace GTFS
             // clean first.
             value = this.CleanFieldValue(value);
 
-            //0 - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.
-            //1 - Subway, Metro. Any underground rail system within a metropolitan area.
-            //2 - Rail. Used for intercity or long-distance travel.
-            //3 - Bus. Used for short- and long-distance bus routes.
-            //4 - Ferry. Used for short- and long-distance boat service.
-            //5 - Cable car. Used for street-level cable cars where the cable runs beneath the car.
-            //6 - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.
-            //7 - Funicular. Any rail system designed for steep inclines.
-            //11 - Trolleybus. Electric buses that draw power from overhead wires using poles. 
-            //12 - Monorail. Railway in which the track consists of a single rail or a beam.
-
-            switch (value)
-            {
-                case "0":
-                    return RouteType.Tram.ToExtended();
-                case "1":
-                    return RouteType.SubwayMetro.ToExtended();
-                case "2":
-                    return RouteType.Rail.ToExtended();
-                case "3":
-                    return RouteType.Bus.ToExtended();
-                case "4":
-                    return RouteType.Ferry.ToExtended();
-                case "5":
-                    return RouteType.CableCar.ToExtended();
-                case "6":
-                    return RouteType.Gondola.ToExtended();
-                case "7":
-                    return RouteType.Funicular.ToExtended();
-                case "11":
-                    return RouteType.Trolleybus.ToExtended();
-                case "12":
-                    return RouteType.Gondola.ToExtended();
-            }
-
             if (!int.TryParse(value, out var routeTypeValue))
             {
                 throw new GTFSParseException(name, fieldName, value);
