@@ -2322,10 +2322,11 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string CleanFieldValue(string value)
         {
+            value = value.Trim();
+
             if (!_strict)
             {
                 // no cleaning when strict!
-                value = value.Trim();
                 if (value != null && value.Length > 0)
                 {
                     // test some stuff.
