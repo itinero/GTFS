@@ -793,7 +793,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
         {
-            value = value.Replace("\"", "\"\"");
+            value = value?.Replace("\"", "\"\"");
             if (quote)
             { // quotes.
                 var valueBuilder = new StringBuilder();
