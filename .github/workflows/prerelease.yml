@@ -34,3 +34,6 @@ jobs:
     - name: Nuget Pack
       run: dotnet pack -c release
       working-directory: ./src/GTFS/
+    - name: Nuget push
+      run: dotnet nuget push **/*.nupkg --skip-duplicate -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+      working-directory: ./src/GTFS/
