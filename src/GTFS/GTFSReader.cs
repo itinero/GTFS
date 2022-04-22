@@ -333,7 +333,7 @@ namespace GTFS
         /// <returns></returns>
         public virtual IEnumerable<string> GetRequiredFiles()
         {
-            return new[] {"agency", "stops", "routes", "trips", "stop_times"};
+            return new[] { "agency", "stops", "routes", "trips", "stop_times" };
         }
 
         /// <summary>
@@ -509,11 +509,11 @@ namespace GTFS
                     pathway.ToStopId = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "pathway_mode":
-                    pathway.PathwayMode = (PathwayMode) this.ParseFieldPathwayMode(header.Name, fieldName, value);
+                    pathway.PathwayMode = (PathwayMode)this.ParseFieldPathwayMode(header.Name, fieldName, value);
                     break;
                 case "is_bidirectional":
                     pathway.IsBidirectional =
-                        (IsBidirectional) this.ParseFieldIsBidirectional(header.Name, fieldName, value);
+                        (IsBidirectional)this.ParseFieldIsBidirectional(header.Name, fieldName, value);
                     break;
                 case "length":
                     pathway.Length = this.ParseFieldDouble(header.Name, fieldName, value);
@@ -583,7 +583,7 @@ namespace GTFS
                     level.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "level_index":
-                    level.Index = (double) this.ParseFieldDouble(header.Name, fieldName, value);
+                    level.Index = (double)this.ParseFieldDouble(header.Name, fieldName, value);
                     break;
                 case "level_name":
                     level.Name = this.ParseFieldString(header.Name, fieldName, value);
@@ -1588,7 +1588,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string ParseFieldString(string name, string fieldName, string value)
         {
-            return this.CleanFieldValue(value);
+            return value.Trim().Replace("\"\"", "\"");
         }
 
         /// <summary>
@@ -1662,7 +1662,7 @@ namespace GTFS
 
             try
             {
-                return (RouteTypeExtended) routeTypeValue;
+                return (RouteTypeExtended)routeTypeValue;
             }
             catch
             {

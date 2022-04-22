@@ -120,7 +120,7 @@ namespace GTFS.Test
             Assert.IsNotNull(feed.Routes);
             var routes = feed.Routes.ToList();
             Assert.AreEqual(5, routes.Count);
-            
+
             //route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
 
             //AB,DTA,10,Airport - Bullfrog,,3,,,
@@ -257,6 +257,16 @@ namespace GTFS.Test
             Assert.AreEqual(DirectionType.OneDirection, trips[idx].Direction);
             Assert.AreEqual("1", trips[idx].BlockId);
             Assert.AreEqual("shape_6", trips[idx].ShapeId);
+
+            // AAMV,WE,AAMV4,"""to Airport""",1,,shape_11
+            idx = 10;
+            Assert.AreEqual("AAMV", trips[idx].RouteId);
+            Assert.AreEqual("WE", trips[idx].ServiceId);
+            Assert.AreEqual("AAMV4", trips[idx].Id);
+            Assert.AreEqual("\"to Airport\"", trips[idx].Headsign);
+            Assert.AreEqual(DirectionType.OppositeDirection, trips[idx].Direction);
+            Assert.AreEqual("", trips[idx].BlockId);
+            Assert.AreEqual("shape_11", trips[idx].ShapeId);
         }
 
         /// <summary>

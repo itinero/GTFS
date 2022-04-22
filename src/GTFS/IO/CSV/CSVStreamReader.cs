@@ -130,7 +130,20 @@ namespace GTFS.IO.CSV
                 {
                     var curChar = line[charIdx];
                     if (curChar == '"')
-                    { // do nothing when in between quotes.
+                    {
+                        var nextCharIdx = charIdx + 1;
+                        if (nextCharIdx < line.Length)
+                        {
+                            var nextChar = line[nextCharIdx];
+                            if (nextChar == '"')
+                            {
+                                chars.Add('"');
+                                charIdx = nextCharIdx;
+                                continue;
+                            }
+                        }
+
+                        // do nothing when in between quotes.
                         between = !between;
                     }
                     else if (!between && curChar == _seperator)
