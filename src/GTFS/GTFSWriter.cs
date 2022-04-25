@@ -83,7 +83,7 @@ namespace GTFS
         protected virtual void Write(IGTFSTargetFile levelsFile, IEnumerable<Level> levels)
         {
             if (levelsFile == null) return;
-            
+
             bool initialized = false;
             var data = new string[3];
             foreach (var level in levels)
@@ -120,7 +120,7 @@ namespace GTFS
         protected virtual void Write(IGTFSTargetFile pathwaysFile, IEnumerable<Pathway> pathways)
         {
             if (pathwaysFile == null) return;
-            
+
             bool initialized = false;
             var data = new string[12];
             foreach (var pathway in pathways)
@@ -779,8 +779,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string WriteFieldString(string name, string fieldName, string value)
         {
-            var quote = !string.IsNullOrWhiteSpace(value) && value.Contains(",");
-            return this.WriteFieldString(name, fieldName, value, quote);
+            return this.WriteFieldString(name, fieldName, value, false);
         }
 
         /// <summary>
@@ -789,20 +788,23 @@ namespace GTFS
         /// <param name="name"></param>
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
-        /// <param name="quote"></param>
+        /// <param name="requireQuotes"></param>
         /// <returns></returns>
-        protected virtual string WriteFieldString(string name, string fieldName, string value, bool quote)
+        protected virtual string WriteFieldString(string name, string fieldName, string value, bool requireQuotes)
         {
-            value = value?.Replace("\"", "\"\"");
-            if (quote)
-            { // quotes.
-                var valueBuilder = new StringBuilder();
-                valueBuilder.Append('"');
-                valueBuilder.Append(value);
-                valueBuilder.Append('"');
-                return valueBuilder.ToString();
-            }
-            return value;
+            var valueContainsSeparator = value?.Contains(",") ?? false;
+
+            var escapedValue = value?.Replace("\"", "\"\"");
+            var valueContainsEscapedCharacters = value != escapedValue;
+
+            var shouldQuote = requireQuotes || valueContainsSeparator || valueContainsEscapedCharacters;
+            if (!shouldQuote) return value;
+
+            var valueBuilder = new StringBuilder();
+            valueBuilder.Append('"');
+            valueBuilder.Append(escapedValue);
+            valueBuilder.Append('"');
+            return valueBuilder.ToString();
         }
 
         /// <summary>
