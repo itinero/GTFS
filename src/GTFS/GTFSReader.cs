@@ -1588,7 +1588,7 @@ namespace GTFS
         /// <returns></returns>
         protected virtual string ParseFieldString(string name, string fieldName, string value)
         {
-            return value.Trim().Replace("\"\"", "\"");
+            return value.Trim();
         }
 
         /// <summary>
